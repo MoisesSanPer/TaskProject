@@ -1,0 +1,74 @@
+/* index.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+/*This refer to the big box that is inside the body and position in the center becuase of display:flex  */
+.login-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 750px;
+  background-color: #ffffff;
+}
+/* this is the div that center and set the  dimensions of the box   */
+.login-container {
+  width: 100%;
+  max-width: 450px;
+}
+ /* this refer to the  box that contains the sign up information */
+.login-box {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+/* Title from the sign up box  */
+.login-box h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #050505;
+}
+.login-box label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+/* This is applied in the place we write the Username and password */
+.login-box input {
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+.login-box button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.login-box button:hover {
+  background-color: #45a049;
+}
+
+.login-box p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.login-box p a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.login-box p a:hover {
+  text-decoration: underline;
+}

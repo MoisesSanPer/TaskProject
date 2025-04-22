@@ -1,0 +1,91 @@
+.PruebaTitulo {
+    text-align: center;
+}
+
+/* .content {
+    background-color: #d3d3d3;
+    margin: 20px 60px;
+    width: calc(100vw - 120px);
+    height: calc(100vh - 20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+/* .inner-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 95%;
+    height: 92%;
+} */
+/* 
+.column1 {
+    background-color: #e7e7e7;
+    padding-left: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 33%;
+    display: flex;
+    height: 98%;
+} */
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    width: 250px; 
+    padding-left: 20px;
+    background-color: #f9f9f9; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .h1c1 {
+    font-family: verdana;
+  }
+  
+  .h2c1 {
+    font-family: verdana;
+    font-size: 20px;
+  }
+  
+  .buttons {
+    background-color: #e7e7e7;
+  }
+  
+  .Tareas {
+    display: flex;
+    align-items: center;
+    height: 40px; 
+    width: 100%; 
+  }
+  
+  .Tareas:hover {
+    background-color: rgb(187, 181, 181);
+    border-radius: 8px;
+  }
+  
+  .mb {
+    margin-bottom: 10px;
+  }
+  
+  .Tareas p {
+    margin: 0;
+    padding-left: 8px;
+  }
+
+  
+  .footer {
+    margin-top: 50px; 
+  }
+  
+  .Etiqueta {
+    border-radius: 15px;
+    display: flex;
+    margin-right: 10px;
+  }
+  
+  .Etiqueta p {
+    text-align: center;
+  }
+  
