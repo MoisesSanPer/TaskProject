@@ -59,20 +59,20 @@ export const UserProvider = ({ children }: Props) => {
       if (user && token) {
         console.log("Token has been validated");
         axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-        GetCategoryAPI()
-        .then((res) => {
-          setCategory(res?.data!!);
-          return res?.data!!;
+        GetCategoryAPI(user.id)
+        .then((data) => {
+         setCategory(data);
+          return data;
         })
-        .catch((e) => {
+        .catch(() => {
           toast.warning("Server error occurred");
         });
-        GetTagsAPI()
-        .then((res) => {
-          setTag(res?.data!!);
-          return res?.data!!;
+        GetTagsAPI(user.id)
+        .then((data) => {
+          setTag(data);
+          return data;
         })
-        .catch((e) => {
+        .catch(() => {
           toast.warning("Server error occurred");
         });
       }
@@ -92,6 +92,7 @@ export const UserProvider = ({ children }: Props) => {
           const userObj = {
             username: res?.data.username,
             email: res?.data.email,
+            id:res.data.id,
           };
           setToken(res?.data.token!);
           setUser(userObj!);
@@ -99,7 +100,7 @@ export const UserProvider = ({ children }: Props) => {
           navigate("/menu");
         }
       })
-      .catch((e) => toast.warning("Server error occurred"));
+      .catch(() => toast.warning("Server error occurred"));
   };
 
   const loginUser = async (email: string, password: string) => {
@@ -110,6 +111,7 @@ export const UserProvider = ({ children }: Props) => {
           const userObj = {
             username: res?.data.username,
             email: res?.data.email,
+            id:res.data.id,
           };
           setToken(res?.data.token);
           setUser(userObj!);
@@ -117,8 +119,10 @@ export const UserProvider = ({ children }: Props) => {
           navigate("/menu");
         }
       })
-      .catch((e) => toast.warning("Server error occurred"));
+      .catch(() => toast.warning("Server error occurred"));
   };
+
+  
 
   const isLoggedIn = () => {
     return !!user && isTokenValid();
@@ -133,7 +137,7 @@ export const UserProvider = ({ children }: Props) => {
   };
   return (
     <UserContext.Provider
-      value={{ loginUser, user, token, logout, isLoggedIn, registerUser, Categories:category, Tags:tag }}
+      value={{ loginUser, user, token, logout, isLoggedIn, registerUser, Categories:category, Tags:tag}}
     >
       {isReady ? children : null}
     </UserContext.Provider>

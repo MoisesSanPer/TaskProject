@@ -7,7 +7,7 @@ export const  PostCategoryAPI = async(title:string,idUser:string) =>{
     try {
         const data = await axios.post<Category>(api + "/AddCategory", {
             title: title,
-            id: idUser,
+            idUser: idUser,
         });
         return data;
       } catch (error) {
@@ -15,10 +15,12 @@ export const  PostCategoryAPI = async(title:string,idUser:string) =>{
       }
 }
 
-export const  GetCategoryAPI = async() =>{
+export const  GetCategoryAPI = async(idUser:string) =>{
   try {
-      const data = (await axios.get<Category[]>(api + "/GetCategory"));
-      return data;
+     const response = await axios.get( api+'/GetCategory', { params: {
+        idUser
+     } });
+ return response.data
     } catch (error) {
       handleError(error);
     }

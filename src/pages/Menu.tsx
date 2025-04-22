@@ -1,18 +1,25 @@
-import React from "react";
-import "../css/style.css";
-import { FaRegCalendarAlt } from "react-icons/fa";
+import  { useState } from "react";
+import { Dialog, Button, Flex, Input } from "@fluentui/react-northstar";
+import {
+  FaRegCalendarAlt,
+  FaRegPlayCircle,
+  FaSignOutAlt,
+  FaRegCheckCircle,
+} from "react-icons/fa";
 import { IoIosTimer } from "react-icons/io";
-import { FaRegPlayCircle } from "react-icons/fa";
-import { FaSignOutAlt } from "react-icons/fa";
-import { Button, Dialog, Flex } from "@fluentui/react-northstar";
-import { useAuth } from "../Context/useAuth";
 import { PiPauseDuotone } from "react-icons/pi";
+import { useAuth } from "../Context/useAuth";
+import "../css/style.css";
 import { IoCalendarOutline } from "react-icons/io5";
-import { FaRegCheckCircle } from "react-icons/fa";
-import { IoMdAdd } from "react-icons/io";
+import { categoryAdd } from "../Context/CategoryAuth";
+import { tagAdd } from "../Context/tagAuth";
+import { SiEgnyte } from "react-icons/si";
 
-const Menu = ({}) => {
-  const { logout, Categories, Tags } = useAuth();
+const Menu = () => {
+  const { logout, Categories, Tags, user } = useAuth();
+  const [inputCategoryValue, setInputCategoryValue] = useState("");
+  const [inputTagValue, setInputTagValue] = useState("");
+
   return (
     <div className="menu-container">
       <h1 className="h1c1">Menu</h1>
@@ -52,27 +59,51 @@ const Menu = ({}) => {
         {Categories.map((category) => (
           <p key={category.id}>{category.title}</p>
         ))}
-        <div className="Tareas" onClick={undefined}>
-          <Flex styles={{ marginRight: "10px" }}>
-            <IoMdAdd size={20} />
-            <p>Add New Category</p>
-          </Flex>
-        </div>
-
       </div>
-
+      <Dialog
+        cancelButton="Cancel"
+        confirmButton="Create"
+        header="Create Category"
+        trigger={<Button content="Create  Category" />}
+        content={
+          <div>
+            <label htmlFor="inputField">Título:</label>
+            <Input
+              id="inputField"
+              value={inputCategoryValue}
+              onChange={({}, data) => setInputCategoryValue(data?.value ?? "")}
+              placeholder="Escribe  el titulo de la categoria"
+            />
+          </div>
+        }
+        onConfirm={() => {categoryAdd(inputCategoryValue, user?.id!!); setInputCategoryValue("")}}
+        onCancel={()=> setInputCategoryValue("")}
+      />
       <h2 className="h2c1">TAGS</h2>
-      <div className="section">
+      <div>
         {Tags.map((tag) => (
           <p key={tag.id}>{tag.title}</p>
         ))}
-        <div className="Tareas" onClick={undefined}>
-          <Flex>
-            <IoMdAdd size={20} />
-            <p>Add New Tag</p>
-          </Flex>
-        </div>
       </div>
+      <Dialog
+        cancelButton="Cancel"
+        confirmButton="Create"
+        header="Create Tag"
+        trigger={<Button content="Create  Tag" />}
+        content={
+          <div>
+            <label htmlFor="inputField">Título:</label>
+            <Input
+              id="inputField"
+              value={inputTagValue}
+              onChange={({}, data) => setInputTagValue(data?.value ?? "")}
+              placeholder="Escribe  el titulo del tag"
+            />
+          </div>
+        }
+        onConfirm={() =>{ tagAdd(inputTagValue, user?.id!!); setInputTagValue("") }}
+        onCancel={() => setInputTagValue("")}
+      />
       <div className="footer">
         <div className="Tareas mb" onClick={undefined}>
           <Flex>

@@ -1,5 +1,5 @@
 // src/Routes/routes.tsx
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 import Menu from '../pages/Menu';
 import Login from '../pages/LoginPage';
 import Register from '../pages/RegisterPage';
