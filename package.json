@@ -22,6 +22,7 @@
     "react-router-dom": "^7.4.1",
     "react-toastify": "^11.0.5",
     "scheduler": "^0.26.0",
+    "uuid": "^11.1.0",
     "yp": "^2.0.3",
     "yup": "^1.6.1"
   },

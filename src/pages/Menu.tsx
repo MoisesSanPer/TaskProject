@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, Button, Flex, Input } from "@fluentui/react-northstar";
 import {
   FaRegCalendarAlt,
@@ -11,14 +11,37 @@ import { PiPauseDuotone } from "react-icons/pi";
 import { useAuth } from "../Context/useAuth";
 import "../css/style.css";
 import { IoCalendarOutline } from "react-icons/io5";
-import { categoryAdd } from "../Context/CategoryAuth";
-import { tagAdd } from "../Context/tagAuth";
-import { SiEgnyte } from "react-icons/si";
+import {
+  categoryAdd,
+  categoryDelete,
+  categoryUpdate,
+} from "../Context/CategoryAuth";
+import { tagAdd, tagDelete, tagUpdate } from "../Context/tagAuth";
+import { Category } from "../models/Category";
+import { Tag } from "../models/Tag";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { MdModeEdit } from "react-icons/md";
+import { v4 as uuidv4 } from "uuid";
+import { UpdateCategoryAPI } from "../services/CategoryServices";
 
 const Menu = () => {
   const { logout, Categories, Tags, user } = useAuth();
   const [inputCategoryValue, setInputCategoryValue] = useState("");
+  const [inputCategoryUpdateValue, setinputCategoryUpdateValue] =
+    useState<string>();
   const [inputTagValue, setInputTagValue] = useState("");
+  const [inputTagUpdateValue, setinputTagUpdateValue] = useState<string>();
+  //Creas 2 estados que son temporales para ir puediendo actualizar la UI  del front
+  //Importante poner el tipo cuando a veces este dando errores el estado ya que este no reconoce de forma directa este
+  const [tempCategories, setTempCategories] = useState<Category[]>([]);
+  const [tempTags, setTempTags] = useState<Tag[]>([]);
+  //Efecto secundarios que lo que hace es asignarle el valor por defecto a las temporales del valor que recoje del contexto anteriormente
+  useEffect(() => {
+    setTempCategories(Categories);
+  }, [Categories]);
+  useEffect(() => {
+    setTempTags(Tags);
+  }, [Tags]);
 
   return (
     <div className="menu-container">
@@ -56,15 +79,89 @@ const Menu = () => {
       </div>
       <h2 className="h2c1">CATEGORY</h2>
       <div>
-        {Categories.map((category) => (
-          <p key={category.id}>{category.title}</p>
+        {tempCategories.map((category) => (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Flex>
+              <p
+                style={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: "150px",
+                }}
+                key={category.id}
+              >
+                {category.title}
+              </p>
+              <Dialog
+                cancelButton="Cancel"
+                confirmButton="Update"
+                header="Update Category"
+                trigger={
+                  <MdModeEdit
+                    size={20}
+                    style={{ marginTop: "10px", marginLeft: "10px" }}
+                    className="icons"
+                  />
+                }
+                content={
+                  <div>
+                    <label htmlFor="UpdateField">Título:</label>
+                    <Input
+                      id="UpdateField"
+                      defaultValue={category.title}
+                      value={inputCategoryUpdateValue}
+                      onChange={({}, data) =>
+                        setinputCategoryUpdateValue(data?.value ?? "")
+                      }
+                      placeholder="Actualiza  el titulo de la categoria"
+                    />
+                  </div>
+                }
+                onConfirm={() => {
+                  const updatedCategory = {
+                    ...category,
+                    title: inputCategoryUpdateValue!!,
+                  };
+                  categoryUpdate(
+                    updatedCategory.id,
+                    updatedCategory.title,
+                    updatedCategory.idUser
+                  );
+                  setTempCategories((prevCategories) =>
+                    prevCategories.map((cat) =>
+                      cat.id === updatedCategory.id ? updatedCategory : cat
+                    )
+                  );
+                }}
+                onCancel={() => setinputCategoryUpdateValue(category.title)}
+              />
+              <RiDeleteBin5Line
+                onClick={() => {
+                  //You  do th e then to take the value that you have recieved before
+                  // with the value of the then that is result you can  control if is is true or not
+                  //And if it is true yo update the Array of categorys
+                  categoryDelete(category.id).then((result) => {
+                    if (result) {
+                      setTempCategories((cat) =>
+                        cat.filter((c) => c.id !== category.id)
+                      );
+                    }
+                  });
+                }}
+                size={20}
+                style={{ marginTop: "10px", marginLeft: "5px" }}
+                className="icons"
+              />
+            </Flex>
+          </div>
         ))}
       </div>
       <Dialog
         cancelButton="Cancel"
         confirmButton="Create"
-        header="Create Category"
-        trigger={<Button content="Create  Category" />}
+        header="Add Category"
+        trigger={<Button content="Add  Category" />}
         content={
           <div>
             <label htmlFor="inputField">Título:</label>
@@ -76,20 +173,97 @@ const Menu = () => {
             />
           </div>
         }
-        onConfirm={() => {categoryAdd(inputCategoryValue, user?.id!!); setInputCategoryValue("")}}
-        onCancel={()=> setInputCategoryValue("")}
+        onConfirm={() => {
+          const idTemp = uuidv4();
+          categoryAdd(idTemp, inputCategoryValue, user?.id!!);
+          //Objeto que nos servira para añadir al array despues
+          const newCategory: Category = {
+            id: idTemp,
+            title: inputCategoryValue,
+            idUser: user?.id!!,
+          };
+          setInputCategoryValue("");
+          //Actualizamos el array  es decir añadiendole al final de este la nueva categoria que hemos creado
+          setTempCategories([...tempCategories, newCategory]);
+        }}
+        onCancel={() => setInputCategoryValue("")}
       />
       <h2 className="h2c1">TAGS</h2>
       <div>
-        {Tags.map((tag) => (
-          <p key={tag.id}>{tag.title}</p>
+        {tempTags.map((tag) => (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Flex>
+              <p
+                 style={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: "150px",
+                }}
+                key={tag.id}
+              >
+                {tag.title}
+              </p>
+              <Dialog
+                cancelButton="Cancel"
+                confirmButton="Update"
+                header="Update Tag"
+                trigger={
+                  <MdModeEdit
+                    size={20}
+                    style={{ marginTop: "10px", marginLeft: "10px" }}
+                    className="icons"
+                  />
+                }
+                content={
+                  <div>
+                    <label htmlFor="UpdateField">Título:</label>
+                    <Input
+                      id="UpdateField"
+                      defaultValue={tag.title}
+                      value={inputTagUpdateValue}
+                      onChange={({}, data) =>
+                        setinputTagUpdateValue(data?.value ?? "")
+                      }
+                      placeholder="Actualiza  el titulo del tag"
+                    />
+                  </div>
+                }
+                onConfirm={() => {
+                  const updatedTag = {
+                    ...tag,
+                    title: inputTagUpdateValue!!,
+                  };
+                  tagUpdate(updatedTag.id, updatedTag.title, updatedTag.idUser);
+                  setTempTags((prevTags) =>
+                    prevTags.map((tag) =>
+                      tag.id === updatedTag.id ? updatedTag : tag
+                    )
+                  );
+                }}
+                onCancel={() => setinputTagUpdateValue(tag.title)}
+              />
+              <RiDeleteBin5Line
+                onClick={() => {
+                  tagDelete(tag.id).then((res) => {
+                    if (res) {
+                      setTempTags((ta) => ta.filter((t) => t.id !== tag.id));
+                    }
+                  });
+                }}
+                size={20}
+                style={{ marginTop: "10px", marginLeft: "5px" }}
+                className="icons"
+              />
+            </Flex>
+          </div>
         ))}
       </div>
       <Dialog
         cancelButton="Cancel"
         confirmButton="Create"
-        header="Create Tag"
-        trigger={<Button content="Create  Tag" />}
+        header="Add Tag"
+        trigger={<Button content="Add  Tag" />}
         content={
           <div>
             <label htmlFor="inputField">Título:</label>
@@ -101,7 +275,19 @@ const Menu = () => {
             />
           </div>
         }
-        onConfirm={() =>{ tagAdd(inputTagValue, user?.id!!); setInputTagValue("") }}
+        onConfirm={() => {
+          //Cambiar para que se actualize el contexto esto es de forma temporal
+          const idTemp = uuidv4();
+          tagAdd(idTemp, inputTagValue, user?.id!!);
+          const newTag = {
+            id: idTemp,
+            title: inputTagValue,
+            idUser: user?.id!!,
+          };
+          setInputTagValue("");
+          //Actualizamos el array  es decir añadiendole al final de este el nuevo Tag que hemos creado
+          setTempTags([...tempTags, newTag]);
+        }}
         onCancel={() => setInputTagValue("")}
       />
       <div className="footer">

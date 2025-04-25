@@ -63,6 +63,7 @@
   .Tareas:hover {
     background-color: rgb(187, 181, 181);
     border-radius: 8px;
+    cursor: pointer;
   }
   
   .mb {
@@ -87,5 +88,8 @@
   
   .Etiqueta p {
     text-align: center;
+  }
+  .icons:hover{
+    cursor: pointer;
   }
   
