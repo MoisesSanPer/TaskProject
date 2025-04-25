@@ -22,7 +22,8 @@ import { Tag } from "../models/Tag";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdModeEdit } from "react-icons/md";
 import { v4 as uuidv4 } from "uuid";
-import { UpdateCategoryAPI } from "../services/CategoryServices";
+import { Datepicker } from "@fluentui/react-northstar";
+import ShowMoreText from "react-show-more-text";
 
 const Menu = () => {
   const { logout, Categories, Tags, user } = useAuth();
@@ -35,6 +36,15 @@ const Menu = () => {
   //Importante poner el tipo cuando a veces este dando errores el estado ya que este no reconoce de forma directa este
   const [tempCategories, setTempCategories] = useState<Category[]>([]);
   const [tempTags, setTempTags] = useState<Tag[]>([]);
+  //Controlas la cantidad de categorias visibles que quieres tener
+  const [visibleCategories, setVisibleCategories] = useState(4);
+
+  //Metodo que se ejecutara  lo que hara es que cuando se clicke el boton se sumara a el valor incial de categorias 4
+  // Las que haya mas en donde se haya usado  
+  const handleShowMore = () => {
+    setVisibleCategories((prev) => prev + 4);
+  };
+
   //Efecto secundarios que lo que hace es asignarle el valor por defecto a las temporales del valor que recoje del contexto anteriormente
   useEffect(() => {
     setTempCategories(Categories);
@@ -45,8 +55,8 @@ const Menu = () => {
 
   return (
     <div className="menu-container">
-      <h1 className="h1c1">Menu</h1>
-      <h2 className="h2c1">TASKS</h2>
+      <h1 className="h1c1" style={{cursor:"default"}}>Menu</h1>
+      <h2 className="h2c1" style={{cursor:"default"}}>TASKS</h2>
       <div className="Tareas mb" onClick={undefined}>
         <Flex>
           <IoIosTimer size={20} />
@@ -77,9 +87,11 @@ const Menu = () => {
           <p>Finished</p>
         </Flex>
       </div>
-      <h2 className="h2c1">CATEGORY</h2>
+      <h2 className="h2c1" style={{cursor:"default"}}>CATEGORY</h2>
       <div>
-        {tempCategories.map((category) => (
+        {
+          //El .slice lo que crea es una copia del array desde la posicion 0 hasta la posicion de la variable del hook que declaramos anteriormente
+        tempCategories.slice(0, visibleCategories).map((category) => (
           <div style={{ display: "flex", alignItems: "center" }}>
             <Flex>
               <p
@@ -88,6 +100,7 @@ const Menu = () => {
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
                   maxWidth: "150px",
+                  cursor:"default"
                 }}
                 key={category.id}
               >
@@ -150,12 +163,16 @@ const Menu = () => {
                   });
                 }}
                 size={20}
-                style={{ marginTop: "10px", marginLeft: "5px" }}
+                style={{ marginTop: "10px", marginLeft: "10px" }}
                 className="icons"
               />
             </Flex>
           </div>
         ))}
+        {
+        visibleCategories < tempCategories.length && (
+          <Button onClick={handleShowMore} content="Show More" />
+        )}
       </div>
       <Dialog
         cancelButton="Cancel"
@@ -188,17 +205,18 @@ const Menu = () => {
         }}
         onCancel={() => setInputCategoryValue("")}
       />
-      <h2 className="h2c1">TAGS</h2>
+      <h2 className="h2c1" style={{cursor:"default"}}>TAGS</h2>
       <div>
         {tempTags.map((tag) => (
           <div style={{ display: "flex", alignItems: "center" }}>
             <Flex>
               <p
-                 style={{
+                style={{
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
                   maxWidth: "150px",
+                  cursor:"default"
                 }}
                 key={tag.id}
               >
@@ -252,7 +270,7 @@ const Menu = () => {
                   });
                 }}
                 size={20}
-                style={{ marginTop: "10px", marginLeft: "5px" }}
+                style={{ marginTop: "10px", marginLeft: "10px" }}
                 className="icons"
               />
             </Flex>
@@ -291,12 +309,24 @@ const Menu = () => {
         onCancel={() => setInputTagValue("")}
       />
       <div className="footer">
-        <div className="Tareas mb" onClick={undefined}>
-          <Flex>
-            <FaRegCalendarAlt size={20} />
-            <p>Calendar </p>
-          </Flex>
-        </div>
+        <Dialog
+          cancelButton="Cancel"
+          confirmButton="Accept"
+          header="Task founded"
+          trigger={
+            <div className="Tareas mb">
+              <Flex>
+                <FaRegCalendarAlt size={20} />
+                <p>Calendar </p>
+              </Flex>
+            </div>
+          }
+          content={
+            <div>
+              <Datepicker />
+            </div>
+          }
+        />
         <div className="Tareas" onClick={logout}>
           <Flex>
             <FaSignOutAlt size={20} />
