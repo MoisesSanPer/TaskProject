@@ -10,6 +10,6 @@ export type  Task ={
     status:Status;
     subTasks?:Task[];
     tags?:Tag[];
-    category?:Category[];
+    categories?:Category[];
     idUser:string;
 }

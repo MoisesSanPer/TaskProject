@@ -1,7 +1,7 @@
 export enum Status{
-    NonStarted="Non Started",
-    InProgress="In progress",
-    Paused="Paused",
-    Late="Late",
-    Pauses="Paused"
+    NonStarted=0,
+    InProgress=1,
+    Paused=2,
+    Late=3,
+    Finished=4
 }

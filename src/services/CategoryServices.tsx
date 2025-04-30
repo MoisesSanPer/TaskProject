@@ -15,7 +15,6 @@ export const  PostCategoryAPI = async(id:string,title:string,idUser:string) =>{
         handleError(error);
       }
 }
-
 export const  GetCategoryAPI = async(idUser:string) =>{
   try {
      const response = await axios.get( api+'/GetCategory', { params: {

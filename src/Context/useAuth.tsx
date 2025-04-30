@@ -10,7 +10,9 @@ import { Category } from "../models/Category";
 import { GetCategoryAPI } from "../services/CategoryServices";
 import { Tag } from "../models/Tag";
 import { GetTagsAPI } from "../services/TagsServices";
-
+import { Task } from "../models/Task";
+import { GetTaskAPI } from "../services/TaskService";
+//Declaramos las variables que tendra este tipo la usaremos para tenerla en el contexto
 type UserContextType = {
   user: UserProfile | null;
   token: string | null;
@@ -18,6 +20,7 @@ type UserContextType = {
   loginUser: (username: string, password: string) => void;
   logout: () => void;
   isLoggedIn: () => boolean;
+  Tasks:Task[];
   Categories: Category[];
   Tags:Tag[];
 };
@@ -31,6 +34,7 @@ export const UserProvider = ({ children }: Props) => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [category,setCategory] = useState<Category[]>([]);
   const [tag,setTag]= useState<Tag[]>([]);
+  const [task,setTask] = useState<Task[]>([]);
   const [isReady, setIsReady] = useState(false);
 
   const isTokenValid = () => {
@@ -62,7 +66,6 @@ export const UserProvider = ({ children }: Props) => {
         GetCategoryAPI(user.id)
         .then((data) => {
          setCategory(data);
-          return data;
         })
         .catch(() => {
           toast.warning("Server error occurred");
@@ -70,7 +73,13 @@ export const UserProvider = ({ children }: Props) => {
         GetTagsAPI(user.id)
         .then((data) => {
           setTag(data);
-          return data;
+        })
+        .catch(() => {
+          toast.warning("Server error occurred");
+        });
+        GetTaskAPI(user.id)
+        .then((data) => {
+          setTask(data);
         })
         .catch(() => {
           toast.warning("Server error occurred");
@@ -137,11 +146,11 @@ export const UserProvider = ({ children }: Props) => {
   };
   return (
     <UserContext.Provider
-      value={{ loginUser, user, token, logout, isLoggedIn, registerUser, Categories:category, Tags:tag}}
+      value={{ loginUser, user, token, logout, isLoggedIn, registerUser, Categories:category, Tags:tag,Tasks:task}}
     >
       {isReady ? children : null}
     </UserContext.Provider>
   );
 };
-
+//Esta funcion es  que al llamarla recoge los datos de UserContextType los cuales estaran en el contexto de la aplicacion
 export const useAuth = () => React.useContext(UserContext);
