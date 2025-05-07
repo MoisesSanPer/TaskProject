@@ -93,5 +93,40 @@
     cursor: pointer;
   }
 
+  
+.middle-section {
+   margin-top: 20px; /* Ajusta según sea necesario */
+   padding: 20px;
+   position: absolute; /* Para centrar en la pantalla */
+   margin-left: 300px;
+} 
+.task-container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-icons {
+  display: flex;
+  align-items: center;
+}
+
+.task-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
+  cursor: default;
+  font-size: 20px;
+}
+
 
   

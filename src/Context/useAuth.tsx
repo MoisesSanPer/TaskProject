@@ -11,7 +11,7 @@ import { GetCategoryAPI } from "../services/CategoryServices";
 import { Tag } from "../models/Tag";
 import { GetTagsAPI } from "../services/TagsServices";
 import { Task } from "../models/Task";
-import { GetTaskAPI } from "../services/TaskService";
+import { GetTaskAPI, GetTaskFinishedAPI, GetTaskLateAPI, GetTaskNonStartedAPI, GetTaskPausedAPI, GetTasksInProgressAPI } from "../services/TaskService";
 //Declaramos las variables que tendra este tipo la usaremos para tenerla en el contexto
 type UserContextType = {
   user: UserProfile | null;
@@ -23,6 +23,11 @@ type UserContextType = {
   Tasks:Task[];
   Categories: Category[];
   Tags:Tag[];
+  TaskNonStarted:Task[];
+  TaskInProgress:Task[];
+  TaskPaused:Task[];
+  TaskLate:Task[];
+  TaskFinished:Task[];
 };
 type Props = { children: React.ReactNode };
 
@@ -36,6 +41,13 @@ export const UserProvider = ({ children }: Props) => {
   const [tag,setTag]= useState<Tag[]>([]);
   const [task,setTask] = useState<Task[]>([]);
   const [isReady, setIsReady] = useState(false);
+  const [taskFinished,setTaskFinished] = useState<Task[]>([]);
+  const [taskNonStarted,setTaskNonStarted] = useState<Task[]>([]);
+  const [taskInProgress,setTaskInProgress] = useState<Task[]>([]);
+  const [taskPaused,setTaskPaused] = useState<Task[]>([]);
+  const [taskLate,setTaskLate] = useState<Task[]>([]);
+
+
 
   const isTokenValid = () => {
     console.log("Validating the token");
@@ -80,6 +92,41 @@ export const UserProvider = ({ children }: Props) => {
         GetTaskAPI(user.id)
         .then((data) => {
           setTask(data);
+        })
+        .catch(() => {
+          toast.warning("Server error occurred");
+        });
+        GetTaskFinishedAPI(user.id)
+        .then((data) => {
+          setTaskFinished(data);
+        })
+        .catch(() => {
+          toast.warning("Server error occurred");
+        });
+        GetTaskNonStartedAPI(user.id)
+        .then((data) => {
+          setTaskNonStarted(data);
+        })
+        .catch(() => {
+          toast.warning("Server error occurred");
+        });
+        GetTasksInProgressAPI(user.id)
+        .then((data) => {
+          setTaskInProgress(data);
+        })
+        .catch(() => {
+          toast.warning("Server error occurred");
+        });
+        GetTaskPausedAPI(user.id)
+        .then((data) => {
+          setTaskPaused(data);
+        })
+        .catch(() => {
+          toast.warning("Server error occurred");
+        });
+        GetTaskLateAPI(user.id)
+        .then((data) => {
+          setTaskLate(data);
         })
         .catch(() => {
           toast.warning("Server error occurred");
@@ -146,7 +193,7 @@ export const UserProvider = ({ children }: Props) => {
   };
   return (
     <UserContext.Provider
-      value={{ loginUser, user, token, logout, isLoggedIn, registerUser, Categories:category, Tags:tag,Tasks:task}}
+      value={{ loginUser, user, token, logout, isLoggedIn, registerUser, Categories:category, Tags:tag,Tasks:task,TaskNonStarted:taskNonStarted,TaskInProgress:taskInProgress,TaskPaused:taskPaused,TaskLate:taskLate,TaskFinished:taskFinished}}
     >
       {isReady ? children : null}
     </UserContext.Provider>

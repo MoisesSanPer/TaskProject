@@ -8,8 +8,8 @@ export type  Task ={
     description?:string;
     endDate?:string;
     status:Status;
-    subTasks?:Task[];
-    tags?:Tag[];
-    categories?:Category[];
+    subTasks:Task[];
+    tags:Tag[];
+    categories:Category[];
     idUser:string;
 }
