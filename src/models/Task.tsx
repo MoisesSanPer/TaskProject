@@ -1,5 +1,4 @@
 import { Category } from "./Category";
-import { Status } from "./Status";
 import { Tag } from "./Tag";
 
 export type  Task ={
@@ -7,7 +6,7 @@ export type  Task ={
     title:string;
     description?:string;
     endDate?:string;
-    status:Status;
+    status:number;
     subTasks:Task[];
     tags:Tag[];
     categories:Category[];

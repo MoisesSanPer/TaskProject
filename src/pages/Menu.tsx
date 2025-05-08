@@ -41,18 +41,7 @@ const Menu = () => {
   //La lista que recibes de la api cuando se llama a la base de datos
   //Esta lista lo que haremos sera guardarla en hooks temporales que luego usaremos para poder asi actualizar estas listas
   //Si nos hiciera falta durante la ejecuccion
-  const {
-    logout,
-    Categories,
-    Tags,
-    user,
-    Tasks,
-    TaskNonStarted,
-    TaskInProgress,
-    TaskLate,
-    TaskPaused,
-    TaskFinished,
-  } = useAuth();
+  const { logout, Categories, Tags, user, Tasks, updateListTask } = useAuth();
 
   //Estos son los hook que usaremos cuando queramos crear  una categoria o un Tag
   const [inputCategoryValue, setInputCategoryValue] = useState("");
@@ -90,7 +79,7 @@ const Menu = () => {
     setInputTaskEndDateUpdateValue(selectedTask?.endDate);
   }, [selectedTask]);
   useEffect(() => {
-    setUpdateStatus(selectedTask?.status.toString() ?? "");
+    setUpdateStatus(status[selectedTask?.status!!] ?? "");
   }, [selectedTask]);
   useEffect(() => {
     seUpdatesubTasks(selectedTask?.subTasks || []);
@@ -117,6 +106,10 @@ const Menu = () => {
     "Late",
     "Finished",
   ]);
+
+  //Estado para el filtro
+  const [filterTask, setFilterTask] = useState<number>();
+
   //Son la svariables que  cogeran el valor de cuando clickemos una opcion o varias depende del dropdown cuando queremos
   //Añadir una tarea a la aplicacion
   const [statusValue, setstatusValue] = useState<string>("");
@@ -129,40 +122,6 @@ const Menu = () => {
   //Importante poner el tipo cuando a veces este dando errores el estado ya que este no reconoce de forma directa este
   const [tempCategories, setTempCategories] = useState<Category[]>([]);
   const [tempTags, setTempTags] = useState<Tag[]>([]);
-
-  //Controlas la cantidad de categorias visibles que quieres tener
-  const [visibleCategories, setVisibleCategories] = useState(4);
-
-  //Metodo que se ejecutara  lo que hara es que cuando se clicke el boton se sumara a el valor incial de categorias 4
-  // Las que haya mas en donde se haya usado
-  const handleShowMore = () => {
-    setVisibleCategories((prev) => prev + 4);
-  };
-
-  //Hook para guardar las listas  que variaran en funcion del div que clicke y este variara mas aun
-  //Son las listas temporales que  se mostraran cuando clickes  en cada estado de las tareas estas variaran segun su status
-  const [tempTaskNonStarted, setTempTaskNonStarted] = useState<Task[]>([]);
-  const [tempTaskInProgress, setTempTaskInProgress] = useState<Task[]>([]);
-  const [tempTaskPaused, setTempTaskPaused] = useState<Task[]>([]);
-  const [tempTaskLate, setTempTaskLate] = useState<Task[]>([]);
-  const [tempTaskFinished, setTempTaskFinished] = useState<Task[]>([]);
-
-  //Efectos secundarios de las listas para que se vayan actualizando
-  useEffect(() => {
-    setTempTaskNonStarted(TaskNonStarted);
-  }, [TaskNonStarted]);
-  useEffect(() => {
-    setTempTaskInProgress(TaskInProgress);
-  }, [TaskInProgress]);
-  useEffect(() => {
-    setTempTaskPaused(TaskPaused);
-  }, [TaskPaused]);
-  useEffect(() => {
-    setTempTaskLate(TaskLate);
-  }, [TaskLate]);
-  useEffect(() => {
-    setTempTaskFinished(TaskFinished);
-  }, [TaskFinished]);
 
   //Efecto secundarios que lo que hace es asignarle el valor por defecto a las temporales del valor que recoje del contexto anteriormente
   useEffect(() => {
@@ -198,10 +157,9 @@ const Menu = () => {
 
   //Estos hook y este metodo van a ser los que van a  actualizar los datos del medio en funcion del status que tenga la tarea
   const [centralText, setCentralText] = useState("No Task Selected");
-  const [listTask, setSelectedList] = useState<Task[]>([]);
-  const handleTaskClick = (text: string, taskList: Task[]) => {
+  const handleTaskClick = (text: string, numberStatus: number) => {
     setCentralText(text);
-    setSelectedList(taskList);
+    setFilterTask(numberStatus);
   };
 
   return (
@@ -209,7 +167,7 @@ const Menu = () => {
       <div className="middle-section">
         <h1 style={{ fontSize: "40px" }}>{centralText}</h1>
         <div>
-          {listTask.map((task) => {
+          {Tasks.filter((task) => task.status == filterTask).map((task) => {
             const listTag: boolean =
               task.tags == null || task.tags?.length <= 0;
             const listCategory: boolean =
@@ -226,6 +184,7 @@ const Menu = () => {
                   </p>
                   <div className="task-icons">
                     <Dialog
+                      style={{ overflow: "visible" }}
                       confirmButton="Ok"
                       header="View  Task"
                       trigger={
@@ -272,7 +231,7 @@ const Menu = () => {
                             <label htmlFor="inputField">Status:</label>
                             <Input
                               id="TaskStatus"
-                              value={task.status}
+                              value={status[task.status]}
                               disabled={true}
                             />
                           </Flex>
@@ -289,6 +248,7 @@ const Menu = () => {
                               }
                               disabled={listTag}
                               noResultsMessage="We couldn't find any matches."
+                              position="below"
                             />
                           </Flex>
                           <Flex gap="gap.small">
@@ -304,6 +264,7 @@ const Menu = () => {
                               }
                               disabled={listCategory}
                               noResultsMessage="We couldn't find any matches."
+                              position="below"
                             />
                           </Flex>
                           <Flex gap="gap.small">
@@ -319,6 +280,7 @@ const Menu = () => {
                               }
                               disabled={listSubTask}
                               noResultsMessage="We couldn't find any matches."
+                              position="below"
                             />
                           </Flex>
                         </div>
@@ -401,10 +363,9 @@ const Menu = () => {
                               items={mappedTask.filter(
                                 (Task) =>
                                   Task.id != task.id &&
-                                  !listTask
-                                    .filter(
-                                      (c) => c.subTasks && c.subTasks.length > 0
-                                    )
+                                  !Tasks.filter(
+                                    (c) => c.subTasks && c.subTasks.length > 0
+                                  )
                                     .flatMap((a) => a.subTasks)
                                     .some((b) => b.id === Task.id)
                               )}
@@ -440,14 +401,8 @@ const Menu = () => {
                               className="icons"
                               multiple
                               items={mappedCategory.filter(
-                                (tas) =>
-                                  !listTask
-                                    .filter(
-                                      (c) =>
-                                        c.categories && c.categories.length > 0
-                                    )
-                                    .flatMap((a) => a.categories)
-                                    .some((b) => b.id === tas.id)
+                                (cat) =>
+                                  !task.categories.some((b) => b.id === cat.id)
                               )}
                               placeholder="Update your Category"
                               noResultsMessage="We couldn't find any matches."
@@ -467,21 +422,12 @@ const Menu = () => {
                               className="icons"
                               multiple
                               items={mappedTag.filter(
-                                (tag) =>
-                                  !listTask
-                                    .filter(
-                                      (c) =>
-                                        c.tags && c.tags.length > 0
-                                    )
-                                    .flatMap((a) => a.tags)
-                                    .some((b) => b.id === tag.id)
+                                (tag) => !task.tags.some((t) => t.id === tag.id)
                               )}
                               placeholder="Update your Tags"
                               noResultsMessage="We couldn't find any matches."
                               position="below"
-                              onChange={(_, data) =>
-                                setUpdateTag(data.value)
-                              }
+                              onChange={(_, data) => setUpdateTag(data.value)}
                               value={updateTag.map((tag) => ({
                                 ...tag,
                                 header: tag.title,
@@ -497,9 +443,18 @@ const Menu = () => {
                           description:
                             inputTaskDescriptionUpdateValue ?? task.description,
                           endDate: inputTaskEndDateUpdateValue ?? task.endDate,
+                          status: status.indexOf(updateStatus),
                           subTasks: updateSubTasks ?? [],
                           categories: updateCategory ?? [],
+                          tags: updateTag ?? [],
                         };
+                        const incrementTaskAmount = (task: Task) => {
+                          const  newTasks =[...Tasks]
+                          newTasks.splice(newTasks.indexOf(task), 1, updatedTask);
+                          updateListTask(newTasks);
+                        };
+                        incrementTaskAmount(task)
+
                         taskUpdate(
                           updatedTask.id,
                           updatedTask.title ?? "",
@@ -508,38 +463,8 @@ const Menu = () => {
                           updatedTask.endDate ?? "",
                           updatedTask.status,
                           updatedTask.subTasks ?? [],
-                          updatedTask.tags,
+                          updatedTask.tags ?? [],
                           updatedTask.categories ?? []
-                        );
-                        setSelectedList((prevTask) =>
-                          prevTask.map((task) =>
-                            task.id === updatedTask.id ? updatedTask : task
-                          )
-                        );
-                        setTempTaskNonStarted((prevTasks) =>
-                          prevTasks.map((t) =>
-                            t.id === updatedTask.id ? updatedTask : t
-                          )
-                        );
-                        setTempTaskInProgress((prevTasks) =>
-                          prevTasks.map((t) =>
-                            t.id === updatedTask.id ? updatedTask : t
-                          )
-                        );
-                        setTempTaskPaused((prevTasks) =>
-                          prevTasks.map((t) =>
-                            t.id === updatedTask.id ? updatedTask : t
-                          )
-                        );
-                        setTempTaskLate((prevTasks) =>
-                          prevTasks.map((t) =>
-                            t.id === updatedTask.id ? updatedTask : t
-                          )
-                        );
-                        setTempTaskFinished((prevTasks) =>
-                          prevTasks.map((t) =>
-                            t.id === updatedTask.id ? updatedTask : t
-                          )
                         );
                       }}
                       onCancel={() => {
@@ -554,23 +479,8 @@ const Menu = () => {
                           if (result) {
                             //Lo que haces es actualizar la lista temporal con los id que sena distinto del que has clickado para asi no tener que  borrar
                             //de la lista temporal y asi no tener problemas
-                            setSelectedList((tasks) =>
-                              tasks.filter((tas) => tas.id !== task.id)
-                            );
-                            setTempTaskNonStarted((tasks) =>
-                              tasks.filter((tas) => tas.id !== task.id)
-                            );
-                            setTempTaskInProgress((tasks) =>
-                              tasks.filter((tas) => tas.id !== task.id)
-                            );
-                            setTempTaskPaused((tasks) =>
-                              tasks.filter((tas) => tas.id !== task.id)
-                            );
-                            setTempTaskLate((tasks) =>
-                              tasks.filter((tas) => tas.id !== task.id)
-                            );
-                            setTempTaskFinished((tasks) =>
-                              tasks.filter((tas) => tas.id !== task.id)
+                            updateListTask(
+                              Tasks.filter((c) => c.id != task.id)
                             );
                           }
                         });
@@ -596,7 +506,7 @@ const Menu = () => {
         </h2>
         <div
           className="Tareas mb"
-          onClick={() => handleTaskClick("Non Started", tempTaskNonStarted)}
+          onClick={() => handleTaskClick("Non Started", Status.NonStarted)}
         >
           <Flex>
             <IoIosTimer size={20} />
@@ -605,7 +515,7 @@ const Menu = () => {
         </div>
         <div
           className="Tareas mb"
-          onClick={() => handleTaskClick("In progress", tempTaskInProgress)}
+          onClick={() => handleTaskClick("In progress", Status.InProgress)}
         >
           <Flex>
             <FaRegPlayCircle size={20} />
@@ -614,7 +524,7 @@ const Menu = () => {
         </div>
         <div
           className="Tareas mb"
-          onClick={() => handleTaskClick("Paused", tempTaskPaused)}
+          onClick={() => handleTaskClick("Paused", Status.Paused)}
         >
           <Flex>
             <PiPauseDuotone size={20} />
@@ -623,7 +533,7 @@ const Menu = () => {
         </div>
         <div
           className="Tareas mb"
-          onClick={() => handleTaskClick("Late", tempTaskLate)}
+          onClick={() => handleTaskClick("Late", Status.Late)}
         >
           <Flex>
             <IoCalendarOutline size={20} />
@@ -632,7 +542,7 @@ const Menu = () => {
         </div>
         <div
           className="Tareas"
-          onClick={() => handleTaskClick("Finished", tempTaskFinished)}
+          onClick={() => handleTaskClick("Finished", Status.Finished)}
         >
           <Flex>
             <FaRegCheckCircle size={20} />
@@ -647,7 +557,12 @@ const Menu = () => {
           trigger={<Button content="Add  Task" />}
           content={
             <div
-              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                overflow: "visible",
+              }}
             >
               <Flex gap="gap.small">
                 <label htmlFor="inputField">Título:</label>
@@ -759,7 +674,7 @@ const Menu = () => {
             } else if (statusValue == "Late") {
               statusAdd = Status.Late;
             } else {
-              statusAdd = Status.Finished;
+              statusAdd = Status.NonStarted;
             }
             const newTask: Task = {
               id: idTemp,
@@ -772,7 +687,7 @@ const Menu = () => {
               categories: taskCategoryAdd,
               idUser: user?.id!!,
             };
-            Tasks.push(newTask)
+            Tasks.push(newTask);
             TaskAdd(
               idTemp,
               inputTaskTitleValue,
@@ -784,18 +699,6 @@ const Menu = () => {
               taskCategoryAdd,
               user?.id!!
             );
-            if (statusValue == "NonStarted") {
-              setTempTaskNonStarted([...tempTaskNonStarted, newTask]);
-            } else if (statusValue == "In Progress") {
-              setTempTaskInProgress([...tempTaskInProgress, newTask]);
-            } else if (statusValue == "Paused") {
-              setTempTaskPaused([...tempTaskPaused, newTask]);
-            } else if (statusValue == "Late") {
-              setTempTaskLate([...tempTaskLate, newTask]);
-            } else {
-              setTempTaskFinished([...tempTaskFinished, newTask]);
-            }
-            
             setInputTitleTaskValue("");
             setInputTaskDescriptionValue("");
             setsubTasks([]);
@@ -818,7 +721,7 @@ const Menu = () => {
         <div>
           {
             //El .slice lo que crea es una copia del array desde la posicion 0 hasta la posicion de la variable del hook que declaramos anteriormente
-            tempCategories.slice(0, visibleCategories).map((category) => (
+            tempCategories.map((category) => (
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Flex>
                   <p
@@ -897,9 +800,6 @@ const Menu = () => {
               </div>
             ))
           }
-          {visibleCategories < tempCategories.length && (
-            <Button onClick={handleShowMore} content="Show More" />
-          )}
         </div>
         <Dialog
           cancelButton="Cancel"
