@@ -16,12 +16,12 @@ const validation = Yup.object().shape({
 });
 
 const RegisterPage = () => {
-  const { registerUser } = useAuth();
+  const {registerUser} = useAuth();
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<RegisterFormsInputs>({ resolver: yupResolver(validation) });
+    formState: {errors},
+  } = useForm<RegisterFormsInputs>({resolver: yupResolver(validation) });
   const handleLogin = (form: RegisterFormsInputs) => {
     registerUser(form.email, form.userName, form.password);
   };

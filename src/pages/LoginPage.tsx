@@ -13,12 +13,12 @@ const validation = Yup.object().shape({
 });
 
 const LoginPage = () => {
-  const { loginUser } = useAuth();
+  const {loginUser} = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) });
+  } = useForm<LoginFormsInputs>({resolver: yupResolver(validation)});
 
   const handleLogin = (form: LoginFormsInputs) => {
     loginUser(form.email, form.password);
@@ -51,7 +51,7 @@ const LoginPage = () => {
             </div>
             <button type="submit">Sign in</button>
             <p>
-              Don’t have an account yet? <a href="register">Sign up</a>
+              Don´t have an account yet? <a href="register">Sign up</a>
             </p>
           </form>
         </div>
