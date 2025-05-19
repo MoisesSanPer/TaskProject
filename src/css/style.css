@@ -41,17 +41,17 @@
     margin-top: 5px;
   }
   .CajaContador{
-    width:30px;
-    height:30px;
-    background-color:rgba(196, 190, 190, 0.815);
+    width: 30px;
+    height: 30px;
+    background-color: rgba(196, 190, 190, 0.815);
     border-radius: 8px; 
-    align-self:center;
+    align-self: center;
     text-align: center;
   }
   .CajaContador p{
-    color:rgb(0, 0, 0);
-    font-size:20px;
-    font-weight:bold;
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    font-weight: bold;
     padding-right: 8px;
   }
   

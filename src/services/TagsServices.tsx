@@ -3,10 +3,10 @@ import { Tag } from "../models/Tag";
 import { handleError } from "../Helpers/ErrorHandler";
 
 const api = "http://localhost:7105/api";
-export const PostTagsAPI = async (id:string,title: string, idUser: string) => {
+export const PostTagsAPI = async (id: string, title: string, idUser: string) => {
   try {
     const data = await axios.post<Tag>(api + "/AddTags", {
-      id:id,
+      id: id,
       title: title,
       idUser: idUser,
     });
@@ -37,12 +37,12 @@ export const DeleteTagsAPI = async (id: string) => {
     handleError(error);
   }
 };
-export const UpdateTagsAPI = async (id:string,title:string,idUser:string) =>{
+export const UpdateTagsAPI = async (id: string, title: string, idUser: string) =>{
   try {
     const response = await axios.patch(api +"/UpdateTag",{
-      id:id,
-      title:title,
-      idUser:idUser
+      id: id,
+      title: title,
+      idUser: idUser
     });
     return response;
   } catch (error) {

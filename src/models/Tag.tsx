@@ -1,5 +1,5 @@
 export type  Tag ={
-    id:string;
-    title:string;
-    idUser:string;
+    id: string;
+    title: string;
+    idUser: string;
 }

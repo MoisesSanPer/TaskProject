@@ -1,4 +1,4 @@
-export type  UserConfiguration ={
-    theme:string;
-    idUser:string;
+export type  UserConfiguration = {
+    theme: string;
+    idUser: string;
 }

@@ -21,7 +21,7 @@ const Root = () => {
   //Method that will be passed to all componnets  and will activate in the moon icon when we click
   //It assign if the tgem is the light it will change to  dark assign to the variable of the hook and update the local storage and will update the theme
 
-    const toggleTheme = async (selectedThem:string) => {
+    const toggleTheme = async (selectedThem: string) => {
       try {
         if (selectedThem == "light") {
           setTheme(teamsTheme);
@@ -36,9 +36,9 @@ const Root = () => {
 
 
   return (
-    <Provider theme={theme}>
+    <Provider theme = {theme}>
       <Router>
-        <App toggleTheme={toggleTheme} />
+        <App toggleTheme = {toggleTheme} />
       </Router>
     </Provider>
   );

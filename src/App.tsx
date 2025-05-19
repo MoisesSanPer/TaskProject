@@ -5,10 +5,10 @@ import { UserProvider } from './Context/useAuth.tsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/ReactToastify.css';
 
-const App = ({ toggleTheme }: { toggleTheme: (selectedTheme:string) => void })  => {
+const App = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void })  => {
   return (
     <UserProvider>
-      <AppRoutes toggleTheme={toggleTheme}  />
+      <AppRoutes toggleTheme = {toggleTheme}  />
       <ToastContainer />
     </UserProvider>
   );
