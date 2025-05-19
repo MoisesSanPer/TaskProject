@@ -7,7 +7,6 @@ import {
   Input,
   Dropdown,
   Datepicker,
-  Divider,
 } from "@fluentui/react-northstar";
 import {
   FaRegCalendarAlt,
@@ -19,6 +18,7 @@ import { IoIosTimer } from "react-icons/io";
 import { PiPauseDuotone } from "react-icons/pi";
 import { useAuth } from "../Context/useAuth";
 import "../css/style.css";
+import "../css/DarkMode.css";
 import { IoCalendarOutline } from "react-icons/io5";
 import {
   categoryAdd,
@@ -36,39 +36,54 @@ import { TaskAdd, taskDelete, taskUpdate } from "../Context/TaskAuth";
 import { Status } from "../models/Status";
 import { Task } from "../models/Task";
 import { FaEye } from "react-icons/fa";
+import DarkMode from "../components/DarkMode";
 
-const Menu = () => {
-  //La lista que recibes de la api cuando se llama a la base de datos
-  //Esta lista lo que haremos sera guardarla en hooks temporales que luego usaremos para poder asi actualizar estas listas
-  //Si nos hiciera falta durante la ejecuccion
-  const { logout, Categories, Tags, user, Tasks, updateListTask } = useAuth();
+const Menu = ({ toggleTheme }: { toggleTheme: (selectedTheme:string) => void }) => {
+  //This is the list that you recieve when you called the API from database
+  //In this list the thing that we are going to do it save the data of the temporal hooks so we can update  the information
+  //If it is necessary during the ejecutiono of the app
+  const {
+    logout,
+    Categories,
+    Tags,
+    user,
+    Tasks,
+    updateListTask,
+    Configuration,
+  } = useAuth();
 
-  //Estos son los hook que usaremos cuando queramos crear  una categoria o un Tag
+  useEffect(() => {
+    toggleTheme(Configuration.theme)
+  }, [Configuration]);
+
+  //This are the hooks that we are going to use when we want to create a category or a tag
   const [inputCategoryValue, setInputCategoryValue] = useState("");
   const [inputTagValue, setInputTagValue] = useState("");
 
-  //Estos son los Los hook de cuando queremos actualizar el valor del titulo de la categoria o de los tag ya que es el unico campo actualizable
+  //This are the hooks that we want to update when the value od the category title or tags title because it is a an updatable field
   const [inputCategoryUpdateValue, setinputCategoryUpdateValue] =
     useState<string>();
   const [inputTagUpdateValue, setinputTagUpdateValue] = useState<string>();
-  //Este es un hook el cual  ,e dice que categoria este seleccionada
+
+  //This are the hooks that told us what is the selected  outside the return so we can  make the use Efect
   const [selectedCategory, setSelectedCategory] = useState<Category>();
   const [selectedTag, setSelectedTag] = useState<Tag>();
   const [selectedTask, setSelectedTask] = useState<Task>();
 
-  //Estos son los hook para editar campos  en las tasks
+  //This are the  hooks that control the  updates value of the tasks
+  //With this hooks we can  set the default values and we can change later
   const [inputTaskTitleUpdateValue, setInputTaskTitleUpdateValue] =
     useState<string>();
   const [inputTaskDescriptionUpdateValue, setInputTaskDescriptionUpdateValue] =
     useState<string>();
   const [inputTaskEndDateUpdateValue, setInputTaskEndDateUpdateValue] =
     useState<string>();
-  const [updateSubTasks, seUpdatesubTasks] = useState<Task[]>([]);
   const [updateStatus, setUpdateStatus] = useState<string>("");
+  const [updateSubTasks, seUpdatesubTasks] = useState<Task[]>([]);
   const [updateCategory, setUpdateCategory] = useState<Category[]>([]);
   const [updateTag, setUpdateTag] = useState<Tag[]>([]);
 
-  //Efecto secundario el cual actualizara el input de cuando queramos editar una categoria
+  //This are the secondary effects that affects the edit tasks and update all the time when we want to change the value of it
   useEffect(() => {
     setInputTaskTitleUpdateValue(selectedTask?.title);
   }, [selectedTask]);
@@ -91,14 +106,14 @@ const Menu = () => {
     setUpdateTag(selectedTask?.tags || []);
   }, [selectedTask]);
 
-  ////ESTOS SON LOS CAMPOS PARA AÑADIR TASKS
-  //Estos son los hook  primeros para añadir la descripcion y el titulo de las tareas
+  ////This are the fields of the create Task
+  //This are the hooks that  control the  add description and add title input of the tasks
   const [inputTaskTitleValue, setInputTitleTaskValue] = useState("");
   const [inputTaskDescriptionValue, setInputTaskDescriptionValue] =
     useState("");
-  //Fecha Para crear la tarea
+  //This is the hook of the date that control the Datepicker
   const [date, setDate] = useState<Date>(new Date());
-  //Array de los estados
+  //This is an array of states thst is useful when we want to  make the number value of status from
   const [status] = useState<string[]>([
     "NonStarted",
     "In Progress",
@@ -107,23 +122,23 @@ const Menu = () => {
     "Finished",
   ]);
 
-  //Estado para el filtro
+  //The state from the filter that help us when we want to list  every status Task
   const [filterTask, setFilterTask] = useState<number>();
 
+  //This are the values that collect the value  when we click in a option or various options of the update Task
   //Son la svariables que  cogeran el valor de cuando clickemos una opcion o varias depende del dropdown cuando queremos
-  //Añadir una tarea a la aplicacion
   const [statusValue, setstatusValue] = useState<string>("");
   let statusAdd: Status;
   const [subTasks, setsubTasks] = useState<Task[]>([]);
   const [taskCategoryAdd, setTaskCategoryAdd] = useState<Category[]>([]);
   const [taskTagAdd, setTaskTagAdd] = useState<Tag[]>([]);
 
-  //Creas los estados que son temporales para ir puediendo actualizar la UI  del front seran los que recogeras de  la respuesta de la API
-  //Importante poner el tipo cuando a veces este dando errores el estado ya que este no reconoce de forma directa este
+  //This are  the  temporal states  where we save tha value thate we fetch from  the API and update the frontList
+  //Important is to put the type of the useState  because sometimes it does not recognise normally so you have to put to hand
   const [tempCategories, setTempCategories] = useState<Category[]>([]);
   const [tempTags, setTempTags] = useState<Tag[]>([]);
 
-  //Efecto secundarios que lo que hace es asignarle el valor por defecto a las temporales del valor que recoje del contexto anteriormente
+  //This are the secondary effects that assign  the default value  of the list that recieve from the context and update the temporal lists with  this values
   useEffect(() => {
     setTempCategories(Categories);
   }, [Categories]);
@@ -131,7 +146,7 @@ const Menu = () => {
     setTempTags(Tags);
   }, [Tags]);
 
-  //Efecto secundario el cual actualizara el input de cuando queramos editar una categoria
+  //Secondary effects that update the input when we want to edit a category
   useEffect(() => {
     setinputCategoryUpdateValue(selectedCategory?.title);
   }, [selectedCategory]);
@@ -139,8 +154,8 @@ const Menu = () => {
     setinputTagUpdateValue(selectedTag?.title);
   }, [selectedTag]);
 
-  //Estos son  las listas que hemos recibido de forma temporal las mapeamos a esta ya que nos hace falta en los dropdown un campo header
-  //Este campo es el que  se mostrara en el dropdown que hara referencia  a  el nombre de cada item que mostrara
+  //This are the list mapped   taht we had recieved from the temporal lists , so we map beacuse it is neccessary to add a header field so we can name the dropdown
+  //This is  the field that will be shown in the dropdown   every item of the dropdown
   const mappedTask = Tasks.map((task) => ({
     ...task,
     header: task.title,
@@ -155,9 +170,12 @@ const Menu = () => {
     header: tag.title,
   }));
 
-  //Estos hook y este metodo van a ser los que van a  actualizar los datos del medio en funcion del status que tenga la tarea
+  //This is  the hook that control the middle component and save the state
   const [centralText, setCentralText] = useState("No Task Selected");
+  const [num, setNum] = useState("");
+  //This is the method that update the middle component depend of the text and the status you want to show
   const handleTaskClick = (text: string, numberStatus: number) => {
+    setNum(numberStatus.toString());
     setCentralText(text);
     setFilterTask(numberStatus);
   };
@@ -165,9 +183,27 @@ const Menu = () => {
   return (
     <div>
       <div className="middle-section">
-        <h1 style={{ fontSize: "40px" }}>{centralText}</h1>
+        <Flex>
+          <h1 style={{ fontSize: "40px" }}>{centralText}</h1>
+          <div style={{ width: "70px" }}></div>
+          <div
+            className="CajaContador"
+            style={{ width: "50px", height: "50px" }}
+          >
+            <span style={{ fontSize: "28px", fontWeight: "bold" }}>
+              {/*THis filter  how many tasks are depending of the status of the task you have clicked before */}
+              {Tasks.filter((st) => st.status.toString() == num)
+                .map((sta) => sta.status)
+                .length.toString()}
+            </span>
+          </div>
+        </Flex>
         <div>
           {Tasks.filter((task) => task.status == filterTask).map((task) => {
+            {
+              /*We make this boolean to control the  disable option of the the view task because when we do not 
+              have any item the dropdown  broke the app if we do not disabled  */
+            }
             const listTag: boolean =
               task.tags == null || task.tags?.length <= 0;
             const listCategory: boolean =
@@ -177,340 +213,368 @@ const Menu = () => {
 
             return (
               <div className="task-container">
-                <Divider color="green" size={8}></Divider>
-                <Flex>
-                  <p className="task-title" key={task.id}>
-                    {task.title}
-                  </p>
-                  <div className="task-icons">
-                    <Dialog
-                      style={{ overflow: "visible" }}
-                      confirmButton="Ok"
-                      header="View  Task"
-                      trigger={
-                        <FaEye
-                          onClick={() => {}}
-                          size={40}
-                          style={{ marginTop: "10px", marginLeft: "80px" }}
-                          className="icons"
-                        />
-                      }
-                      content={
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "10px",
-                          }}
-                        >
-                          <Flex gap="gap.small">
-                            <label htmlFor="inputField">Título:</label>
-                            <Input
-                              id="TaskTitle"
-                              value={task.title}
-                              disabled={true}
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="inputField">Descripcion:</label>
-                            <Input
-                              id="TaskDescription"
-                              value={task.description}
-                              disabled={true}
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="inputField">EndDate:</label>
-                            <Input
-                              id="TaskEndDate"
-                              value={task.endDate}
-                              disabled={true}
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="inputField">Status:</label>
-                            <Input
-                              id="TaskStatus"
-                              value={status[task.status]}
-                              disabled={true}
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="inputField">Tags:</label>
-                            <Dropdown
-                              multiple
-                              placeholder="Click to see the Tag related"
-                              id="TaskTag"
-                              items={
-                                listTag
-                                  ? []
-                                  : task.tags?.map((tag) => tag.title)
-                              }
-                              disabled={listTag}
-                              noResultsMessage="We couldn't find any matches."
-                              position="below"
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="inputField">Category:</label>
-                            <Dropdown
-                              multiple
-                              placeholder="Click to see the category related"
-                              id="TaskCategory"
-                              items={
-                                listCategory
-                                  ? []
-                                  : task.categories.map((cat) => cat.title)
-                              }
-                              disabled={listCategory}
-                              noResultsMessage="We couldn't find any matches."
-                              position="below"
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="inputField">SubTasks:</label>
-                            <Dropdown
-                              multiple
-                              placeholder="Click to see the subtasks related"
-                              id="SubTasksCategory"
-                              items={
-                                listSubTask
-                                  ? []
-                                  : task.subTasks.map((task) => task.title)
-                              }
-                              disabled={listSubTask}
-                              noResultsMessage="We couldn't find any matches."
-                              position="below"
-                            />
-                          </Flex>
-                        </div>
-                      }
-                      onConfirm={() => {}}
-                    />
-                    <Dialog
-                      style={{ overflow: "visible" }}
-                      cancelButton="Cancel"
-                      confirmButton="Update"
-                      header="Update Task"
-                      trigger={
-                        <MdModeEdit
-                          onClick={() => {
-                            setSelectedTask(task);
-                          }}
-                          size={40}
-                          style={{ marginTop: "10px", marginLeft: "20px" }}
-                          className="icons"
-                        />
-                      }
-                      content={
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "10px",
-                          }}
-                        >
-                          <Flex gap="gap.small">
-                            <label htmlFor="UpdateField">Título:</label>
-                            <Input
-                              id="UpdateFieldTitle"
-                              value={inputTaskTitleUpdateValue}
-                              onChange={(_, data) => {
-                                setInputTaskTitleUpdateValue(data?.value ?? "");
-                              }}
-                              placeholder="Actualiza  el titulo de la tarea"
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="inputField">Descripcion:</label>
-                            <Input
-                              id="updateField"
-                              value={inputTaskDescriptionUpdateValue}
-                              onChange={({}, data) => {
-                                setInputTaskDescriptionUpdateValue(
-                                  data?.value ?? ""
-                                );
-                              }}
-                              placeholder="Actualiza  la descripcion de la tarea"
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="inputField">EndDate:</label>
-                            <Datepicker
-                              input={{
-                                clearable: true,
-                              }}
-                              id="TaskEndDate"
-                              //Te dice la fecha  que esta seleccionada en este caso
-                              onDateChange={(_, date) => {
-                                setInputTaskEndDateUpdateValue(
-                                  date?.value.toDateString()
-                                );
-                                return date;
-                              }}
-                              selectedDate={
-                                new Date(
-                                  Date.parse(inputTaskEndDateUpdateValue ?? "")
-                                )
-                              }
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="subTaskDropdown">SubTasks:</label>
-                            <Dropdown
-                              className="icons"
-                              multiple
-                              items={mappedTask.filter(
-                                (Task) =>
-                                  Task.id != task.id &&
-                                  !Tasks.filter(
-                                    (c) => c.subTasks && c.subTasks.length > 0
+                <div className="task-inside-container">
+                  <Flex>
+                    <p className="task-title" key={task.id}>
+                      {task.title}
+                    </p>
+                    <div className="task-icons">
+                      <Dialog
+                        style={{ overflow: "visible" }}
+                        confirmButton="Ok"
+                        header="View  Task"
+                        trigger={
+                          <FaEye
+                            onClick={() => {}}
+                            size={40}
+                            style={{ marginTop: "10px", marginLeft: "80px" }}
+                            className="icons"
+                          />
+                        }
+                        content={
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "10px",
+                            }}
+                          >
+                            <Flex gap="gap.small">
+                              <label htmlFor="inputField">Título:</label>
+                              <Input
+                                id="TaskTitle"
+                                value={task.title}
+                                disabled={true}
+                              />
+                            </Flex>
+                            <Flex gap="gap.small">
+                              <label htmlFor="inputField">Descripcion:</label>
+                              <Input
+                                id="TaskDescription"
+                                value={task.description}
+                                disabled={true}
+                              />
+                            </Flex>
+                            <Flex gap="gap.small">
+                              <label htmlFor="inputField">EndDate:</label>
+                              <Input
+                                id="TaskEndDate"
+                                value={task.endDate}
+                                disabled={true}
+                              />
+                            </Flex>
+                            <Flex gap="gap.small">
+                              <label htmlFor="inputField">Status:</label>
+                              <Input
+                                id="TaskStatus"
+                                value={status[task.status]}
+                                disabled={true}
+                              />
+                            </Flex>
+                            <Flex gap="gap.small">
+                              <label htmlFor="inputField">Tags:</label>
+                              <Dropdown
+                                multiple
+                                placeholder="Click to see the Tag related"
+                                id="TaskTag"
+                                items={
+                                  listTag
+                                    ? []
+                                    : task.tags?.map((tag) => tag.title)
+                                }
+                                disabled={listTag}
+                                noResultsMessage="We couldn't find any matches."
+                                position="below"
+                              />
+                            </Flex>
+                            <Flex gap="gap.small">
+                              <label htmlFor="inputField">Category:</label>
+                              <Dropdown
+                                multiple
+                                placeholder="Click to see the category related"
+                                id="TaskCategory"
+                                items={
+                                  listCategory
+                                    ? []
+                                    : task.categories.map((cat) => cat.title)
+                                }
+                                disabled={listCategory}
+                                noResultsMessage="We couldn't find any matches."
+                                position="below"
+                              />
+                            </Flex>
+                            <Flex gap="gap.small">
+                              <label htmlFor="inputField">SubTasks:</label>
+                              <Dropdown
+                                multiple
+                                placeholder="Click to see the subtasks related"
+                                id="SubTasksCategory"
+                                items={
+                                  listSubTask
+                                    ? []
+                                    : task.subTasks.map((task) => task.title)
+                                }
+                                disabled={listSubTask}
+                                noResultsMessage="We couldn't find any matches."
+                                position="below"
+                              />
+                            </Flex>
+                          </div>
+                        }
+                        onConfirm={() => {}}
+                      />
+                      <Dialog
+                        style={{ overflow: "visible" }}
+                        cancelButton="Cancel"
+                        confirmButton="Update"
+                        header="Update Task"
+                        trigger={
+                          <MdModeEdit
+                            onClick={() => {
+                              setSelectedTask(task);
+                            }}
+                            size={40}
+                            style={{ marginTop: "10px", marginLeft: "20px" }}
+                            className="icons"
+                          />
+                        }
+                        content={
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "10px",
+                            }}
+                          >
+                            <Flex gap="gap.small">
+                              <label htmlFor="UpdateField">Título:</label>
+                              <Input
+                                id="UpdateFieldTitle"
+                                value={inputTaskTitleUpdateValue}
+                                onChange={(_, data) => {
+                                  setInputTaskTitleUpdateValue(
+                                    data?.value ?? ""
+                                  );
+                                }}
+                                placeholder="Actualiza  el titulo de la tarea"
+                              />
+                            </Flex>
+                            <Flex gap="gap.small">
+                              <label htmlFor="inputField">Descripcion:</label>
+                              <Input
+                                id="updateField"
+                                value={inputTaskDescriptionUpdateValue}
+                                onChange={({}, data) => {
+                                  setInputTaskDescriptionUpdateValue(
+                                    data?.value ?? ""
+                                  );
+                                }}
+                                placeholder="Actualiza  la descripcion de la tarea"
+                              />
+                            </Flex>
+                            <Flex gap="gap.small">
+                              <label htmlFor="inputField">EndDate:</label>
+                              <Datepicker
+                                input={{
+                                  clearable: true,
+                                }}
+                                id="TaskEndDate"
+                                //Te dice la fecha  que esta seleccionada en este caso
+                                onDateChange={(_, date) => {
+                                  setInputTaskEndDateUpdateValue(
+                                    date?.value.toDateString()
+                                  );
+                                  return date;
+                                }}
+                                selectedDate={
+                                  new Date(
+                                    Date.parse(
+                                      inputTaskEndDateUpdateValue ?? ""
+                                    )
                                   )
-                                    .flatMap((a) => a.subTasks)
-                                    .some((b) => b.id === Task.id)
-                              )}
-                              placeholder="Update your SubTasks"
-                              noResultsMessage="We couldn't find any matches."
-                              position="below"
-                              onChange={(_, data) =>
-                                seUpdatesubTasks(data.value)
-                              }
-                              value={updateSubTasks.map((task) => ({
-                                ...task,
-                                header: task.title,
-                              }))}
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="StatusDropdown">Status:</label>
-                            <Dropdown
-                              className="icons"
-                              items={status}
-                              placeholder="Update your Status"
-                              noResultsMessage="We couldn't find any matches."
-                              position="below"
-                              onChange={(_, data) =>
-                                setUpdateStatus(data.value)
-                              }
-                              value={updateStatus}
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="CategoryDropdown">Category:</label>
-                            <Dropdown
-                              className="icons"
-                              multiple
-                              items={mappedCategory.filter(
-                                (cat) =>
-                                  !task.categories.some((b) => b.id === cat.id)
-                              )}
-                              placeholder="Update your Category"
-                              noResultsMessage="We couldn't find any matches."
-                              position="below"
-                              onChange={(_, data) =>
-                                setUpdateCategory(data.value)
-                              }
-                              value={updateCategory.map((cat) => ({
-                                ...cat,
-                                header: cat.title,
-                              }))}
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="TagsDropdown">Tags:</label>
-                            <Dropdown
-                              className="icons"
-                              multiple
-                              items={mappedTag.filter(
-                                (tag) => !task.tags.some((t) => t.id === tag.id)
-                              )}
-                              placeholder="Update your Tags"
-                              noResultsMessage="We couldn't find any matches."
-                              position="below"
-                              onChange={(_, data) => setUpdateTag(data.value)}
-                              value={updateTag.map((tag) => ({
-                                ...tag,
-                                header: tag.title,
-                              }))}
-                            />
-                          </Flex>
-                        </div>
-                      }
-                      onConfirm={() => {
-                        const updatedTask = {
-                          ...task,
-                          title: inputTaskTitleUpdateValue ?? task.title,
-                          description:
-                            inputTaskDescriptionUpdateValue ?? task.description,
-                          endDate: inputTaskEndDateUpdateValue ?? task.endDate,
-                          status: status.indexOf(updateStatus),
-                          subTasks: updateSubTasks ?? [],
-                          categories: updateCategory ?? [],
-                          tags: updateTag ?? [],
-                        };
-                        const incrementTaskAmount = (task: Task) => {
-                          const  newTasks =[...Tasks]
-                          newTasks.splice(newTasks.indexOf(task), 1, updatedTask);
-                          updateListTask(newTasks);
-                        };
-                        incrementTaskAmount(task)
-
-                        taskUpdate(
-                          updatedTask.id,
-                          updatedTask.title ?? "",
-                          updatedTask.idUser,
-                          updatedTask.description ?? "",
-                          updatedTask.endDate ?? "",
-                          updatedTask.status,
-                          updatedTask.subTasks ?? [],
-                          updatedTask.tags ?? [],
-                          updatedTask.categories ?? []
-                        );
-                      }}
-                      onCancel={() => {
-                        setInputTaskTitleUpdateValue(task.title);
-                        setInputTaskDescriptionUpdateValue(task.description);
-                        setInputTaskEndDateUpdateValue(task.endDate);
-                      }}
-                    />
-                    <RiDeleteBin5Line
-                      onClick={() => {
-                        taskDelete(task.id).then((result) => {
-                          if (result) {
-                            //Lo que haces es actualizar la lista temporal con los id que sena distinto del que has clickado para asi no tener que  borrar
-                            //de la lista temporal y asi no tener problemas
-                            updateListTask(
-                              Tasks.filter((c) => c.id != task.id)
+                                }
+                              />
+                            </Flex>
+                            <Flex gap="gap.small">
+                              <label htmlFor="subTaskDropdown">SubTasks:</label>
+                              <Dropdown
+                                className="icons"
+                                multiple
+                                items={mappedTask.filter(
+                                  (Task) =>
+                                    Task.id != task.id &&
+                                    !Tasks.filter(
+                                      (c) => c.subTasks && c.subTasks.length > 0
+                                    )
+                                      .flatMap((a) => a.subTasks)
+                                      .some((b) => b.id === Task.id)
+                                )}
+                                placeholder="Update your SubTasks"
+                                noResultsMessage="We couldn't find any matches."
+                                position="below"
+                                onChange={(_, data) =>
+                                  seUpdatesubTasks(data.value)
+                                }
+                                value={updateSubTasks.map((task) => ({
+                                  ...task,
+                                  header: task.title,
+                                }))}
+                              />
+                            </Flex>
+                            <Flex gap="gap.small">
+                              <label htmlFor="StatusDropdown">Status:</label>
+                              <Dropdown
+                                className="icons"
+                                items={status}
+                                placeholder="Update your Status"
+                                noResultsMessage="We couldn't find any matches."
+                                position="below"
+                                onChange={(_, data) =>
+                                  setUpdateStatus(data.value)
+                                }
+                                value={updateStatus}
+                              />
+                            </Flex>
+                            <Flex gap="gap.small">
+                              <label htmlFor="CategoryDropdown">
+                                Category:
+                              </label>
+                              <Dropdown
+                                className="icons"
+                                multiple
+                                items={mappedCategory.filter(
+                                  (cat) =>
+                                    !task.categories.some(
+                                      (b) => b.id === cat.id
+                                    )
+                                )}
+                                placeholder="Update your Category"
+                                noResultsMessage="We couldn't find any matches."
+                                position="below"
+                                onChange={(_, data) =>
+                                  setUpdateCategory(data.value)
+                                }
+                                value={updateCategory.map((cat) => ({
+                                  ...cat,
+                                  header: cat.title,
+                                }))}
+                              />
+                            </Flex>
+                            <Flex gap="gap.small">
+                              <label htmlFor="TagsDropdown">Tags:</label>
+                              <Dropdown
+                                className="icons"
+                                multiple
+                                items={mappedTag.filter(
+                                  (tag) =>
+                                    !task.tags.some((t) => t.id === tag.id)
+                                )}
+                                placeholder="Update your Tags"
+                                noResultsMessage="We couldn't find any matches."
+                                position="below"
+                                onChange={(_, data) => setUpdateTag(data.value)}
+                                value={updateTag.map((tag) => ({
+                                  ...tag,
+                                  header: tag.title,
+                                }))}
+                              />
+                            </Flex>
+                          </div>
+                        }
+                        onConfirm={() => {
+                          const updatedTask = {
+                            ...task,
+                            title: inputTaskTitleUpdateValue ?? task.title,
+                            description:
+                              inputTaskDescriptionUpdateValue ??
+                              task.description,
+                            endDate:
+                              inputTaskEndDateUpdateValue ?? task.endDate,
+                            status: status.indexOf(updateStatus),
+                            subTasks: updateSubTasks ?? [],
+                            categories: updateCategory ?? [],
+                            tags: updateTag ?? [],
+                          };
+                          const incrementTaskAmount = (task: Task) => {
+                            const newTasks = [...Tasks];
+                            newTasks.splice(
+                              newTasks.indexOf(task),
+                              1,
+                              updatedTask
                             );
-                          }
-                        });
-                      }}
-                      size={40}
-                      style={{ marginTop: "10px", marginLeft: "10px" }}
-                      className="icons"
-                    />
-                  </div>
-                </Flex>
-                <Divider color="green" size={8}></Divider>
+                            updateListTask(newTasks);
+                          };
+                          incrementTaskAmount(task);
+
+                          taskUpdate(
+                            updatedTask.id,
+                            updatedTask.title ?? "",
+                            updatedTask.idUser,
+                            updatedTask.description ?? "",
+                            updatedTask.endDate ?? "",
+                            updatedTask.status,
+                            updatedTask.subTasks ?? [],
+                            updatedTask.tags ?? [],
+                            updatedTask.categories ?? []
+                          );
+                        }}
+                        onCancel={() => {
+                          setInputTaskTitleUpdateValue(task.title);
+                          setInputTaskDescriptionUpdateValue(task.description);
+                          setInputTaskEndDateUpdateValue(task.endDate);
+                        }}
+                      />
+                      <RiDeleteBin5Line
+                        onClick={() => {
+                          taskDelete(task.id).then((result) => {
+                            if (result) {
+                              //Lo que haces es actualizar la lista temporal con los id que sena distinto del que has clickado para asi no tener que  borrar
+                              //de la lista temporal y asi no tener problemas
+                              updateListTask(
+                                Tasks.filter((c) => c.id != task.id)
+                              );
+                            }
+                          });
+                        }}
+                        size={40}
+                        style={{ marginTop: "10px", marginLeft: "10px" }}
+                        className="icons"
+                      />
+                    </div>
+                  </Flex>
+                </div>
               </div>
             );
           })}
         </div>
       </div>
       <div className="menu-container">
-        <h1 className="h1c1" style={{ cursor: "default" }}>
-          Menu
-        </h1>
+        <Flex>
+          <h1 className="h1c1" style={{ cursor: "default" }}>
+            Menu
+          </h1>
+          <div style={{ width: "80px" }}></div>
+          <DarkMode toggleTheme={toggleTheme} user={user!} />
+        </Flex>
+
         <h2 className="h2c1" style={{ cursor: "default" }}>
           TASKS
         </h2>
         <div
-          className="Tareas mb"
+          className="Tareas "
           onClick={() => handleTaskClick("Non Started", Status.NonStarted)}
         >
           <Flex>
             <IoIosTimer size={20} />
             <p>Non Started</p>
+            <div style={{ width: "70px" }}></div>
+            <div className="CajaContador">
+              <p>
+                {Tasks.filter((st) => st.status == Status.NonStarted)
+                  .map((sta) => sta.status)
+                  .length.toString()}
+              </p>
+            </div>
           </Flex>
         </div>
         <div
@@ -520,6 +584,14 @@ const Menu = () => {
           <Flex>
             <FaRegPlayCircle size={20} />
             <p>In progress</p>
+            <div style={{ width: "76px" }}></div>
+            <div className="CajaContador">
+              <p>
+                {Tasks.filter((st) => st.status == Status.InProgress)
+                  .map((sta) => sta.status)
+                  .length.toString()}
+              </p>
+            </div>
           </Flex>
         </div>
         <div
@@ -529,6 +601,14 @@ const Menu = () => {
           <Flex>
             <PiPauseDuotone size={20} />
             <p>Paused</p>
+            <div style={{ width: "100px" }}></div>
+            <div className="CajaContador">
+              <p>
+                {Tasks.filter((st) => st.status == Status.Paused)
+                  .map((sta) => sta.status)
+                  .length.toString()}
+              </p>
+            </div>
           </Flex>
         </div>
         <div
@@ -538,15 +618,31 @@ const Menu = () => {
           <Flex>
             <IoCalendarOutline size={20} />
             <p>Late </p>
+            <div style={{ width: "117px" }}></div>
+            <div className="CajaContador">
+              <p>
+                {Tasks.filter((st) => st.status == Status.Late)
+                  .map((sta) => sta.status)
+                  .length.toString()}
+              </p>{" "}
+            </div>
           </Flex>
         </div>
         <div
-          className="Tareas"
+          className="Tareas mb"
           onClick={() => handleTaskClick("Finished", Status.Finished)}
         >
           <Flex>
             <FaRegCheckCircle size={20} />
             <p>Finished</p>
+            <div style={{ width: "92px" }}></div>
+            <div className="CajaContador">
+              <p>
+                {Tasks.filter((st) => st.status == Status.Finished)
+                  .map((sta) => sta.status)
+                  .length.toString()}
+              </p>{" "}
+            </div>
           </Flex>
         </div>
         <Dialog
@@ -673,6 +769,8 @@ const Menu = () => {
               statusAdd = Status.Paused;
             } else if (statusValue == "Late") {
               statusAdd = Status.Late;
+            } else if (statusValue == "Finished") {
+              statusAdd = Status.Finished;
             } else {
               statusAdd = Status.NonStarted;
             }
@@ -721,84 +819,153 @@ const Menu = () => {
         <div>
           {
             //El .slice lo que crea es una copia del array desde la posicion 0 hasta la posicion de la variable del hook que declaramos anteriormente
-            tempCategories.map((category) => (
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <Flex>
-                  <p
-                    style={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      maxWidth: "150px",
-                      cursor: "default",
-                    }}
-                    key={category.id}
-                  >
-                    {category.title}
-                  </p>
-                  <Dialog
-                    cancelButton="Cancel"
-                    confirmButton="Update"
-                    header="Update Category"
-                    trigger={
-                      <MdModeEdit
-                        onClick={() => setSelectedCategory(category)}
-                        size={20}
-                        style={{ marginTop: "10px", marginLeft: "10px" }}
-                        className="icons"
-                      />
-                    }
-                    content={
-                      <div>
-                        <label htmlFor="UpdateField">Título:</label>
-                        <Input
-                          id="UpdateField"
-                          value={inputCategoryUpdateValue}
-                          onChange={({}, data) =>
-                            setinputCategoryUpdateValue(data?.value ?? "")
-                          }
-                          placeholder="Actualiza  el titulo de la categoria"
+            tempCategories.map((category) => {
+              return (
+                <div
+                  style={{ display: "flex", alignItems: "center" }}
+                  onClick={() => {}}
+                >
+                  <Flex>
+                    <p
+                      style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        maxWidth: "50px",
+                        cursor: "default",
+                        minWidth: "50px",
+                        marginBottom: "10px",
+                      }}
+                      key={category.id}
+                      onClick={() => setSelectedCategory(category)}
+                    >
+                      {category.title}
+                    </p>
+                    <Dialog
+                      style={{ overflow: "visible" }}
+                      confirmButton="Ok"
+                      header="View  Category"
+                      trigger={
+                        <FaEye
+                          onClick={() => {}}
+                          size={20}
+                          style={{ marginTop: "10px", marginLeft: "80px" }}
+                          className="icons"
                         />
-                      </div>
-                    }
-                    onConfirm={() => {
-                      const updatedCategory = {
-                        ...category,
-                        title: inputCategoryUpdateValue!!,
-                      };
-                      categoryUpdate(
-                        updatedCategory.id,
-                        updatedCategory.title,
-                        updatedCategory.idUser
-                      );
-                      setTempCategories((prevCategories) =>
-                        prevCategories.map((cat) =>
-                          cat.id === updatedCategory.id ? updatedCategory : cat
-                        )
-                      );
-                    }}
-                    onCancel={() => setinputCategoryUpdateValue(category.title)}
-                  />
-                  <RiDeleteBin5Line
-                    onClick={() => {
-                      //You  do th e then to take the value that you have recieved before
-                      // with the value of the then that is result you can  control if it is true or not
-                      //And if it is true yo update the Array of categorys
-                      categoryDelete(category.id).then((result) => {
-                        if (result) {
-                          setTempCategories((cat) =>
-                            cat.filter((c) => c.id !== category.id)
-                          );
-                        }
-                      });
-                    }}
-                    size={20}
-                    style={{ marginTop: "10px", marginLeft: "10px" }}
-                    className="icons"
-                  />
-                </Flex>
-              </div>
-            ))
+                      }
+                      content={
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "10px",
+                          }}
+                        >
+                          <Flex gap="gap.small">
+                            <label htmlFor="inputField">Título:</label>
+                            <Input
+                              id="TaskTitle"
+                              value={category.title}
+                              disabled={true}
+                            />
+                          </Flex>
+                          <Flex gap="gap.small">
+                            <label htmlFor="inputField">Tasks:</label>
+                            <Dropdown
+                              multiple
+                              placeholder="Click to see the Tasks related"
+                              id="TaskTag"
+                              items={mappedTask.filter((sta) =>
+                                sta.categories.some(
+                                  (cat) => cat.id === category.id
+                                )
+                              )}
+                              noResultsMessage="We couldn't find any tasks related."
+                              position="below"
+                            />
+                          </Flex>
+                        </div>
+                      }
+                      onConfirm={() => {}}
+                    />
+                    <Dialog
+                      cancelButton="Cancel"
+                      confirmButton="Update"
+                      header="Update Category"
+                      trigger={
+                        <MdModeEdit
+                          onClick={() => setSelectedCategory(category)}
+                          size={20}
+                          style={{ marginTop: "10px", marginLeft: "10px" }}
+                          className="icons"
+                        />
+                      }
+                      content={
+                        <div>
+                          <label htmlFor="UpdateField">Título:</label>
+                          <Input
+                            id="UpdateField"
+                            value={inputCategoryUpdateValue}
+                            onChange={({}, data) =>
+                              setinputCategoryUpdateValue(data?.value ?? "")
+                            }
+                            placeholder="Actualiza  el titulo de la categoria"
+                          />
+                        </div>
+                      }
+                      onConfirm={() => {
+                        const updatedCategory = {
+                          ...category,
+                          title: inputCategoryUpdateValue!!,
+                        };
+                        categoryUpdate(
+                          updatedCategory.id,
+                          updatedCategory.title,
+                          updatedCategory.idUser
+                        );
+                        setTempCategories((prevCategories) =>
+                          prevCategories.map((cat) =>
+                            cat.id === updatedCategory.id
+                              ? updatedCategory
+                              : cat
+                          )
+                        );
+                      }}
+                      onCancel={() =>
+                        setinputCategoryUpdateValue(category.title)
+                      }
+                    />
+                    <RiDeleteBin5Line
+                      onClick={() => {
+                        //You  do the then to take the value that you have recieved before
+                        // with the value of the then that is result you can  control if it is true or not
+                        //And if it is true yo update the Array of categorys
+                        categoryDelete(category.id).then((result) => {
+                          if (result) {
+                            setTempCategories((cat) =>
+                              cat.filter((c) => c.id !== category.id)
+                            );
+                          }
+                        });
+                      }}
+                      size={20}
+                      style={{ marginTop: "10px", marginLeft: "10px" }}
+                      className="icons"
+                    />
+                    <div
+                      className="CajaContador"
+                      style={{ marginLeft: "10px" }}
+                    >
+                      <span style={{ fontSize: "18px", fontWeight: "bold" }}>
+                        {Tasks.filter((sta) =>
+                          sta.categories.some((cat) => cat.id === category.id)
+                        ).length.toString()}
+                      </span>
+                    </div>
+                  </Flex>
+                </div>
+              );
+            })
           }
         </div>
         <Dialog
@@ -842,79 +1009,136 @@ const Menu = () => {
           TAGS
         </h2>
         <div>
-          {tempTags.map((tag) => (
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Flex>
-                <p
-                  style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    maxWidth: "150px",
-                    cursor: "default",
-                  }}
-                  key={tag.id}
-                >
-                  {tag.title}
-                </p>
-                <Dialog
-                  cancelButton="Cancel"
-                  confirmButton="Update"
-                  header="Update Tag"
-                  trigger={
-                    <MdModeEdit
-                      onClick={() => setSelectedTag(tag)}
-                      size={20}
-                      style={{ marginTop: "10px", marginLeft: "10px" }}
-                      className="icons"
-                    />
-                  }
-                  content={
-                    <div>
-                      <label htmlFor="UpdateField">Título:</label>
-                      <Input
-                        id="UpdateField"
-                        value={inputTagUpdateValue}
-                        onChange={({}, data) =>
-                          setinputTagUpdateValue(data?.value ?? "")
-                        }
-                        placeholder="Actualiza  el titulo del tag"
+          {tempTags.map((tag) => {
+            return (
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Flex>
+                  <p
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      maxWidth: "50px",
+                      minWidth: "50px",
+                      cursor: "default",
+                    }}
+                    key={tag.id}
+                  >
+                    {tag.title}
+                  </p>
+                  <Dialog
+                    style={{ overflow: "visible" }}
+                    confirmButton="Ok"
+                    header="View  Category"
+                    trigger={
+                      <FaEye
+                        onClick={() => {}}
+                        size={20}
+                        style={{ marginTop: "10px", marginLeft: "80px" }}
+                        className="icons"
                       />
-                    </div>
-                  }
-                  onConfirm={() => {
-                    const updatedTag = {
-                      ...tag,
-                      title: inputTagUpdateValue!!,
-                    };
-                    tagUpdate(
-                      updatedTag.id,
-                      updatedTag.title,
-                      updatedTag.idUser
-                    );
-                    setTempTags((prevTags) =>
-                      prevTags.map((tag) =>
-                        tag.id === updatedTag.id ? updatedTag : tag
-                      )
-                    );
-                  }}
-                  onCancel={() => setinputTagUpdateValue(tag.title)}
-                />
-                <RiDeleteBin5Line
-                  onClick={() => {
-                    tagDelete(tag.id).then((res) => {
-                      if (res) {
-                        setTempTags((ta) => ta.filter((t) => t.id !== tag.id));
-                      }
-                    });
-                  }}
-                  size={20}
-                  style={{ marginTop: "10px", marginLeft: "10px" }}
-                  className="icons"
-                />
-              </Flex>
-            </div>
-          ))}
+                    }
+                    content={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "10px",
+                        }}
+                      >
+                        <Flex gap="gap.small">
+                          <label htmlFor="inputField">Título:</label>
+                          <Input
+                            id="TaskTitle"
+                            value={tag.title}
+                            disabled={true}
+                          />
+                        </Flex>
+                        <Flex gap="gap.small">
+                          <label htmlFor="inputField">Tasks:</label>
+                          <Dropdown
+                            multiple
+                            placeholder="Click to see the Tasks related"
+                            id="TaskTag"
+                            items={mappedTask.filter((sta) =>
+                              sta.tags.some((tags) => tags.id === tag.id)
+                            )}
+                            noResultsMessage="We couldn't find any tasks related."
+                            position="below"
+                          />
+                        </Flex>
+                      </div>
+                    }
+                    onConfirm={() => {}}
+                  />
+                  <Dialog
+                    cancelButton="Cancel"
+                    confirmButton="Update"
+                    header="Update Tag"
+                    trigger={
+                      <MdModeEdit
+                        onClick={() => setSelectedTag(tag)}
+                        size={20}
+                        style={{ marginTop: "10px", marginLeft: "10px" }}
+                        className="icons"
+                      />
+                    }
+                    content={
+                      <div>
+                        <label htmlFor="UpdateField">Título:</label>
+                        <Input
+                          id="UpdateField"
+                          value={inputTagUpdateValue}
+                          onChange={({}, data) =>
+                            setinputTagUpdateValue(data?.value ?? "")
+                          }
+                          placeholder="Actualiza  el titulo del tag"
+                        />
+                      </div>
+                    }
+                    onConfirm={() => {
+                      const updatedTag = {
+                        ...tag,
+                        title: inputTagUpdateValue!!,
+                      };
+                      tagUpdate(
+                        updatedTag.id,
+                        updatedTag.title,
+                        updatedTag.idUser
+                      );
+                      setTempTags((prevTags) =>
+                        prevTags.map((tag) =>
+                          tag.id === updatedTag.id ? updatedTag : tag
+                        )
+                      );
+                    }}
+                    onCancel={() => setinputTagUpdateValue(tag.title)}
+                  />
+                  <RiDeleteBin5Line
+                    onClick={() => {
+                      tagDelete(tag.id).then((res) => {
+                        if (res) {
+                          setTempTags((ta) =>
+                            ta.filter((t) => t.id !== tag.id)
+                          );
+                        }
+                      });
+                    }}
+                    size={20}
+                    style={{ marginTop: "10px", marginLeft: "10px" }}
+                    className="icons"
+                  />
+                </Flex>
+                <div className="CajaContador" style={{ marginLeft: "10px" }}>
+                  <span style={{ fontSize: "18px", fontWeight: "bold" }}>
+                    {Tasks.filter((task) =>
+                      task.tags.some((tagg) => tagg.id == tag.id)
+                    ).length.toString()}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
         <Dialog
           cancelButton="Cancel"

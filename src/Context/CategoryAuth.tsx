@@ -21,6 +21,7 @@ export const categoryAdd = async (id:string,title: string, idUser: string) => {
 };
 
 //Function taht return a  Promise<boolean> and can later control the status code in the build of the view
+//It return a boolean to later  to control it  has delete successfully the   category or no 
 export const categoryDelete = async (id: string):Promise<boolean> => {
   try {
     //This is the return of the backend function that  told us  if the category has been deleted

@@ -1,41 +1,11 @@
 .PruebaTitulo {
     text-align: center;
 }
-
-/* .content {
-    background-color: #d3d3d3;
-    margin: 20px 60px;
-    width: calc(100vw - 120px);
-    height: calc(100vh - 20px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
-
-/* .inner-box {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 95%;
-    height: 92%;
-} */
-/* 
-.column1 {
-    background-color: #e7e7e7;
-    padding-left: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 33%;
-    display: flex;
-    height: 98%;
-} */
 .menu-container {
     display: flex;
     flex-direction: column;
-    width: 250px; 
+    width: 300px; 
     padding-left: 20px;
-    background-color: #f9f9f9; 
     border-radius: 10px; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   }
@@ -68,6 +38,21 @@
   
   .mb {
     margin-bottom: 10px;
+    margin-top: 5px;
+  }
+  .CajaContador{
+    width:30px;
+    height:30px;
+    background-color:rgba(196, 190, 190, 0.815);
+    border-radius: 8px; 
+    align-self:center;
+    text-align: center;
+  }
+  .CajaContador p{
+    color:rgb(0, 0, 0);
+    font-size:20px;
+    font-weight:bold;
+    padding-right: 8px;
   }
   
   .Tareas p {
@@ -95,18 +80,27 @@
 
   
 .middle-section {
-   margin-top: 20px; /* Ajusta según sea necesario */
+   margin-top: 20px; 
    padding: 20px;
-   position: absolute; /* Para centrar en la pantalla */
-   margin-left: 300px;
+   position: absolute; 
+   margin-left: 350px;
 } 
 .task-container {
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.task-inside-container {
+  border: 5px solid green; 
+  border-radius: 8px;
+  padding: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px 0;
+}
+
 
 .task-flex {
   display: flex;

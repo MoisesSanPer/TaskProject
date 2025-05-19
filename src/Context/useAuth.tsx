@@ -12,7 +12,9 @@ import { Tag } from "../models/Tag";
 import { GetTagsAPI } from "../services/TagsServices";
 import { Task } from "../models/Task";
 import { GetTaskAPI} from "../services/TaskService";
-//Declaramos las variables que tendra este tipo la usaremos para tenerla en el contexto
+import { GetUserConfigurationAPI } from "../services/UserConfigurationService";
+import { UserConfiguration } from "../models/UserConfiguration";
+//Here we delcare the type that we want to have in the context of the app
 type UserContextType = {
   user: UserProfile | null;
   token: string | null;
@@ -24,6 +26,8 @@ type UserContextType = {
   Categories: Category[];
   Tags:Tag[];
   updateListTask:(updatedList:Task[])  => void;
+  Configuration:UserConfiguration;
+  updateConfiguration:(configuration:UserConfiguration) => void;
 };
 type Props = { children: React.ReactNode };
 
@@ -37,13 +41,13 @@ export const UserProvider = ({ children }: Props) => {
   const [tag,setTag]= useState<Tag[]>([]);
   const [task,setTask] = useState<Task[]>([]);
   const [isReady, setIsReady] = useState(false);
+  const [configuration, setConfiguration]=useState<UserConfiguration >( {theme:"light",idUser:user?.id ?? ""})
 
 
 
 
   const isTokenValid = () => {
     console.log("Validating the token");
-    // const token2 = localStorage.getItem("token");
     if (!token) return false;
     const decoded = jwtDecode(token);
     if (decoded.exp) {
@@ -55,7 +59,7 @@ export const UserProvider = ({ children }: Props) => {
   };
 
   //This  is execute when we  create the component
-  //Validar el token
+  //Validate the token
   useEffect(() => {
     const token = localStorage.getItem("token");
     console.log(token);
@@ -118,7 +122,7 @@ export const UserProvider = ({ children }: Props) => {
 
   const loginUser = async (email: string, password: string) => {
     await loginAPI(email, password)
-      .then((res) => {
+      .then((res) =>  {
         if (res) {
           localStorage.setItem("token", res?.data.token);
           const userObj = {
@@ -128,6 +132,9 @@ export const UserProvider = ({ children }: Props) => {
           };
           setToken(res?.data.token);
           setUser(userObj!);
+          GetUserConfigurationAPI(userObj?.id!).then((data) =>{
+            setConfiguration(data)
+          })
           toast.success("Login Success!");
           navigate("/menu");
         }
@@ -139,6 +146,9 @@ export const UserProvider = ({ children }: Props) => {
 const updateListTask = (UpdatedTaskList:Task[]) => {
    setTask(UpdatedTaskList);
    };
+   const updateConfiguration = (UpdatedConfiguration:UserConfiguration) =>{
+    setConfiguration(UpdatedConfiguration)
+   }
   
 
   const isLoggedIn = () => {
@@ -154,11 +164,11 @@ const updateListTask = (UpdatedTaskList:Task[]) => {
   };
   return (
     <UserContext.Provider
-      value={{ loginUser, user, token, logout, isLoggedIn, registerUser, Categories:category, Tags:tag,Tasks:task,updateListTask}}
+      value={{ loginUser, user, token, logout, isLoggedIn, registerUser, Categories:category, Tags:tag,Tasks:task,updateListTask,Configuration:configuration,updateConfiguration }}
     >
       {isReady ? children : null}
     </UserContext.Provider>
   );
 };
-//Esta funcion es  que al llamarla recoge los datos de UserContextType los cuales estaran en el contexto de la aplicacion
+//This is the function that recolect the data from the UserContextType which they are in the context of the application
 export const useAuth = () => React.useContext(UserContext);
