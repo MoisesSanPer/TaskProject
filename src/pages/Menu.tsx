@@ -38,7 +38,11 @@ import { Task } from "../models/Task";
 import { FaEye } from "react-icons/fa";
 import DarkMode from "../components/DarkMode";
 
-const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) => {
+const Menu = ({
+  toggleTheme,
+}: {
+  toggleTheme: (selectedTheme: string) => void;
+}) => {
   //This is the list that you recieve when you called the API from database
   //In this list the thing that we are going to do it save the data of the temporal hooks so we can update  the information
   //If it is necessary during the ejecutiono of the app
@@ -53,7 +57,7 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
   } = useAuth();
 
   useEffect(() => {
-    toggleTheme(Configuration.theme)
+    toggleTheme(Configuration.theme);
   }, [Configuration]);
 
   //This are the hooks that we are going to use when we want to create a category or a tag
@@ -184,13 +188,13 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
     <div>
       <div className="middle-section">
         <Flex>
-          <h1 style={{fontSize: "40px"}}>{centralText}</h1>
-          <div style={{width: "70px"}}></div>
+          <h1 style={{ fontSize: "40px" }}>{centralText}</h1>
+          <div style={{ width: "70px" }}></div>
           <div
             className="CajaContador"
-            style={{width: "50px", height: "50px"}}
+            style={{ width: "50px", height: "50px" }}
           >
-            <span style={{fontSize: "28px", fontWeight: "bold"}}>
+            <span style={{ fontSize: "28px", fontWeight: "bold" }}>
               {/*THis filter  how many tasks are depending of the status of the task you have clicked before */}
               {Tasks.filter((st) => st.status.toString() == num)
                 .map((sta) => sta.status)
@@ -220,14 +224,14 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
                     </p>
                     <div className="task-icons">
                       <Dialog
-                        style={{overflow: "visible"}}
+                        style={{ overflow: "visible" }}
                         confirmButton="Ok"
                         header="View  Task"
                         trigger={
                           <FaEye
                             onClick={() => {}}
                             size={40}
-                            style={{marginTop: "10px", marginLeft: "80px"}}
+                            style={{ marginTop: "10px", marginLeft: "80px" }}
                             className="icons"
                           />
                         }
@@ -324,7 +328,7 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
                         onConfirm={() => {}}
                       />
                       <Dialog
-                        style={{overflow: "visible"}}
+                        style={{ overflow: "visible" }}
                         cancelButton="Cancel"
                         confirmButton="Update"
                         header="Update Task"
@@ -334,7 +338,7 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
                               setSelectedTask(task);
                             }}
                             size={40}
-                            style={{marginTop: "10px", marginLeft: "20px"}}
+                            style={{ marginTop: "10px", marginLeft: "20px" }}
                             className="icons"
                           />
                         }
@@ -405,7 +409,9 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
                                     Task.id != task.id &&
                                     !Tasks.filter(
                                       (c) => c.subTasks && c.subTasks.length > 0
-                                    ).flatMap((a) => a.subTasks).some((b) => b.id === Task.id)
+                                    )
+                                      .flatMap((a) => a.subTasks)
+                                      .some((b) => b.id === Task.id)
                                 )}
                                 placeholder="Update your SubTasks"
                                 noResultsMessage="We couldn't find any matches."
@@ -483,8 +489,11 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
                           const updatedTask = {
                             ...task,
                             title: inputTaskTitleUpdateValue ?? task.title,
-                            description: inputTaskDescriptionUpdateValue ?? task.description,
-                            endDate: inputTaskEndDateUpdateValue ?? task.endDate,
+                            description:
+                              inputTaskDescriptionUpdateValue ??
+                              task.description,
+                            endDate:
+                              inputTaskEndDateUpdateValue ?? task.endDate,
                             status: status.indexOf(updateStatus),
                             subTasks: updateSubTasks ?? [],
                             categories: updateCategory ?? [],
@@ -531,7 +540,7 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
                           });
                         }}
                         size={40}
-                        style={{marginTop: "10px", marginLeft: "10px"}}
+                        style={{ marginTop: "10px", marginLeft: "10px" }}
                         className="icons"
                       />
                     </div>
@@ -544,28 +553,36 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
       </div>
       <div className="menu-container">
         <Flex>
-          <h1 className="h1c1" style={{cursor: "default"}}>
+          <h1 className="h1c1" style={{ cursor: "default" }}>
             Menu
           </h1>
-          <div style={{width: "80px"}}></div>
+          <div style={{ width: "130px" }}></div>
           <DarkMode toggleTheme={toggleTheme} user={user!} />
         </Flex>
 
-        <h2 className="h2c1" style={{cursor: "default"}}>
+        <h2 className="h2c1" style={{ cursor: "default" }}>
           TASKS
         </h2>
         <div
-          className="Tareas"
+          className="Tareas mb"
           onClick={() => handleTaskClick("Non Started", Status.NonStarted)}
         >
           <Flex>
-            <IoIosTimer size={20} />
-            <p>Non Started</p>
-            <div style={{width: "70px"}}></div>
+            <IoIosTimer size={30} />
+            <p
+              style={{
+                justifyContent: "space-between",
+                alignContent: "center",
+              }}
+            >
+              Non Started
+            </p>
+            <div style={{ width: "105px" }}></div>
             <div className="CajaContador">
               <p>
                 {Tasks.filter((st) => st.status == Status.NonStarted)
-                  .map((sta) => sta.status).length.toString()}
+                  .map((sta) => sta.status)
+                  .length.toString()}
               </p>
             </div>
           </Flex>
@@ -575,13 +592,21 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
           onClick={() => handleTaskClick("In progress", Status.InProgress)}
         >
           <Flex>
-            <FaRegPlayCircle size={20} />
-            <p>In progress</p>
-            <div style={{width: "76px"}}></div>
+            <FaRegPlayCircle size={30} />
+            <p
+              style={{
+                justifyContent: "space-between",
+                alignContent: "center",
+              }}
+            >
+              In progress
+            </p>
+            <div style={{ width: "110px" }}></div>
             <div className="CajaContador">
               <p>
                 {Tasks.filter((st) => st.status == Status.InProgress)
-                  .map((sta) => sta.status).length.toString()}
+                  .map((sta) => sta.status)
+                  .length.toString()}
               </p>
             </div>
           </Flex>
@@ -591,13 +616,21 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
           onClick={() => handleTaskClick("Paused", Status.Paused)}
         >
           <Flex>
-            <PiPauseDuotone size={20} />
-            <p>Paused</p>
-            <div style={{width: "100px"}}></div>
+            <PiPauseDuotone size={30} />
+            <p
+              style={{
+                justifyContent: "space-between",
+                alignContent: "center",
+              }}
+            >
+              Paused
+            </p>
+            <div style={{ width: "134px" }}></div>
             <div className="CajaContador">
               <p>
                 {Tasks.filter((st) => st.status == Status.Paused)
-                  .map((sta) => sta.status).length.toString()}
+                  .map((sta) => sta.status)
+                  .length.toString()}
               </p>
             </div>
           </Flex>
@@ -607,14 +640,23 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
           onClick={() => handleTaskClick("Late", Status.Late)}
         >
           <Flex>
-            <IoCalendarOutline size={20} />
-            <p>Late </p>
-            <div style={{width: "117px"}}></div>
+            <IoCalendarOutline size={30} />
+            <p
+              style={{
+                justifyContent: "space-between",
+                alignContent: "center",
+              }}
+            >
+              Late{" "}
+            </p>
+            <div style={{ width: "153px" }}></div>
             <div className="CajaContador">
               <p>
                 {Tasks.filter((st) => st.status == Status.Late)
-                  .map((sta) => sta.status).length.toString()}
-              </p>{""}
+                  .map((sta) => sta.status)
+                  .length.toString()}
+              </p>
+              {""}
             </div>
           </Flex>
         </div>
@@ -623,23 +665,34 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
           onClick={() => handleTaskClick("Finished", Status.Finished)}
         >
           <Flex>
-            <FaRegCheckCircle size={20} />
-            <p>Finished</p>
-            <div style={{width: "92px"}}></div>
+            <FaRegCheckCircle size={30} />
+            <p
+              style={{
+                justifyContent: "space-between",
+                alignContent: "center",
+              }}
+            >
+              Finished
+            </p>
+            <div style={{ width: "127px" }}></div>
             <div className="CajaContador">
               <p>
                 {Tasks.filter((st) => st.status == Status.Finished)
-                  .map((sta) => sta.status).length.toString()}
-              </p>{""}
+                  .map((sta) => sta.status)
+                  .length.toString()}
+              </p>
+              {""}
             </div>
           </Flex>
         </div>
         <Dialog
-          style={{overflow: "visible"}}
+          style={{ overflow: "visible" }}
           cancelButton="Cancel"
           confirmButton="Create"
           header="Add Task"
-          trigger={<Button content="Add Task"/>}
+          trigger={
+            <Button content="Add Task" styles={{ backgroundColor: "gold" }} />
+          }
           content={
             <div
               style={{
@@ -802,7 +855,7 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
             setTaskTagAdd([]);
           }}
         />
-        <h2 className="h2c1" style={{cursor: "default"}}>
+        <h2 className="h2c1" style={{ cursor: "default" }}>
           CATEGORY
         </h2>
         <div>
@@ -811,7 +864,7 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
             tempCategories.map((category) => {
               return (
                 <div
-                  style={{display: "flex", alignItems: "center"}}
+                  style={{ display: "flex", alignItems: "center" }}
                   onClick={() => {}}
                 >
                   <Flex>
@@ -831,14 +884,14 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
                       {category.title}
                     </p>
                     <Dialog
-                      style={{overflow: "visible"}}
+                      style={{ overflow: "visible" }}
                       confirmButton="Ok"
                       header="View  Category"
                       trigger={
                         <FaEye
                           onClick={() => {}}
                           size={20}
-                          style={{marginTop: "10px", marginLeft: "80px"}}
+                          style={{ marginTop: "10px", marginLeft: "80px" }}
                           className="icons"
                         />
                       }
@@ -885,7 +938,7 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
                         <MdModeEdit
                           onClick={() => setSelectedCategory(category)}
                           size={20}
-                          style={{marginTop: "10px", marginLeft: "10px"}}
+                          style={{ marginTop: "10px", marginLeft: "10px" }}
                           className="icons"
                         />
                       }
@@ -938,14 +991,14 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
                         });
                       }}
                       size={20}
-                      style={{marginTop: "10px", marginLeft: "10px"}}
+                      style={{ marginTop: "10px", marginLeft: "10px" }}
                       className="icons"
                     />
                     <div
                       className="CajaContador"
-                      style={{marginLeft: "10px"}}
+                      style={{ marginLeft: "10px" }}
                     >
-                      <span style={{fontSize: "18px", fontWeight: "bold"}}>
+                      <span style={{ fontSize: "18px", fontWeight: "bold" }}>
                         {Tasks.filter((sta) =>
                           sta.categories.some((cat) => cat.id === category.id)
                         ).length.toString()}
@@ -961,7 +1014,12 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
           cancelButton="Cancel"
           confirmButton="Create"
           header="Add Category"
-          trigger={<Button content="Add  Category"/>}
+          trigger={
+            <Button
+              content="Add  Category"
+              styles={{ backgroundColor: "gold" }}
+            />
+          }
           content={
             <div>
               <label htmlFor="inputField">Título:</label>
@@ -994,13 +1052,13 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
           }}
           onCancel={() => setInputCategoryValue("")}
         />
-        <h2 className="h2c1" style={{cursor: "default"}}>
+        <h2 className="h2c1" style={{ cursor: "default" }}>
           TAGS
         </h2>
         <div>
           {tempTags.map((tag) => {
             return (
-              <div style={{display: "flex", alignItems: "center"}}>
+              <div style={{ display: "flex", alignItems: "center" }}>
                 <Flex>
                   <p
                     style={{
@@ -1016,14 +1074,14 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
                     {tag.title}
                   </p>
                   <Dialog
-                    style={{overflow: "visible"}}
+                    style={{ overflow: "visible" }}
                     confirmButton="Ok"
                     header="View  Category"
                     trigger={
                       <FaEye
                         onClick={() => {}}
                         size={20}
-                        style={{marginTop: "10px", marginLeft: "80px"}}
+                        style={{ marginTop: "10px", marginLeft: "80px" }}
                         className="icons"
                       />
                     }
@@ -1068,7 +1126,7 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
                       <MdModeEdit
                         onClick={() => setSelectedTag(tag)}
                         size={20}
-                        style={{marginTop: "10px", marginLeft: "10px"}}
+                        style={{ marginTop: "10px", marginLeft: "10px" }}
                         className="icons"
                       />
                     }
@@ -1114,12 +1172,12 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
                       });
                     }}
                     size={20}
-                    style={{marginTop: "10px", marginLeft: "10px"}}
+                    style={{ marginTop: "10px", marginLeft: "10px" }}
                     className="icons"
                   />
                 </Flex>
-                <div className="CajaContador" style={{ marginLeft: "10px"}}>
-                  <span style={{fontSize: "18px", fontWeight: "bold"}}>
+                <div className="CajaContador" style={{ marginLeft: "10px" }}>
+                  <span style={{ fontSize: "18px", fontWeight: "bold" }}>
                     {Tasks.filter((task) =>
                       task.tags.some((tagg) => tagg.id == tag.id)
                     ).length.toString()}
@@ -1133,7 +1191,9 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
           cancelButton="Cancel"
           confirmButton="Create"
           header="Add Tag"
-          trigger={<Button content="Add Tag"/>}
+          trigger={
+            <Button content="Add Tag" styles={{ backgroundColor: "gold" }} />
+          }
           content={
             <div>
               <label htmlFor="inputField">Título:</label>
@@ -1166,9 +1226,8 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
         />
         <div className="footer">
           <Dialog
-            cancelButton="Cancel"
-            confirmButton="Accept"
-            header="Task founded"
+            confirmButton="Ok"
+            header="Calendar"
             trigger={
               <div className="Tareas mb">
                 <Flex>
@@ -1179,7 +1238,18 @@ const Menu = ({toggleTheme}: {toggleTheme: (selectedTheme: string) => void }) =>
             }
             content={
               <div>
-                <Datepicker />
+                <Datepicker
+                  onDateChange={(_, v) => {
+                    alert(`You picked '${v!.value}'.`);
+                  }}
+                  today={new Date(2020, 7, 30, 0, 0, 0, 0)}
+                  buttonOnly
+                  popup={{
+                    trigger: (
+                      <Button title="Click to Open" content="Click to Open" />
+                    ),
+                  }}
+                />
               </div>
             }
           />

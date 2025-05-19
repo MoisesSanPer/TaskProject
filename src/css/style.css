@@ -1,90 +1,95 @@
 .PruebaTitulo {
-    text-align: center;
+  text-align: center;
 }
+
 .menu-container {
-    display: flex;
-    flex-direction: column;
-    width: 300px; 
-    padding-left: 20px;
-    border-radius: 10px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-  }
-  
-  .h1c1 {
-    font-family: verdana;
-  }
-  
-  .h2c1 {
-    font-family: verdana;
-    font-size: 20px;
-  }
-  
-  .buttons {
-    background-color: #e7e7e7;
-  }
-  
-  .Tareas {
-    display: flex;
-    align-items: center;
-    height: 40px; 
-    width: 100%; 
-  }
-  
-  .Tareas:hover {
-    background-color: rgb(187, 181, 181);
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  .mb {
-    margin-bottom: 10px;
-    margin-top: 5px;
-  }
-  .CajaContador{
-    width: 30px;
-    height: 30px;
-    background-color: rgba(196, 190, 190, 0.815);
-    border-radius: 8px; 
-    align-self: center;
-    text-align: center;
-  }
-  .CajaContador p{
-    color: rgb(0, 0, 0);
-    font-size: 20px;
-    font-weight: bold;
-    padding-right: 8px;
-  }
-  
-  .Tareas p {
-    margin: 0;
-    padding-left: 8px;
-  }
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 950px;
+  padding-left: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: hidden;
+ overflow-y: auto;
+}
 
-  
-  .footer {
-    margin-top: 50px; 
-  }
-  
-  .Etiqueta {
-    border-radius: 15px;
-    display: flex;
-    margin-right: 10px;
-  }
-  
-  .Etiqueta p {
-    text-align: center;
-  }
-  .icons:hover{
-    cursor: pointer;
-  }
+.h1c1 {
+  font-family: verdana;
+}
 
-  
+.h2c1 {
+  font-family: verdana;
+  font-size: 20px;
+}
+
+
+.Tareas {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+}
+
+.Tareas:hover {
+  background-color: rgb(187, 181, 181);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.mb {
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+.CajaContador {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(196, 190, 190, 0.815);
+  border-radius: 8px;
+  align-self: center;
+  text-align: center;
+}
+
+.CajaContador p {
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  font-weight: bold;
+  padding-right: 8px;
+}
+
+.Tareas p {
+  margin: 0;
+  padding-left: 8px;
+}
+
+
+.footer {
+  margin-top: 50px;
+}
+
+.Etiqueta {
+  border-radius: 15px;
+  display: flex;
+  margin-right: 10px;
+}
+
+.Etiqueta p {
+  text-align: center;
+}
+
+.icons:hover {
+  cursor: pointer;
+}
+
+
 .middle-section {
-   margin-top: 20px; 
-   padding: 20px;
-   position: absolute; 
-   margin-left: 350px;
-} 
+  margin-top: 20px;
+  padding: 20px;
+  position: absolute;
+  margin-left: 350px;
+}
+
 .task-container {
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -94,11 +99,11 @@
 }
 
 .task-inside-container {
-  border: 5px solid green; 
+  border: 5px solid green;
   border-radius: 8px;
-  padding: 10px; 
+  padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 10px 0;
+  margin: 10px 0
 }
 
 
@@ -121,6 +126,3 @@
   cursor: default;
   font-size: 20px;
 }
-
-
-  
