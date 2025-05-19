@@ -6,8 +6,13 @@ import {
   UpdateCategoryAPI,
 } from "../services/CategoryServices";
 
-export const categoryAdd = async (id:string,title: string, idUser: string) => {
-  await PostCategoryAPI(id,title, idUser)
+//Function that call the  API function
+export const categoryAdd = async (
+  id: string,
+  title: string,
+  idUser: string
+) => {
+  await PostCategoryAPI(id, title, idUser)
     .then((res) => {
       const category: Category = {
         id: res?.data.id ?? "",
@@ -20,9 +25,9 @@ export const categoryAdd = async (id:string,title: string, idUser: string) => {
     .catch(() => toast.warning("Server error occurred"));
 };
 
-//Function taht return a  Promise<boolean> and can later control the status code in the build of the view
-//It return a boolean to later  to control it  has delete successfully the   category or no 
-export const categoryDelete = async (id: string):Promise<boolean> => {
+//Function that return a  Promise<boolean> and can later control the status code in the build of the view
+//It return a boolean to later  to control it  has delete successfully the   category or no
+export const categoryDelete = async (id: string): Promise<boolean> => {
   try {
     //This is the return of the backend function that  told us  if the category has been deleted
     //Normally you do the when but ins this case we need to return a boolean because  if we do not return we do not know
@@ -41,11 +46,15 @@ export const categoryDelete = async (id: string):Promise<boolean> => {
   }
 };
 
-export const categoryUpdate = async (id:string,title:string,idUser:string) =>{
-  await UpdateCategoryAPI(id,title,idUser)
-  .then((res) =>{
-    toast.success("Category Update Success!");
-    return res;
-  })
-  .catch(() => toast.warning("Server error occurred"));
-}
+export const categoryUpdate = async (
+  id: string,
+  title: string,
+  idUser: string
+) => {
+  await UpdateCategoryAPI(id, title, idUser)
+    .then((res) => {
+      toast.success("Category Update Success!");
+      return res;
+    })
+    .catch(() => toast.warning("Server error occurred"));
+};

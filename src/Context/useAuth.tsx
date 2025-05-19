@@ -22,28 +22,26 @@ type UserContextType = {
   loginUser: (username: string, password: string) => void;
   logout: () => void;
   isLoggedIn: () => boolean;
-  Tasks:Task[];
+  Tasks: Task[];
   Categories: Category[];
-  Tags:Tag[];
-  updateListTask:(updatedList:Task[])  => void;
-  Configuration:UserConfiguration;
-  updateConfiguration:(configuration:UserConfiguration) => void;
+  Tags: Tag[];
+  updateListTask: (updatedList: Task[])  => void;
+  Configuration: UserConfiguration;
+  updateConfiguration: (configuration: UserConfiguration) => void;
 };
 type Props = { children: React.ReactNode };
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
 
-export const UserProvider = ({ children }: Props) => {
+export const UserProvider = ({children}: Props) => {
   const navigate = useNavigate();
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<UserProfile | null>(null);
-  const [category,setCategory] = useState<Category[]>([]);
-  const [tag,setTag]= useState<Tag[]>([]);
-  const [task,setTask] = useState<Task[]>([]);
+  const [category, setCategory] = useState<Category[]>([]);
+  const [tag, setTag]= useState<Tag[]>([]);
+  const [task, setTask] = useState<Task[]>([]);
   const [isReady, setIsReady] = useState(false);
-  const [configuration, setConfiguration]=useState<UserConfiguration >( {theme:"light",idUser:user?.id ?? ""})
-
-
+  const [configuration, setConfiguration]=useState<UserConfiguration>( {theme: "light", idUser:user?.id ?? ""})
 
 
   const isTokenValid = () => {
@@ -109,7 +107,7 @@ export const UserProvider = ({ children }: Props) => {
           const userObj = {
             username: res?.data.username,
             email: res?.data.email,
-            id:res.data.id,
+            id: res.data.id,
           };
           setToken(res?.data.token!);
           setUser(userObj!);
@@ -128,7 +126,7 @@ export const UserProvider = ({ children }: Props) => {
           const userObj = {
             username: res?.data.username,
             email: res?.data.email,
-            id:res.data.id,
+            id: res.data.id,
           };
           setToken(res?.data.token);
           setUser(userObj!);
@@ -143,10 +141,10 @@ export const UserProvider = ({ children }: Props) => {
   };
 
   
-const updateListTask = (UpdatedTaskList:Task[]) => {
+const updateListTask = (UpdatedTaskList: Task[]) => {
    setTask(UpdatedTaskList);
    };
-   const updateConfiguration = (UpdatedConfiguration:UserConfiguration) =>{
+   const updateConfiguration = (UpdatedConfiguration: UserConfiguration) =>{
     setConfiguration(UpdatedConfiguration)
    }
   
@@ -164,7 +162,7 @@ const updateListTask = (UpdatedTaskList:Task[]) => {
   };
   return (
     <UserContext.Provider
-      value={{ loginUser, user, token, logout, isLoggedIn, registerUser, Categories:category, Tags:tag,Tasks:task,updateListTask,Configuration:configuration,updateConfiguration }}
+      value={{loginUser, user, token, logout, isLoggedIn, registerUser, Categories: category, Tags: tag, Tasks: task, updateListTask, Configuration: configuration, updateConfiguration}}
     >
       {isReady ? children : null}
     </UserContext.Provider>

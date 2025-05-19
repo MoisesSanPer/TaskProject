@@ -2,8 +2,8 @@ import { toast } from "react-toastify";
 import { Tag } from "../models/Tag";
 import { DeleteTagsAPI, PostTagsAPI, UpdateTagsAPI } from "../services/TagsServices";
 
-export const tagAdd = async (id:string,title: string, idUser: string) => {
-  await PostTagsAPI(id,title, idUser)
+export const tagAdd = async (id: string, title: string, idUser: string) => {
+  await PostTagsAPI(id, title, idUser)
     .then((res) => {
       const tag: Tag = {
         id: res?.data.id ?? "",
@@ -31,8 +31,9 @@ export const tagDelete = async (id: string): Promise<boolean> => {
     return false;
   }
 };
-export const tagUpdate = async (id:string,title:string,idUser:string) =>{
-  await UpdateTagsAPI(id,title,idUser)
+
+export const tagUpdate = async (id: string, title: string, idUser: string) =>{
+  await UpdateTagsAPI(id, title, idUser)
   .then((res) =>{
     toast.success("Tag Update Success!");
     return res;
