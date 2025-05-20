@@ -186,9 +186,9 @@ const Menu = ({
     setFilterTask(numberStatus);
   };
   const handleCategoryClick = (category: Category) => {
-      setCentralText(category.title);
-      setSelectedCategory(category);
-      setCategoryTasksNumber(true);
+    setCentralText(category.title);
+    setSelectedCategory(category);
+    setCategoryTasksNumber(true);
   };
 
   return (
@@ -920,72 +920,18 @@ const Menu = ({
             tempCategories.map((category) => {
               return (
                 <div
-                  style={{ display: "flex", alignItems: "center" }}
+                  style={{ display: "flex",position:"relative"}}
                   onClick={() => {}}
                 >
                   <Flex>
                     <p
-                      style={{
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                        maxWidth: "50px",
-                        cursor: "pointer",
-                        minWidth: "50px",
-                        marginBottom: "10px",
-                      }}
+                      className="category-title"
                       key={category.id}
                       onClick={() => handleCategoryClick(category)}
                     >
                       {category.title}
                     </p>
-                    <Dialog
-                      style={{ overflow: "visible" }}
-                      confirmButton="Ok"
-                      header="View  Category"
-                      trigger={
-                        <FaEye
-                          onClick={() => {}}
-                          size={20}
-                          style={{ marginTop: "10px", marginLeft: "80px" }}
-                          className="icons"
-                        />
-                      }
-                      content={
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "10px",
-                          }}
-                        >
-                          <Flex gap="gap.small">
-                            <label htmlFor="inputField">Título:</label>
-                            <Input
-                              id="TaskTitle"
-                              value={category.title}
-                              disabled={true}
-                            />
-                          </Flex>
-                          <Flex gap="gap.small">
-                            <label htmlFor="inputField">Tasks:</label>
-                            <Dropdown
-                              multiple
-                              placeholder="Click to see the Tasks related"
-                              id="TaskTag"
-                              items={mappedTask.filter((sta) =>
-                                sta.categories.some(
-                                  (cat) => cat.id === category.id
-                                )
-                              )}
-                              noResultsMessage="We couldn't find any tasks related."
-                              position="below"
-                            />
-                          </Flex>
-                        </div>
-                      }
-                      onConfirm={() => {}}
-                    />
+                    
                     <Dialog
                       cancelButton="Cancel"
                       confirmButton="Update"
@@ -994,7 +940,7 @@ const Menu = ({
                         <MdModeEdit
                           onClick={() => setSelectedCategory(category)}
                           size={20}
-                          style={{ marginTop: "10px", marginLeft: "10px" }}
+                          style={{ marginTop: "10px", marginLeft: "110px" }}
                           className="icons"
                         />
                       }

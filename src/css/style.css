@@ -11,7 +11,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow-x: hidden;
- overflow-y: auto;
+  overflow-y: auto;
 }
 
 .h1c1 {
@@ -133,8 +133,28 @@
   font-size: 20px;
   margin: 0;
 }
+
 .task-subtitle {
   font-size: 16px;
   color: #524949;
   margin: 4px 0 0 20px;
+}
+
+.category-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 50px;
+  min-width: 50px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1
+}
+
+.category-title:hover {
+  max-width: none;
+  background-color: #ffffff;
+  z-index: 2;
 }
