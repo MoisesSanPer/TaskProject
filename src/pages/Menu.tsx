@@ -177,11 +177,23 @@ const Menu = ({
   //This is  the hook that control the middle component and save the state
   const [centralText, setCentralText] = useState("No Task Selected");
   const [num, setNum] = useState("");
+  const [categoryTasks, setCategoryTasks] = useState<boolean>();
+  const [categoryTasksNumber, setCategoryTasksNumber] = useState<boolean>();
   //This is the method that update the middle component depend of the text and the status you want to show
   const handleTaskClick = (text: string, numberStatus: number) => {
     setNum(numberStatus.toString());
     setCentralText(text);
     setFilterTask(numberStatus);
+  };
+  const handleCategoryClick = (category: Category) => {
+    const isActivating = !categoryTasks;
+
+    if (isActivating) {
+      setCentralText(category.title);
+      setSelectedCategory(category);
+      setCategoryTasksNumber(isActivating);
+    }
+    setCategoryTasks(false);
   };
 
   return (
@@ -196,9 +208,15 @@ const Menu = ({
           >
             <span style={{ fontSize: "28px", fontWeight: "bold" }}>
               {/*THis filter  how many tasks are depending of the status of the task you have clicked before */}
-              {Tasks.filter((st) => st.status.toString() == num)
-                .map((sta) => sta.status)
-                .length.toString()}
+              {categoryTasksNumber === true
+                ? Tasks.filter((sta) =>
+                    sta.categories.some(
+                      (cat) => cat.id === selectedCategory!.id
+                    )
+                  ).length.toString()
+                : Tasks.filter((st) => st.status.toString() == num)
+                    .map((sta) => sta.status)
+                    .length.toString()}
             </span>
           </div>
         </Flex>
@@ -219,9 +237,10 @@ const Menu = ({
               <div className="task-container">
                 <div className="task-inside-container">
                   <Flex>
-                    <p className="task-title" key={task.id}>
-                      {task.title}
-                    </p>
+                    <div className="task-text">
+                      <p className="task-title">{task.title}</p>
+                      <p className="task-subtitle">{task.description}</p>
+                    </div>
                     <div className="task-icons">
                       <Dialog
                         style={{ overflow: "visible" }}
@@ -874,12 +893,12 @@ const Menu = ({
                         textOverflow: "ellipsis",
                         whiteSpace: "nowrap",
                         maxWidth: "50px",
-                        cursor: "default",
+                        cursor: "pointer",
                         minWidth: "50px",
                         marginBottom: "10px",
                       }}
                       key={category.id}
-                      onClick={() => setSelectedCategory(category)}
+                      onClick={() => handleCategoryClick(category)}
                     >
                       {category.title}
                     </p>
