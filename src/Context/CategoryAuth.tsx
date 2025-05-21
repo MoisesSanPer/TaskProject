@@ -27,14 +27,19 @@ export const categoryAdd = async (
 
 //Function that return a  Promise<boolean> and can later control the status code in the build of the view
 //It return a boolean to later  to control it  has delete successfully the   category or no
-export const categoryDelete = async (id: string): Promise<boolean> => {
+export const categoryDelete = async (id: string,isAll:boolean): Promise<boolean> => {
   try {
     //This is the return of the backend function that  told us  if the category has been deleted
     //Normally you do the when but ins this case we need to return a boolean because  if we do not return we do not know
     // if the status is 200 or not
-    const res = await DeleteCategoryAPI(id);
-    if (res?.status == 200) {
+    const res = await DeleteCategoryAPI(id,isAll);
+    if (res?.status == 200 && isAll == true) {
       toast.success("Category Delete Success!");
+      return true;
+    }
+    else if (res?.status == 200) {
+      toast.success("Category Delete Success!");
+      toast.success("Task Delete Success!");
       return true;
     } else {
       toast.warning("Failed to delete category. Please try again.");

@@ -26,9 +26,9 @@ export const  GetCategoryAPI = async (idUser: string) =>{
     }
 }
 
-export const DeleteCategoryAPI = async (id :string)=>{
+export const DeleteCategoryAPI = async (id :string,isAll:boolean)=>{
   try{
-    const response = await axios.delete<HttpStatusCode>(api +"/DeleteCategory?id="+ id)
+    const response = await axios.delete<HttpStatusCode>(api +"/DeleteCategory?id="+ id+"&isAll="+isAll)
     console.log("User deleted succesfully"+ response)
     return response;
   }catch (error) {

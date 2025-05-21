@@ -246,7 +246,7 @@ const Menu = ({
                     </div>
                   </div>
                 ))
-            : categoryTasksNumber
+            : categoryTasksNumber === true
             ? mappedTask
                 .filter((task) =>
                   task.categories?.some(
@@ -344,22 +344,6 @@ const Menu = ({
                                   />
                                 </Flex>
                                 <Flex gap="gap.small">
-                                  <label htmlFor="inputField">Tags:</label>
-                                  <Dropdown
-                                    multiple
-                                    placeholder="Click to see the Tag related"
-                                    id="TaskTag"
-                                    items={
-                                      listTag
-                                        ? []
-                                        : task.tags?.map((tag) => tag.title)
-                                    }
-                                    disabled={listTag}
-                                    noResultsMessage="We couldn't find any matches."
-                                    position="below"
-                                  />
-                                </Flex>
-                                <Flex gap="gap.small">
                                   <label htmlFor="inputField">Category:</label>
                                   <Dropdown
                                     multiple
@@ -372,7 +356,27 @@ const Menu = ({
                                             (cat) => cat.title
                                           )
                                     }
+                                    value={updateCategory.map((cat) => ({
+                                      ...cat,
+                                      header: cat.title,
+                                    }))}
                                     disabled={listCategory}
+                                    noResultsMessage="We couldn't find any matches."
+                                    position="below"
+                                  />
+                                </Flex>
+                                <Flex gap="gap.small">
+                                  <label htmlFor="inputField">Tags:</label>
+                                  <Dropdown
+                                    multiple
+                                    placeholder="Click to see the Tag related"
+                                    id="TaskTag"
+                                    items={
+                                      listTag
+                                        ? []
+                                        : task.tags?.map((tag) => tag.title)
+                                    }
+                                    disabled={listTag}
                                     noResultsMessage="We couldn't find any matches."
                                     position="below"
                                   />
@@ -945,101 +949,136 @@ const Menu = ({
           CATEGORY
         </h2>
         <div>
-          {
-            tempCategories.map((category) => {
-              return (
-                <div
-                  style={{ display: "flex", position: "relative" }}
-                  onClick={() => {}}
-                >
-                  <Flex>
-                    <p
-                      className="category-title"
-                      key={category.id}
-                      onClick={() => handleCategoryClick(category)}
-                    >
-                      {category.title}
-                    </p>
+          {tempCategories.map((category) => {
+            return (
+              <div
+                style={{ display: "flex", position: "relative" }}
+                onClick={() => {}}
+              >
+                <Flex>
+                  <p
+                    className="category-title"
+                    key={category.id}
+                    onClick={() => handleCategoryClick(category)}
+                  >
+                    {category.title}
+                  </p>
 
-                    <Dialog
-                      cancelButton="Cancel"
-                      confirmButton="Update"
-                      header="Update Category"
-                      trigger={
-                        <MdModeEdit
-                          onClick={() => setSelectedCategory(category)}
-                          size={20}
-                          style={{ marginTop: "10px", marginLeft: "110px" }}
-                          className="icons"
-                        />
-                      }
-                      content={
-                        <div>
-                          <label htmlFor="UpdateField">Title:</label>
-                          <Input
-                            id="UpdateField"
-                            value={inputCategoryUpdateValue}
-                            onChange={({}, data) =>
-                              setinputCategoryUpdateValue(data?.value ?? "")
-                            }
-                            placeholder="Update the category title "
-                          />
-                        </div>
-                      }
-                      onConfirm={() => {
-                        const updatedCategory = {
-                          ...category,
-                          title: inputCategoryUpdateValue!!,
-                        };
-                        categoryUpdate(
-                          updatedCategory.id,
-                          updatedCategory.title,
-                          updatedCategory.idUser
-                        );
-                        setTempCategories((prevCategories) =>
-                          prevCategories.map((cat) =>
-                            cat.id === updatedCategory.id
-                              ? updatedCategory
-                              : cat
-                          )
-                        );
-                      }}
-                      onCancel={() =>
-                        setinputCategoryUpdateValue(category.title)
-                      }
-                    />
-                    <RiDeleteBin5Line
-                      onClick={() => {
-                        //You  do the then to take the value that you have recieved before
-                        // with the value of the then that is result you can  control if it is true or not
-                        //And if it is true yo update the Array of categorys
-                        categoryDelete(category.id).then((result) => {
-                          if (result) {
-                            setTempCategories((cat) =>
-                              cat.filter((c) => c.id !== category.id)
-                            );
+                  <Dialog
+                    cancelButton="Cancel"
+                    confirmButton="Update"
+                    header="Update Category"
+                    trigger={
+                      <MdModeEdit
+                        onClick={() => setSelectedCategory(category)}
+                        size={20}
+                        style={{ marginTop: "10px", marginLeft: "110px" }}
+                        className="icons"
+                      />
+                    }
+                    content={
+                      <div>
+                        <label htmlFor="UpdateField">Title:</label>
+                        <Input
+                          id="UpdateField"
+                          value={inputCategoryUpdateValue}
+                          onChange={({}, data) =>
+                            setinputCategoryUpdateValue(data?.value ?? "")
                           }
-                        });
-                      }}
-                      size={20}
-                      style={{ marginTop: "10px", marginLeft: "10px" }}
-                      className="icons"
-                    />
-                    <div
-                      className="BoxNumberCount"
-                      style={{ marginLeft: "10px" }}
-                    >
-                      <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-                        {Tasks.filter((sta) =>
-                          sta.categories.some((cat) => cat.id === category.id)
-                        ).length.toString()}
-                      </span>
-                    </div>
-                  </Flex>
-                </div>
-              );
-            })
-          }
+                          placeholder="Update the category title "
+                        />
+                      </div>
+                    }
+                    onConfirm={() => {
+                      const updatedCategory = {
+                        ...category,
+                        title: inputCategoryUpdateValue!!,
+                      };
+                      categoryUpdate(
+                        updatedCategory.id,
+                        updatedCategory.title,
+                        updatedCategory.idUser
+                      );
+                      setTempCategories((prevCategories) =>
+                        prevCategories.map((cat) =>
+                          cat.id === updatedCategory.id ? updatedCategory : cat
+                        )
+                      );
+                    }}
+                    onCancel={() => setinputCategoryUpdateValue(category.title)}
+                  />
+                  <Dialog
+                    cancelButton="Delete Category and Task"
+                    confirmButton="Delete only Category"
+                    header="Delete Category (Click outside to leave)"
+                    trigger={
+                      <RiDeleteBin5Line
+                        onClick={() => setSelectedCategory(category)}
+                        size={20}
+                        style={{ marginTop: "10px", marginLeft: "10px" }}
+                        className="icons"
+                      />
+                    }
+                    content={
+                      <div>
+                        <label
+                          style={{ fontSize: "22px" }}
+                          htmlFor="UpdateField"
+                        >
+                          Do you want to delete the {category.title}?
+                          <br />
+                        </label>
+                      </div>
+                    }
+                    onConfirm={() => {
+                      categoryDelete(category.id, true).then((result) => {
+                        if (result) {
+                          setTempCategories((cat) =>
+                            cat.filter((c) => c.id !== category.id)
+                          );
+                          updateListTask(
+                            Tasks.map((task) => ({
+                              ...task,
+                              categories: task.categories?.filter(
+                                (c) => c.id !== category.id
+                              ),
+                            }))
+                          );
+                        }
+                      });
+                    }}
+                    onCancel={() => {
+                      categoryDelete(category.id, false).then((result) => {
+                        if (result) {
+                          setTempCategories((cat) =>
+                            cat.filter((c) => c.id !== category.id)
+                          );
+                          updateListTask(
+                            Tasks.filter(
+                              (task) =>
+                                !task.categories?.some(
+                                  (c) => c.id === category.id
+                                )
+                            )
+                          );
+                        }
+                      });
+                    }}
+                  />
+                  <div
+                    className="BoxNumberCount"
+                    style={{ marginLeft: "10px" }}
+                  >
+                    <span style={{ fontSize: "18px", fontWeight: "bold" }}>
+                      {Tasks.filter((sta) =>
+                        sta.categories.some((cat) => cat.id === category.id)
+                      ).length.toString()}
+                    </span>
+                  </div>
+                </Flex>
+              </div>
+            );
+          })}
         </div>
         <Dialog
           cancelButton="Cancel"
@@ -1066,7 +1105,7 @@ const Menu = ({
           }
           onConfirm={() => {
             if (!inputCategoryValue || inputCategoryValue.trim() === "") {
-              toast.warning("The category can not have a empty title")
+              toast.warning("The category can not have a empty title");
               return;
             }
             const idTemp = uuidv4();
@@ -1148,6 +1187,12 @@ const Menu = ({
                           setTempTags((ta) =>
                             ta.filter((t) => t.id !== tag.id)
                           );
+                          updateListTask(
+                            Tasks.map((task) => ({
+                              ...task,
+                              tags: task.tags?.filter((c) => c.id !== tag.id),
+                            }))
+                          );
                         }
                       });
                     }}
@@ -1221,7 +1266,7 @@ const Menu = ({
                   onDateChange={(_, v) => {
                     alert(`You picked '${v!.value}'.`);
                   }}
-                  today={new Date(2020, 7, 30, 0, 0, 0, 0)}
+                  today={new Date()}
                   buttonOnly
                   popup={{
                     trigger: (
