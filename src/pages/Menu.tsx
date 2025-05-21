@@ -178,17 +178,26 @@ const Menu = ({
   const [centralText, setCentralText] = useState("No Task Selected");
   const [num, setNum] = useState("");
   const [categoryTasksNumber, setCategoryTasksNumber] = useState<boolean>();
+  const [tagsTaskNumber, setTagTaskNumber] = useState<boolean>();
   //This is the method that update the middle component depend of the text and the status you want to show
   const handleTaskClick = (text: string, numberStatus: number) => {
     setCategoryTasksNumber(false);
+    setTagTaskNumber(false);
     setNum(numberStatus.toString());
     setCentralText(text);
     setFilterTask(numberStatus);
   };
   const handleCategoryClick = (category: Category) => {
+    setTagTaskNumber(false);
     setCentralText(category.title);
     setSelectedCategory(category);
     setCategoryTasksNumber(true);
+  };
+  const handleTagClick = (tag: Tag) => {
+    setCategoryTasksNumber(false);
+    setCentralText(tag.title);
+    setSelectedTag(tag);
+    setTagTaskNumber(true);
   };
 
   return (
@@ -203,7 +212,11 @@ const Menu = ({
           >
             <span style={{ fontSize: "28px", fontWeight: "bold" }}>
               {/*THis filter  how many tasks are depending of the status of the task you have clicked before */}
-              {categoryTasksNumber === true
+              {tagsTaskNumber === true
+                ? Tasks.filter((task) =>
+                    task.tags.some((tagg) => tagg.id == selectedTag!.id)
+                  ).length.toString()
+                : categoryTasksNumber === true
                 ? Tasks.filter((sta) =>
                     sta.categories.some(
                       (cat) => cat.id === selectedCategory!.id
@@ -216,7 +229,24 @@ const Menu = ({
           </div>
         </Flex>
         <div>
-          {categoryTasksNumber
+          {tagsTaskNumber === true
+            ? mappedTask
+                .filter((sta) =>
+                  sta.tags.some((tags) => tags.id === selectedTag!.id)
+                )
+                .map((task) => (
+                  <div className="task-container" key={task.id}>
+                    <div className="task-inside-container">
+                      <Flex>
+                        <div className="task-text">
+                          <p className="task-title">{task.title}</p>
+                          <p className="task-subtitle">{task.description}</p>
+                        </div>
+                      </Flex>
+                    </div>
+                  </div>
+                ))
+            : categoryTasksNumber
             ? mappedTask
                 .filter((task) =>
                   task.categories?.some(
@@ -920,7 +950,7 @@ const Menu = ({
             tempCategories.map((category) => {
               return (
                 <div
-                  style={{ display: "flex",position:"relative"}}
+                  style={{ display: "flex", position: "relative" }}
                   onClick={() => {}}
                 >
                   <Flex>
@@ -931,7 +961,7 @@ const Menu = ({
                     >
                       {category.title}
                     </p>
-                    
+
                     <Dialog
                       cancelButton="Cancel"
                       confirmButton="Update"
@@ -1063,63 +1093,12 @@ const Menu = ({
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Flex>
                   <p
-                    style={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      maxWidth: "50px",
-                      minWidth: "50px",
-                      cursor: "default",
-                    }}
+                    className="category-title"
                     key={tag.id}
+                    onClick={() => handleTagClick(tag)}
                   >
                     {tag.title}
                   </p>
-                  <Dialog
-                    style={{ overflow: "visible" }}
-                    confirmButton="Ok"
-                    header="View  Category"
-                    trigger={
-                      <FaEye
-                        onClick={() => {}}
-                        size={20}
-                        style={{ marginTop: "10px", marginLeft: "80px" }}
-                        className="icons"
-                      />
-                    }
-                    content={
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "10px",
-                        }}
-                      >
-                        <Flex gap="gap.small">
-                          <label htmlFor="inputField">Título:</label>
-                          <Input
-                            id="TaskTitle"
-                            value={tag.title}
-                            disabled={true}
-                          />
-                        </Flex>
-                        <Flex gap="gap.small">
-                          <label htmlFor="inputField">Tasks:</label>
-                          <Dropdown
-                            multiple
-                            placeholder="Click to see the Tasks related"
-                            id="TaskTag"
-                            items={mappedTask.filter((sta) =>
-                              sta.tags.some((tags) => tags.id === tag.id)
-                            )}
-                            noResultsMessage="We couldn't find any tasks related."
-                            position="below"
-                          />
-                        </Flex>
-                      </div>
-                    }
-                    onConfirm={() => {}}
-                  />
                   <Dialog
                     cancelButton="Cancel"
                     confirmButton="Update"
@@ -1128,7 +1107,7 @@ const Menu = ({
                       <MdModeEdit
                         onClick={() => setSelectedTag(tag)}
                         size={20}
-                        style={{ marginTop: "10px", marginLeft: "10px" }}
+                        style={{ marginTop: "10px", marginLeft: "110px" }}
                         className="icons"
                       />
                     }
