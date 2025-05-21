@@ -64,12 +64,12 @@ const Menu = ({
   const [inputCategoryValue, setInputCategoryValue] = useState("");
   const [inputTagValue, setInputTagValue] = useState("");
 
-  //This are the hooks that we want to update when the value od the category title or tags title because it is a an updatable field
+  //This are the hooks that we want to update when the value of the category title or tags title because it is a an updatable field
   const [inputCategoryUpdateValue, setinputCategoryUpdateValue] =
     useState<string>();
   const [inputTagUpdateValue, setinputTagUpdateValue] = useState<string>();
 
-  //This are the hooks that told us what is the selected  outside the return so we can  make the use Efect
+  //This are the hooks that told us what is the selected  outside the return so we can  make the use Effect
   const [selectedCategory, setSelectedCategory] = useState<Category>();
   const [selectedTag, setSelectedTag] = useState<Tag>();
   const [selectedTask, setSelectedTask] = useState<Task>();
@@ -110,7 +110,7 @@ const Menu = ({
     setUpdateTag(selectedTask?.tags || []);
   }, [selectedTask]);
 
-  ////This are the fields of the create Task
+  //This are the fields of the create Task
   //This are the hooks that  control the  add description and add title input of the tasks
   const [inputTaskTitleValue, setInputTitleTaskValue] = useState("");
   const [inputTaskDescriptionValue, setInputTaskDescriptionValue] =
@@ -129,8 +129,7 @@ const Menu = ({
   //The state from the filter that help us when we want to list  every status Task
   const [filterTask, setFilterTask] = useState<number>();
 
-  //This are the values that collect the value  when we click in a option or various options of the update Task
-  //Son la svariables que  cogeran el valor de cuando clickemos una opcion o varias depende del dropdown cuando queremos
+  //This are the values that collect the value  when we click in a option or different options of the update Task
   const [statusValue, setstatusValue] = useState<string>("");
   let statusAdd: Status;
   const [subTasks, setsubTasks] = useState<Task[]>([]);
@@ -158,7 +157,7 @@ const Menu = ({
     setinputTagUpdateValue(selectedTag?.title);
   }, [selectedTag]);
 
-  //This are the list mapped   taht we had recieved from the temporal lists , so we map beacuse it is neccessary to add a header field so we can name the dropdown
+  //This are the list mapped that we had recieved from the temporal lists , so we map beacuse it is neccessary to add a header field so we can name the dropdown
   //This is  the field that will be shown in the dropdown   every item of the dropdown
   const mappedTask = Tasks.map((task) => ({
     ...task,
@@ -179,7 +178,8 @@ const Menu = ({
   const [num, setNum] = useState("");
   const [categoryTasksNumber, setCategoryTasksNumber] = useState<boolean>();
   const [tagsTaskNumber, setTagTaskNumber] = useState<boolean>();
-  //This is the method that update the middle component depend of the text and the status you want to show
+
+  //This is the method that update the middle component depend of the text and the status you want to show the tasks
   const handleTaskClick = (text: string, numberStatus: number) => {
     setCategoryTasksNumber(false);
     setTagTaskNumber(false);
@@ -207,7 +207,7 @@ const Menu = ({
           <h1 style={{ fontSize: "40px" }}>{centralText}</h1>
           <div style={{ width: "70px" }}></div>
           <div
-            className="CajaContador"
+            className="BoxNumberCount"
             style={{ width: "50px", height: "50px" }}
           >
             <span style={{ fontSize: "28px", fontWeight: "bold" }}>
@@ -310,7 +310,7 @@ const Menu = ({
                                 }}
                               >
                                 <Flex gap="gap.small">
-                                  <label htmlFor="inputField">Título:</label>
+                                  <label htmlFor="inputField">Title:</label>
                                   <Input
                                     id="TaskTitle"
                                     value={task.title}
@@ -319,7 +319,7 @@ const Menu = ({
                                 </Flex>
                                 <Flex gap="gap.small">
                                   <label htmlFor="inputField">
-                                    Descripcion:
+                                    Description:
                                   </label>
                                   <Input
                                     id="TaskDescription"
@@ -426,7 +426,7 @@ const Menu = ({
                                 }}
                               >
                                 <Flex gap="gap.small">
-                                  <label htmlFor="UpdateField">Título:</label>
+                                  <label htmlFor="UpdateField">Title:</label>
                                   <Input
                                     id="UpdateFieldTitle"
                                     value={inputTaskTitleUpdateValue}
@@ -435,12 +435,12 @@ const Menu = ({
                                         data?.value ?? ""
                                       );
                                     }}
-                                    placeholder="Actualiza  el titulo de la tarea"
+                                    placeholder="Update the task title"
                                   />
                                 </Flex>
                                 <Flex gap="gap.small">
                                   <label htmlFor="inputField">
-                                    Descripcion:
+                                    Description:
                                   </label>
                                   <Input
                                     id="updateField"
@@ -450,7 +450,7 @@ const Menu = ({
                                         data?.value ?? ""
                                       );
                                     }}
-                                    placeholder="Actualiza  la descripcion de la tarea"
+                                    placeholder="Update the description title"
                                   />
                                 </Flex>
                                 <Flex gap="gap.small">
@@ -650,7 +650,7 @@ const Menu = ({
           TASKS
         </h2>
         <div
-          className="Tareas mb"
+          className="Tasks mb"
           onClick={() => handleTaskClick("Non Started", Status.NonStarted)}
         >
           <Flex>
@@ -664,7 +664,7 @@ const Menu = ({
               Non Started
             </p>
             <div style={{ width: "105px" }}></div>
-            <div className="CajaContador">
+            <div className="BoxNumberCount">
               <p>
                 {Tasks.filter((st) => st.status == Status.NonStarted)
                   .map((sta) => sta.status)
@@ -674,7 +674,7 @@ const Menu = ({
           </Flex>
         </div>
         <div
-          className="Tareas mb"
+          className="Tasks mb"
           onClick={() => handleTaskClick("In progress", Status.InProgress)}
         >
           <Flex>
@@ -688,7 +688,7 @@ const Menu = ({
               In progress
             </p>
             <div style={{ width: "110px" }}></div>
-            <div className="CajaContador">
+            <div className="BoxNumberCount">
               <p>
                 {Tasks.filter((st) => st.status == Status.InProgress)
                   .map((sta) => sta.status)
@@ -698,7 +698,7 @@ const Menu = ({
           </Flex>
         </div>
         <div
-          className="Tareas mb"
+          className="Tasks mb"
           onClick={() => handleTaskClick("Paused", Status.Paused)}
         >
           <Flex>
@@ -712,7 +712,7 @@ const Menu = ({
               Paused
             </p>
             <div style={{ width: "134px" }}></div>
-            <div className="CajaContador">
+            <div className="BoxNumberCount">
               <p>
                 {Tasks.filter((st) => st.status == Status.Paused)
                   .map((sta) => sta.status)
@@ -722,7 +722,7 @@ const Menu = ({
           </Flex>
         </div>
         <div
-          className="Tareas mb"
+          className="Tasks mb"
           onClick={() => handleTaskClick("Late", Status.Late)}
         >
           <Flex>
@@ -736,7 +736,7 @@ const Menu = ({
               Late{" "}
             </p>
             <div style={{ width: "153px" }}></div>
-            <div className="CajaContador">
+            <div className="BoxNumberCount">
               <p>
                 {Tasks.filter((st) => st.status == Status.Late)
                   .map((sta) => sta.status)
@@ -747,7 +747,7 @@ const Menu = ({
           </Flex>
         </div>
         <div
-          className="Tareas mb"
+          className="Tasks mb"
           onClick={() => handleTaskClick("Finished", Status.Finished)}
         >
           <Flex>
@@ -761,7 +761,7 @@ const Menu = ({
               Finished
             </p>
             <div style={{ width: "127px" }}></div>
-            <div className="CajaContador">
+            <div className="BoxNumberCount">
               <p>
                 {Tasks.filter((st) => st.status == Status.Finished)
                   .map((sta) => sta.status)
@@ -789,25 +789,25 @@ const Menu = ({
               }}
             >
               <Flex gap="gap.small">
-                <label htmlFor="inputField">Título:</label>
+                <label htmlFor="inputField">Title:</label>
                 <Input
                   id="inputField"
                   value={inputTaskTitleValue}
                   onChange={({}, data) =>
                     setInputTitleTaskValue(data?.value ?? "")
                   }
-                  placeholder="Escribe el titulo de la tarea"
+                  placeholder="Write the task title"
                 />
               </Flex>
               <Flex gap="gap.small">
-                <label htmlFor="inputField">Descripcion:</label>
+                <label htmlFor="inputField">Description:</label>
                 <Input
                   id="inputField"
                   value={inputTaskDescriptionValue}
                   onChange={({}, data) =>
                     setInputTaskDescriptionValue(data?.value ?? "")
                   }
-                  placeholder="Escribe la descripcion de la tarea"
+                  placeholder="Write the task description"
                 />
               </Flex>
               <div>
@@ -885,7 +885,7 @@ const Menu = ({
           }
           onConfirm={() => {
             if (!inputTaskTitleValue || inputTaskTitleValue.trim() === "") {
-              toast.warning("La tarea no puede tener un titulo  vacio.");
+              toast.warning("The task can not have a empty title.");
               return;
             }
             const idTemp = uuidv4();
@@ -946,7 +946,6 @@ const Menu = ({
         </h2>
         <div>
           {
-            //El .slice lo que crea es una copia del array desde la posicion 0 hasta la posicion de la variable del hook que declaramos anteriormente
             tempCategories.map((category) => {
               return (
                 <div
@@ -976,14 +975,14 @@ const Menu = ({
                       }
                       content={
                         <div>
-                          <label htmlFor="UpdateField">Título:</label>
+                          <label htmlFor="UpdateField">Title:</label>
                           <Input
                             id="UpdateField"
                             value={inputCategoryUpdateValue}
                             onChange={({}, data) =>
                               setinputCategoryUpdateValue(data?.value ?? "")
                             }
-                            placeholder="Actualiza  el titulo de la categoria"
+                            placeholder="Update the category title "
                           />
                         </div>
                       }
@@ -1027,7 +1026,7 @@ const Menu = ({
                       className="icons"
                     />
                     <div
-                      className="CajaContador"
+                      className="BoxNumberCount"
                       style={{ marginLeft: "10px" }}
                     >
                       <span style={{ fontSize: "18px", fontWeight: "bold" }}>
@@ -1054,20 +1053,20 @@ const Menu = ({
           }
           content={
             <div>
-              <label htmlFor="inputField">Título:</label>
+              <label htmlFor="inputField">Title:</label>
               <Input
                 id="inputField"
                 value={inputCategoryValue}
                 onChange={({}, data) =>
                   setInputCategoryValue(data?.value ?? "")
                 }
-                placeholder="Escribe el titulo de la categoria"
+                placeholder="Write the category title"
               />
             </div>
           }
           onConfirm={() => {
             if (!inputCategoryValue || inputCategoryValue.trim() === "") {
-              toast.warning("La categoría no puede tener un titulo  vacio.");
+              toast.warning("The category can not have a empty title")
               return;
             }
             const idTemp = uuidv4();
@@ -1120,7 +1119,7 @@ const Menu = ({
                           onChange={({}, data) =>
                             setinputTagUpdateValue(data?.value ?? "")
                           }
-                          placeholder="Actualiza  el titulo del tag"
+                          placeholder="Update the tag title"
                         />
                       </div>
                     }
@@ -1157,7 +1156,7 @@ const Menu = ({
                     className="icons"
                   />
                 </Flex>
-                <div className="CajaContador" style={{ marginLeft: "10px" }}>
+                <div className="BoxNumberCount" style={{ marginLeft: "10px" }}>
                   <span style={{ fontSize: "18px", fontWeight: "bold" }}>
                     {Tasks.filter((task) =>
                       task.tags.some((tagg) => tagg.id == tag.id)
@@ -1182,7 +1181,7 @@ const Menu = ({
                 id="inputField"
                 value={inputTagValue}
                 onChange={({}, data) => setInputTagValue(data?.value ?? "")}
-                placeholder="Escribe  el titulo del tag"
+                placeholder="Write the tag title"
               />
             </div>
           }
@@ -1191,7 +1190,6 @@ const Menu = ({
               toast.warning("The tag can not have a empty title");
               return;
             }
-            //Cambiar para que se actualize el contexto esto es de forma temporal
             const idTemp = uuidv4();
             tagAdd(idTemp, inputTagValue, user?.id!!);
             const newTag = {
@@ -1200,7 +1198,7 @@ const Menu = ({
               idUser: user?.id!!,
             };
             setInputTagValue("");
-            //Actualizamos el array  es decir añadiendole al final de este el nuevo Tag que hemos creado
+            //We update the array by adding the new tag we have created at the end of the array.
             setTempTags([...tempTags, newTag]);
           }}
           onCancel={() => setInputTagValue("")}
@@ -1210,7 +1208,7 @@ const Menu = ({
             confirmButton="Ok"
             header="Calendar"
             trigger={
-              <div className="Tareas mb">
+              <div className="Tasks mb">
                 <Flex>
                   <FaRegCalendarAlt size={20} />
                   <p>Calendar </p>
@@ -1234,7 +1232,7 @@ const Menu = ({
               </div>
             }
           />
-          <div className="Tareas" onClick={logout}>
+          <div className="Tasks" onClick={logout}>
             <Flex>
               <FaSignOutAlt size={20} />
               <p>Sign Out</p>

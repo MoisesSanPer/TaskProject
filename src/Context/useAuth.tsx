@@ -56,7 +56,7 @@ export const UserProvider = ({children}: Props) => {
     return true;
   };
 
-  //This  is execute when we  create the component
+  //This  is executed when we  create the component
   //Validate the token
   useEffect(() => {
     const token = localStorage.getItem("token");

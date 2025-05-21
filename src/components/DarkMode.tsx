@@ -3,7 +3,7 @@ import { userConfigurationAdd } from "../Context/UserConfiguration";
 import { UserProfile } from "../models/User";
 import { useAuth } from "../Context/useAuth";
 
-//Type yjay jave the event that changed the theme and the user to save his id inside our cache
+//Type  have the event that changed the theme and the user to save his id inside our cache
 type DarkModeProps = {
   toggleTheme: (selectedTheme: string) => void;
   user: UserProfile;

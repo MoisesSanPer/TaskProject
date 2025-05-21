@@ -18,8 +18,8 @@ const Root = () => {
     teamsTheme
   );
 
-  //Method that will be passed to all componnets  and will activate in the moon icon when we click
-  //It assign if the tgem is the light it will change to  dark assign to the variable of the hook and update the local storage and will update the theme
+  //Method that will be passed to all components  and will activate in the moon icon when we click
+  //It assign if the theme is the light it will change to  dark assign to the variable of the hook and update the local storage and will update the theme
 
     const toggleTheme = async (selectedThem: string) => {
       try {
