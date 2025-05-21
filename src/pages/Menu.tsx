@@ -1188,7 +1188,7 @@ const Menu = ({
           }
           onConfirm={() => {
             if (!inputTagValue || inputTagValue.trim() === "") {
-              toast.warning("La tag no puede tener un titulo vacio.");
+              toast.warning("The tag can not have a empty title");
               return;
             }
             //Cambiar para que se actualize el contexto esto es de forma temporal
