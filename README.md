@@ -1,11 +1,31 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# React + TypeScript + Vite + C# Backend + Azurite + Cosmos DB
 
-Currently, two official plugins are available:
+Este proyecto combina un frontend moderno construido con **React**, **TypeScript** y **Vite**, junto con un backend robusto desarrollado en **C# (.NET)**. Para la gestión de datos, se utilizan **Azurite** como emulador local de Azure Storage y **Cosmos DB** como base de datos NoSQL en la nube.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧩 Tecnologías utilizadas
+
+### Frontend
+
+- **React**: Biblioteca para construir interfaces de usuario.
+- **TypeScript**: Superset de JavaScript que añade tipado estático.
+- **Vite**: Herramienta de desarrollo rápida y moderna.
+- **ESLint**: Linter para mantener un código limpio y consistente.
+
+Actualmente, se utilizan dos plugins oficiales para React:
+
+- [`@vitejs/plugin-react`](https://github.com/vitejs/vite-plugin-react): Usa Babel para Fast Refresh.
+- [`@vitejs/plugin-react-swc`](https://github.com/vitejs/vite-plugin-react-swc): Usa SWC para Fast Refresh.
+
+### Backend
+
+- **C# (.NET)**: Lenguaje y framework para construir APIs RESTful robustas y escalables.
+- **ASP.NET Core Web API**: Framework para construir servicios HTTP.
+
+### Base de Datos
+
+- **Azurite**: Emulador local de Azure Storage, ideal para desarrollo y pruebas sin conexión a la nube.
+- **Azure Cosmos DB**: Base de datos NoSQL distribuida globalmente, ideal para aplicaciones modernas con alta disponibilidad y baja latencia.
 
 ## Expanding the ESLint configuration
 
