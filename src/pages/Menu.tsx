@@ -7,6 +7,7 @@ import {
   Input,
   Dropdown,
   Datepicker,
+  CloseIcon,
 } from "@fluentui/react-northstar";
 import {
   FaRegCalendarAlt,
@@ -37,7 +38,6 @@ import { Status } from "../models/Status";
 import { Task } from "../models/Task";
 import { FaEye } from "react-icons/fa";
 import DarkMode from "../components/DarkMode";
-
 const Menu = ({
   toggleTheme,
 }: {
@@ -125,6 +125,8 @@ const Menu = ({
     "Late",
     "Finished",
   ]);
+
+  const [open, setOpen] = useState(false);
 
   //The state from the filter that help us when we want to list  every status Task
   const [filterTask, setFilterTask] = useState<number>();
@@ -1007,18 +1009,19 @@ const Menu = ({
                     }}
                     onCancel={() => setinputCategoryUpdateValue(category.title)}
                   />
+                  {/* Dialog that we manually control if it is opne or not to have a  header button to close normally it */}
                   <Dialog
-                    cancelButton="Delete Category and Task"
-                    confirmButton="Delete only Category"
+                  //It will now if the dialog must be open or not depends on the variable of the hook
+                    open={open}
+                    //I prefer not having backgorund and you can see the app normally
+                    backdrop={false}
                     header="Delete Category (Click outside to leave)"
-                    trigger={
-                      <RiDeleteBin5Line
-                        onClick={() => setSelectedCategory(category)}
-                        size={20}
-                        style={{ marginTop: "10px", marginLeft: "10px" }}
-                        className="icons"
-                      />
-                    }
+                    //Close Icon were we update  the state that control if it is open and we close it 
+                    headerAction={{
+                      icon: <CloseIcon />,
+                      title: "Close",
+                      onClick: () => setOpen(false),
+                    }}
                     content={
                       <div>
                         <label
@@ -1026,44 +1029,83 @@ const Menu = ({
                           htmlFor="UpdateField"
                         >
                           Do you want to delete the {category.title}?
-                          <br />
                         </label>
                       </div>
                     }
-                    onConfirm={() => {
-                      categoryDelete(category.id, true).then((result) => {
-                        if (result) {
-                          setTempCategories((cat) =>
-                            cat.filter((c) => c.id !== category.id)
-                          );
-                          updateListTask(
-                            Tasks.map((task) => ({
-                              ...task,
-                              categories: task.categories?.filter(
-                                (c) => c.id !== category.id
-                              ),
-                            }))
-                          );
-                        }
-                      });
+                    //We create a footer in which we can have 2 buttons that do the diferents delete options
+                    // In the final of the action of the button we close it 
+                    footer={{
+                      children: () => (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            flexWrap: "wrap",
+                            gap: "0.5rem",
+                            marginTop: "1rem",
+                          }}
+                        >
+                          <Button
+                            content="Delete only Category"
+                            primary
+                            onClick={() => {
+                              categoryDelete(category.id, true).then(
+                                (result) => {
+                                  if (result) {
+                                    setTempCategories((cat) =>
+                                      cat.filter((c) => c.id !== category.id)
+                                    );
+                                    updateListTask(
+                                      Tasks.map((task) => ({
+                                        ...task,
+                                        categories: task.categories?.filter(
+                                          (c) => c.id !== category.id
+                                        ),
+                                      }))
+                                    );
+                                    setOpen(false);
+                                  }
+                                }
+                              );
+                            }}
+                          />
+                          <Button
+                            content="Delete Category and Task"
+                            secondary
+                            onClick={() => {
+                              categoryDelete(category.id, false).then(
+                                (result) => {
+                                  if (result) {
+                                    setTempCategories((cat) =>
+                                      cat.filter((c) => c.id !== category.id)
+                                    );
+                                    updateListTask(
+                                      Tasks.filter(
+                                        (task) =>
+                                          !task.categories?.some(
+                                            (c) => c.id === category.id
+                                          )
+                                      )
+                                    );
+                                    setOpen(false);
+                                  }
+                                }
+                              );
+                            }}
+                          />
+                        </div>
+                      ),
                     }}
-                    onCancel={() => {
-                      categoryDelete(category.id, false).then((result) => {
-                        if (result) {
-                          setTempCategories((cat) =>
-                            cat.filter((c) => c.id !== category.id)
-                          );
-                          updateListTask(
-                            Tasks.filter(
-                              (task) =>
-                                !task.categories?.some(
-                                  (c) => c.id === category.id
-                                )
-                            )
-                          );
-                        }
-                      });
+                  />
+                  {/* We set the state to open the dialog and selected the category that will depennd which you click*/ }
+                  <RiDeleteBin5Line
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      setOpen(true);
                     }}
+                    size={20}
+                    style={{ marginTop: "10px", marginLeft: "10px" }}
+                    className="icons"
                   />
                   <div
                     className="BoxNumberCount"
