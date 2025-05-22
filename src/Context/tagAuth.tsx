@@ -16,11 +16,16 @@ export const tagAdd = async (id: string, title: string, idUser: string) => {
     .catch(() => toast.warning("Server error occurred"));
 };
 
-export const tagDelete = async (id: string): Promise<boolean> => {
+export const tagDelete = async (id: string,isAll:boolean): Promise<boolean> => {
   try {
-    const res = await DeleteTagsAPI(id);
-    if (res?.status == 200) {
+    const res = await DeleteTagsAPI(id,isAll);
+  if (res?.status == 200 && isAll == true) {
       toast.success("Tag Delete Success!");
+      return true;
+    }
+    else if (res?.status == 200) {
+      toast.success("Tag Delete Success!");
+      toast.success("Task Delete Success!");
       return true;
     } else {
       toast.warning("Failed to delete tag. Please try again.");

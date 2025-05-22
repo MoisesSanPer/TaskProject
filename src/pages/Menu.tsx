@@ -126,7 +126,8 @@ const Menu = ({
     "Finished",
   ]);
 
-  const [open, setOpen] = useState(false);
+  const [CategoryDeleteDialogOpen, setCategoryDeleteDialogOpen] = useState(false);
+  const [TagDeleteDialogOpen, setTagDeleteDialogOpen] = useState(false);
 
   //The state from the filter that help us when we want to list  every status Task
   const [filterTask, setFilterTask] = useState<number>();
@@ -1012,7 +1013,7 @@ const Menu = ({
                   {/* Dialog that we manually control if it is opne or not to have a  header button to close normally it */}
                   <Dialog
                   //It will now if the dialog must be open or not depends on the variable of the hook
-                    open={open}
+                    open={CategoryDeleteDialogOpen}
                     //I prefer not having backgorund and you can see the app normally
                     backdrop={false}
                     header="Delete Category (Click outside to leave)"
@@ -1020,7 +1021,7 @@ const Menu = ({
                     headerAction={{
                       icon: <CloseIcon />,
                       title: "Close",
-                      onClick: () => setOpen(false),
+                      onClick: () => setCategoryDeleteDialogOpen(false),
                     }}
                     content={
                       <div>
@@ -1063,7 +1064,7 @@ const Menu = ({
                                         ),
                                       }))
                                     );
-                                    setOpen(false);
+                                    setCategoryDeleteDialogOpen(false);
                                   }
                                 }
                               );
@@ -1087,7 +1088,7 @@ const Menu = ({
                                           )
                                       )
                                     );
-                                    setOpen(false);
+                                    setCategoryDeleteDialogOpen(false);
                                   }
                                 }
                               );
@@ -1097,11 +1098,12 @@ const Menu = ({
                       ),
                     }}
                   />
-                  {/* We set the state to open the dialog and selected the category that will depennd which you click*/ }
+                  {/* We set the state to open the dialog to true so this makes the dialog execute
+                   and selected the category that will depend in  which you click*/ }
                   <RiDeleteBin5Line
                     onClick={() => {
                       setSelectedCategory(category);
-                      setOpen(true);
+                      setCategoryDeleteDialogOpen(true);
                     }}
                     size={20}
                     style={{ marginTop: "10px", marginLeft: "10px" }}
@@ -1222,26 +1224,105 @@ const Menu = ({
                     }}
                     onCancel={() => setinputTagUpdateValue(tag.title)}
                   />
+                   <Dialog
+                  //It will now if the dialog must be open or not depends on the variable of the hook
+                    open={TagDeleteDialogOpen}
+                    //I prefer not having backgorund and you can see the app normally
+                    backdrop={false}
+                    header="Delete Tag (Click outside to leave)"
+                    //Close Icon were we update  the state that control if it is open and we close it 
+                    headerAction={{
+                      icon: <CloseIcon />,
+                      title: "Close",
+                      onClick: () => setTagDeleteDialogOpen(false),
+                    }}
+                    content={
+                      <div>
+                        <label
+                          style={{ fontSize: "22px" }}
+                          htmlFor="UpdateField"
+                        >
+                          Do you want to delete the {tag.title}?
+                        </label>
+                      </div>
+                    }
+                    //We create a footer in which we can have 2 buttons that do the diferents delete options
+                    // In the final of the action of the button we close it 
+                    footer={{
+                      children: () => (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            flexWrap: "wrap",
+                            gap: "0.5rem",
+                            marginTop: "1rem",
+                          }}
+                        >
+                          <Button
+                            content="Delete only tag"
+                            primary
+                            onClick={() => {
+                              tagDelete(tag.id, true).then(
+                                (result) => {
+                                  if (result) {
+                                    setTempTags((tagg) =>
+                                      tagg.filter((t) => t.id !== tag.id)
+                                    );
+                                    updateListTask(
+                                      Tasks.map((task) => ({
+                                        ...task,
+                                        tags: task.tags?.filter(
+                                          (t) => t.id !== tag.id
+                                        ),
+                                      }))
+                                    );
+                                    setTagDeleteDialogOpen(false);
+                                  }
+                                }
+                              );
+                            }}
+                          />
+                          <Button
+                            content="Delete tag and Task"
+                            secondary
+                            onClick={() => {
+                              tagDelete(tag.id, false).then(
+                                (result) => {
+                                  if (result) {
+                                    setTempTags((tagg) =>
+                                      tagg.filter((T) => T.id !== tag.id)
+                                    );
+                                    updateListTask(
+                                      Tasks.filter(
+                                        (task) =>
+                                          !task.tags?.some(
+                                            (t) => t.id === tag.id
+                                          )
+                                      )
+                                    );
+                                    setTagDeleteDialogOpen(false);
+                                  }
+                                }
+                              );
+                            }}
+                          />
+                        </div>
+                      ),
+                    }}
+                  />
+                   {/* We set the state to open the dialog to true so this makes the dialog execute
+                   and selected the tag that will depend in  which you click*/ }
                   <RiDeleteBin5Line
                     onClick={() => {
-                      tagDelete(tag.id).then((res) => {
-                        if (res) {
-                          setTempTags((ta) =>
-                            ta.filter((t) => t.id !== tag.id)
-                          );
-                          updateListTask(
-                            Tasks.map((task) => ({
-                              ...task,
-                              tags: task.tags?.filter((c) => c.id !== tag.id),
-                            }))
-                          );
-                        }
-                      });
+                      setSelectedTag(tag);
+                      setTagDeleteDialogOpen(true);
                     }}
                     size={20}
                     style={{ marginTop: "10px", marginLeft: "10px" }}
                     className="icons"
                   />
+
                 </Flex>
                 <div className="BoxNumberCount" style={{ marginLeft: "10px" }}>
                   <span style={{ fontSize: "18px", fontWeight: "bold" }}>

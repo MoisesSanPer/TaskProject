@@ -27,10 +27,10 @@ export const GetTagsAPI = async (idUser: string) => {
     handleError(error);
   }
 };
-export const DeleteTagsAPI = async (id: string) => {
+export const DeleteTagsAPI = async (id: string,isAll:boolean) => {
   try {
     const response = await axios.delete<HttpStatusCode>(
-      api + "/DeleteTag?id=" + id
+      api + "/DeleteTag?id=" + id +"&isAll"+isAll
     );
     return response;
   } catch (error) {
