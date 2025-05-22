@@ -126,7 +126,8 @@ const Menu = ({
     "Finished",
   ]);
 
-  const [CategoryDeleteDialogOpen, setCategoryDeleteDialogOpen] = useState(false);
+  const [CategoryDeleteDialogOpen, setCategoryDeleteDialogOpen] =
+    useState(false);
   const [TagDeleteDialogOpen, setTagDeleteDialogOpen] = useState(false);
 
   //The state from the filter that help us when we want to list  every status Task
@@ -202,7 +203,6 @@ const Menu = ({
     setSelectedTag(tag);
     setTagTaskNumber(true);
   };
-
   return (
     <div>
       <div className="middle-section">
@@ -273,13 +273,6 @@ const Menu = ({
                   /*We make this boolean to control the  disable option of the the view task because when we do not 
               have any item the dropdown  broke the app if we do not disabled  */
                 }
-                const listTag: boolean =
-                  task.tags == null || task.tags?.length <= 0;
-                const listCategory: boolean =
-                  task.categories == null || task.categories.length <= 0;
-                const listSubTask: boolean =
-                  task.subTasks == null || task.subTasks.length <= 0;
-
                 return (
                   <div className="task-container">
                     <div className="task-inside-container">
@@ -301,7 +294,7 @@ const Menu = ({
                                   marginTop: "10px",
                                   marginLeft: "80px",
                                 }}
-                                className="icons"
+                                className="viewIcon"
                               />
                             }
                             content={
@@ -317,7 +310,8 @@ const Menu = ({
                                   <Input
                                     id="TaskTitle"
                                     value={task.title}
-                                    disabled={true}
+                                    readOnly={true}
+                                    styles={{ cursor: "crosshair" }}
                                   />
                                 </Flex>
                                 <Flex gap="gap.small">
@@ -327,7 +321,7 @@ const Menu = ({
                                   <Input
                                     id="TaskDescription"
                                     value={task.description}
-                                    disabled={true}
+                                    readOnly={true}
                                   />
                                 </Flex>
                                 <Flex gap="gap.small">
@@ -335,7 +329,8 @@ const Menu = ({
                                   <Input
                                     id="TaskEndDate"
                                     value={task.endDate}
-                                    disabled={true}
+                                    readOnly={true}
+                                    inverted
                                   />
                                 </Flex>
                                 <Flex gap="gap.small">
@@ -343,64 +338,56 @@ const Menu = ({
                                   <Input
                                     id="TaskStatus"
                                     value={status[task.status]}
-                                    disabled={true}
+                                    readOnly={true}
                                   />
                                 </Flex>
                                 <Flex gap="gap.small">
                                   <label htmlFor="inputField">Category:</label>
-                                  <Dropdown
-                                    multiple
-                                    placeholder="Click to see the category related"
-                                    id="TaskCategory"
-                                    items={
-                                      listCategory
-                                        ? []
-                                        : task.categories.map(
-                                            (cat) => cat.title
-                                          )
-                                    }
-                                    value={updateCategory.map((cat) => ({
-                                      ...cat,
-                                      header: cat.title,
-                                    }))}
-                                    disabled={listCategory}
-                                    noResultsMessage="We couldn't find any matches."
-                                    position="below"
-                                  />
+                                  <span
+                                    style={{
+                                      fontStyle: "italic",
+                                      color: "#555",
+                                      fontSize: "16px",
+                                    }}
+                                  >
+                                    {task.categories.length > 0
+                                      ? task.categories
+                                          .map((cat) => cat.title)
+                                          .join(", ")
+                                      : "No hay categorias en esta Tarea"}
+                                  </span>
                                 </Flex>
                                 <Flex gap="gap.small">
                                   <label htmlFor="inputField">Tags:</label>
-                                  <Dropdown
-                                    multiple
-                                    placeholder="Click to see the Tag related"
-                                    id="TaskTag"
-                                    items={
-                                      listTag
-                                        ? []
-                                        : task.tags?.map((tag) => tag.title)
-                                    }
-                                    disabled={listTag}
-                                    noResultsMessage="We couldn't find any matches."
-                                    position="below"
-                                  />
+                                  <span
+                                    style={{
+                                      fontStyle: "italic",
+                                      color: "#555",
+                                      fontSize: "16px",
+                                    }}
+                                  >
+                                    {task.tags.length > 0
+                                      ? task.tags
+                                          .map((tag) => tag.title)
+                                          .join(", ")
+                                      : "No hay tags en esta Tarea"}
+                                  </span>
                                 </Flex>
                                 <Flex gap="gap.small">
                                   <label htmlFor="inputField">SubTasks:</label>
-                                  <Dropdown
-                                    multiple
-                                    placeholder="Click to see the subtasks related"
-                                    id="SubTasksCategory"
-                                    items={
-                                      listSubTask
-                                        ? []
-                                        : task.subTasks.map(
-                                            (task) => task.title
-                                          )
-                                    }
-                                    disabled={listSubTask}
-                                    noResultsMessage="We couldn't find any matches."
-                                    position="below"
-                                  />
+                                  <span
+                                    style={{
+                                      fontStyle: "italic",
+                                      color: "#555",
+                                      fontSize: "16px",
+                                    }}
+                                  >
+                                    {task.subTasks.length > 0
+                                      ? task.subTasks
+                                          .map((task) => task.title)
+                                          .join(", ")
+                                      : "No hay subtareas en esta Tarea"}
+                                  </span>
                                 </Flex>
                               </div>
                             }
@@ -421,7 +408,7 @@ const Menu = ({
                                   marginTop: "10px",
                                   marginLeft: "20px",
                                 }}
-                                className="icons"
+                                className="editIcon"
                               />
                             }
                             content={
@@ -634,7 +621,7 @@ const Menu = ({
                             }}
                             size={40}
                             style={{ marginTop: "10px", marginLeft: "10px" }}
-                            className="icons"
+                            className="deleteIcon"
                           />
                         </div>
                       </Flex>
@@ -670,7 +657,7 @@ const Menu = ({
             >
               Non Started
             </p>
-            <div style={{ width: "105px" }}></div>
+            <div style={{ width: "85px" }}></div>
             <div className="BoxNumberCount">
               <p>
                 {Tasks.filter((st) => st.status == Status.NonStarted)
@@ -694,7 +681,7 @@ const Menu = ({
             >
               In progress
             </p>
-            <div style={{ width: "110px" }}></div>
+            <div style={{ width: "90px" }}></div>
             <div className="BoxNumberCount">
               <p>
                 {Tasks.filter((st) => st.status == Status.InProgress)
@@ -718,7 +705,7 @@ const Menu = ({
             >
               Paused
             </p>
-            <div style={{ width: "134px" }}></div>
+            <div style={{ width: "114px" }}></div>
             <div className="BoxNumberCount">
               <p>
                 {Tasks.filter((st) => st.status == Status.Paused)
@@ -742,7 +729,7 @@ const Menu = ({
             >
               Late{" "}
             </p>
-            <div style={{ width: "153px" }}></div>
+            <div style={{ width: "133px" }}></div>
             <div className="BoxNumberCount">
               <p>
                 {Tasks.filter((st) => st.status == Status.Late)
@@ -767,14 +754,13 @@ const Menu = ({
             >
               Finished
             </p>
-            <div style={{ width: "127px" }}></div>
+            <div style={{ width: "107px" }}></div>
             <div className="BoxNumberCount">
               <p>
                 {Tasks.filter((st) => st.status == Status.Finished)
                   .map((sta) => sta.status)
                   .length.toString()}
               </p>
-              {""}
             </div>
           </Flex>
         </div>
@@ -784,7 +770,15 @@ const Menu = ({
           confirmButton="Create"
           header="Add Task"
           trigger={
-            <Button content="Add Task" styles={{ backgroundColor: "gold" }} />
+            <Button
+              content="Add Task"
+              styles={{
+                ":hover": {
+                  backgroundColor: "#6F00FF",
+                  color: "white",
+                },
+              }}
+            />
           }
           content={
             <div
@@ -975,8 +969,8 @@ const Menu = ({
                       <MdModeEdit
                         onClick={() => setSelectedCategory(category)}
                         size={20}
-                        style={{ marginTop: "10px", marginLeft: "110px" }}
-                        className="icons"
+                        style={{ marginTop: "10px", marginLeft: "90px" }}
+                        className="editIcon"
                       />
                     }
                     content={
@@ -1012,12 +1006,12 @@ const Menu = ({
                   />
                   {/* Dialog that we manually control if it is opne or not to have a  header button to close normally it */}
                   <Dialog
-                  //It will now if the dialog must be open or not depends on the variable of the hook
+                    //It will now if the dialog must be open or not depends on the variable of the hook
                     open={CategoryDeleteDialogOpen}
                     //I prefer not having backgorund and you can see the app normally
                     backdrop={false}
                     header="Delete Category (Click outside to leave)"
-                    //Close Icon were we update  the state that control if it is open and we close it 
+                    //Close Icon were we update  the state that control if it is open and we close it
                     headerAction={{
                       icon: <CloseIcon />,
                       title: "Close",
@@ -1029,12 +1023,12 @@ const Menu = ({
                           style={{ fontSize: "22px" }}
                           htmlFor="UpdateField"
                         >
-                          Do you want to delete the {category.title}?
+                          Do you want to delete the category {category.title}?
                         </label>
                       </div>
                     }
-                    //We create a footer in which we can have 2 buttons that do the diferents delete options
-                    // In the final of the action of the button we close it 
+                    //I create a footer in which we can have 2 buttons that do the diferents delete options
+                    // In the final of the action of the button we close it
                     footer={{
                       children: () => (
                         <div
@@ -1071,7 +1065,7 @@ const Menu = ({
                             }}
                           />
                           <Button
-                            content="Delete Category and Task"
+                            content="Delete Category and Tasks"
                             secondary
                             onClick={() => {
                               categoryDelete(category.id, false).then(
@@ -1098,8 +1092,8 @@ const Menu = ({
                       ),
                     }}
                   />
-                  {/* We set the state to open the dialog to true so this makes the dialog execute
-                   and selected the category that will depend in  which you click*/ }
+                  {/* I set the state to open the dialog to true so this makes the dialog execute
+                   and selected the category that will depend in  which you click*/}
                   <RiDeleteBin5Line
                     onClick={() => {
                       setSelectedCategory(category);
@@ -1107,7 +1101,7 @@ const Menu = ({
                     }}
                     size={20}
                     style={{ marginTop: "10px", marginLeft: "10px" }}
-                    className="icons"
+                    className="deleteIcon"
                   />
                   <div
                     className="BoxNumberCount"
@@ -1123,6 +1117,7 @@ const Menu = ({
               </div>
             );
           })}
+
         </div>
         <Dialog
           cancelButton="Cancel"
@@ -1131,7 +1126,12 @@ const Menu = ({
           trigger={
             <Button
               content="Add  Category"
-              styles={{ backgroundColor: "gold" }}
+              styles={{
+                ":hover": {
+                  backgroundColor: "#6F00FF",
+                  color: "white",
+                },
+              }}
             />
           }
           content={
@@ -1189,8 +1189,8 @@ const Menu = ({
                       <MdModeEdit
                         onClick={() => setSelectedTag(tag)}
                         size={20}
-                        style={{ marginTop: "10px", marginLeft: "110px" }}
-                        className="icons"
+                        style={{ marginTop: "10px", marginLeft: "90px" }}
+                        className="editIcon"
                       />
                     }
                     content={
@@ -1224,13 +1224,13 @@ const Menu = ({
                     }}
                     onCancel={() => setinputTagUpdateValue(tag.title)}
                   />
-                   <Dialog
-                  //It will now if the dialog must be open or not depends on the variable of the hook
+                  <Dialog
+                    //It will now if the dialog must be open or not depends on the variable of the hook
                     open={TagDeleteDialogOpen}
                     //I prefer not having backgorund and you can see the app normally
                     backdrop={false}
                     header="Delete Tag (Click outside to leave)"
-                    //Close Icon were we update  the state that control if it is open and we close it 
+                    //Close Icon were we update  the state that control if it is open and we close it
                     headerAction={{
                       icon: <CloseIcon />,
                       title: "Close",
@@ -1242,12 +1242,12 @@ const Menu = ({
                           style={{ fontSize: "22px" }}
                           htmlFor="UpdateField"
                         >
-                          Do you want to delete the {tag.title}?
+                          Do you want to delete the tag {tag.title}?
                         </label>
                       </div>
                     }
                     //We create a footer in which we can have 2 buttons that do the diferents delete options
-                    // In the final of the action of the button we close it 
+                    // In the final of the action of the button we close it
                     footer={{
                       children: () => (
                         <div
@@ -1263,56 +1263,50 @@ const Menu = ({
                             content="Delete only tag"
                             primary
                             onClick={() => {
-                              tagDelete(tag.id, true).then(
-                                (result) => {
-                                  if (result) {
-                                    setTempTags((tagg) =>
-                                      tagg.filter((t) => t.id !== tag.id)
-                                    );
-                                    updateListTask(
-                                      Tasks.map((task) => ({
-                                        ...task,
-                                        tags: task.tags?.filter(
-                                          (t) => t.id !== tag.id
-                                        ),
-                                      }))
-                                    );
-                                    setTagDeleteDialogOpen(false);
-                                  }
+                              tagDelete(tag.id, true).then((result) => {
+                                if (result) {
+                                  setTempTags((tagg) =>
+                                    tagg.filter((t) => t.id !== tag.id)
+                                  );
+                                  updateListTask(
+                                    Tasks.map((task) => ({
+                                      ...task,
+                                      tags: task.tags?.filter(
+                                        (t) => t.id !== tag.id
+                                      ),
+                                    }))
+                                  );
+                                  setTagDeleteDialogOpen(false);
                                 }
-                              );
+                              });
                             }}
                           />
                           <Button
-                            content="Delete tag and Task"
+                            content="Delete tag and Tasks"
                             secondary
                             onClick={() => {
-                              tagDelete(tag.id, false).then(
-                                (result) => {
-                                  if (result) {
-                                    setTempTags((tagg) =>
-                                      tagg.filter((T) => T.id !== tag.id)
-                                    );
-                                    updateListTask(
-                                      Tasks.filter(
-                                        (task) =>
-                                          !task.tags?.some(
-                                            (t) => t.id === tag.id
-                                          )
-                                      )
-                                    );
-                                    setTagDeleteDialogOpen(false);
-                                  }
+                              tagDelete(tag.id, false).then((result) => {
+                                if (result) {
+                                  setTempTags((tagg) =>
+                                    tagg.filter((T) => T.id !== tag.id)
+                                  );
+                                  updateListTask(
+                                    Tasks.filter(
+                                      (task) =>
+                                        !task.tags?.some((t) => t.id === tag.id)
+                                    )
+                                  );
+                                  setTagDeleteDialogOpen(false);
                                 }
-                              );
+                              });
                             }}
                           />
                         </div>
                       ),
                     }}
                   />
-                   {/* We set the state to open the dialog to true so this makes the dialog execute
-                   and selected the tag that will depend in  which you click*/ }
+                  {/* We set the state to open the dialog to true so this makes the dialog execute
+                   and selected the tag that will depend in  which you click*/}
                   <RiDeleteBin5Line
                     onClick={() => {
                       setSelectedTag(tag);
@@ -1320,9 +1314,8 @@ const Menu = ({
                     }}
                     size={20}
                     style={{ marginTop: "10px", marginLeft: "10px" }}
-                    className="icons"
+                    className="deleteIcon"
                   />
-
                 </Flex>
                 <div className="BoxNumberCount" style={{ marginLeft: "10px" }}>
                   <span style={{ fontSize: "18px", fontWeight: "bold" }}>
@@ -1340,7 +1333,15 @@ const Menu = ({
           confirmButton="Create"
           header="Add Tag"
           trigger={
-            <Button content="Add Tag" styles={{ backgroundColor: "gold" }} />
+            <Button
+              content="Add Tag"
+              styles={{
+                ":hover": {
+                  backgroundColor: "#6F00FF",
+                  color: "white",
+                },
+              }}
+            />
           }
           content={
             <div>
