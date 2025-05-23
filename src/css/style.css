@@ -73,31 +73,38 @@
 .Etiqueta p {
   text-align: center;
 }
-.icons:hover{
+
+.icons:hover {
   cursor: pointer;
 }
+
 .viewIcon {
   cursor: pointer;
   color: #64abe6;
 }
+
 .viewIcon:hover {
   cursor: pointer;
   color: #085fb6;
 }
-.editIcon{
-   color:#8fe591 ;
+
+.editIcon {
+  color: #8fe591;
   cursor: pointer;
 }
-.editIcon:hover{
-   color:#3c9740;
+
+.editIcon:hover {
+  color: #3c9740;
   cursor: pointer;
 }
-.deleteIcon{
-  color:#f57777;
+
+.deleteIcon {
+  color: #f57777;
   cursor: pointer;
 }
-.deleteIcon:hover{
-  color:#a50a0a;
+
+.deleteIcon:hover {
+  color: #a50a0a;
   cursor: pointer;
 }
 
@@ -170,10 +177,4 @@
   transition: all 0.3s ease;
   position: relative;
   z-index: 1
-}
-
-.category-title:hover {
-  max-width: none;
-  background-color: #ffffff;
-  z-index: 2; 
 }

@@ -137,7 +137,7 @@ export const UserProvider = ({children}: Props) => {
           navigate("/menu");
         }
       })
-      .catch(() => toast.warning("Server error occurred"));
+      .catch(() => toast.error("Incorrect  email or password"));
   };
 
   

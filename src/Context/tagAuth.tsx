@@ -13,7 +13,7 @@ export const tagAdd = async (id: string, title: string, idUser: string) => {
       toast.success("Tag Add Success!");
       return tag;
     })
-    .catch(() => toast.warning("Server error occurred"));
+    .catch(() => toast.error("Tag can not be created"));
 };
 
 export const tagDelete = async (id: string,isAll:boolean): Promise<boolean> => {
@@ -28,7 +28,7 @@ export const tagDelete = async (id: string,isAll:boolean): Promise<boolean> => {
       toast.success("Task Delete Success!");
       return true;
     } else {
-      toast.warning("Failed to delete tag. Please try again.");
+      toast.error("Failed to delete tag. Please try again.");
       return false;
     }
   } catch {
@@ -43,5 +43,5 @@ export const tagUpdate = async (id: string, title: string, idUser: string) =>{
     toast.success("Tag Update Success!");
     return res;
   })
-  .catch(() => toast.warning("Server error occurred"));
+  .catch(() => toast.error("Tag can not be updated"));
 }

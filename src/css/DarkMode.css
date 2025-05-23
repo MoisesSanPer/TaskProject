@@ -20,4 +20,7 @@
 #darkMode.clicked{
     filter: none !important;
     background-color: black;
+    background: transparent url("../assets/day.png") no-repeat center;
+    background-size: 40px 40px;
 }
+

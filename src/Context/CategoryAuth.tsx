@@ -22,7 +22,7 @@ export const categoryAdd = async (
       toast.success("Category Add Success!");
       return category;
     })
-    .catch(() => toast.warning("Server error occurred"));
+    .catch(() => toast.error("Category can not be updated"));
 };
 
 //Function that return a  Promise<boolean> and can later control the status code in the build of the view
@@ -42,7 +42,7 @@ export const categoryDelete = async (id: string,isAll:boolean): Promise<boolean>
       toast.success("Task Delete Success!");
       return true;
     } else {
-      toast.warning("Failed to delete category. Please try again.");
+      toast.error("Failed to delete category. Please try again.");
       return false;
     }
   } catch {
@@ -61,5 +61,5 @@ export const categoryUpdate = async (
       toast.success("Category Update Success!");
       return res;
     })
-    .catch(() => toast.warning("Server error occurred"));
+    .catch(() => toast.error("Category can not be updated"));
 };

@@ -21,7 +21,7 @@ export const TaskAdd = async (id: string, title: string, description: string, en
       toast.success("Task Add Success!");
       return task;
     })
-    .catch(() => toast.warning("Server error occurred"));
+    .catch(() => toast.error("Task can not be added"));
 };
 export const taskDelete = async (id: string):Promise<boolean> => {
   try {
@@ -30,7 +30,7 @@ export const taskDelete = async (id: string):Promise<boolean> => {
       toast.success("Task Delete Success!");
       return true;
     } else {
-      toast.warning("Failed to delete task. Please try again.");
+      toast.error("Failed to delete task. Please try again.");
       return false;
     }
   } catch {
@@ -44,5 +44,5 @@ export const taskUpdate = async (id: string, title: string, idUser: string, desc
     toast.success("Task Update Success!");
     return res;
   })
-  .catch(() => toast.warning("Server error occurred"));
+  .catch(() => toast.error("Task can not be updated"));
 }

@@ -8,6 +8,7 @@ import {
   Dropdown,
   Datepicker,
   CloseIcon,
+  Tooltip,
 } from "@fluentui/react-northstar";
 import {
   FaRegCalendarAlt,
@@ -343,51 +344,130 @@ const Menu = ({
                                 </Flex>
                                 <Flex gap="gap.small">
                                   <label htmlFor="inputField">Category:</label>
-                                  <span
-                                    style={{
-                                      fontStyle: "italic",
-                                      color: "#555",
-                                      fontSize: "16px",
-                                    }}
-                                  >
-                                    {task.categories.length > 0
-                                      ? task.categories
-                                          .map((cat) => cat.title)
-                                          .join(", ")
-                                      : "No hay categorias en esta Tarea"}
-                                  </span>
+                                  <Tooltip
+                                    dismissOnContentMouseEnter
+                                    autoSize
+                                    position="after"
+                                    align="center"
+                                    trigger={
+                                      <span
+                                        style={{
+                                          fontStyle: "italic",
+                                          fontSize: "16px",
+                                          display: "inline-block",
+                                          maxWidth: "200px",
+                                          whiteSpace: "nowrap",
+                                          overflow: "hidden",
+                                          textOverflow: "ellipsis",
+                                        }}
+                                      >
+                                        {task.categories.length > 0
+                                          ? task.categories
+                                              .map((cat) => cat.title)
+                                              .join(", ")
+                                          : "No hay categorias en esta Tarea"}
+                                      </span>
+                                    }
+                                    content={
+                                      <span
+                                        style={{
+                                          fontStyle: "italic",
+                                          fontSize: "16px",
+                                        }}
+                                      >
+                                        {task.categories.length > 0
+                                          ? task.categories
+                                              .map((cat) => cat.title)
+                                              .join(", ")
+                                          : "No hay categorias en esta Tarea"}
+                                      </span>
+                                    }
+                                  />
                                 </Flex>
                                 <Flex gap="gap.small">
                                   <label htmlFor="inputField">Tags:</label>
-                                  <span
-                                    style={{
-                                      fontStyle: "italic",
-                                      color: "#555",
-                                      fontSize: "16px",
-                                    }}
-                                  >
-                                    {task.tags.length > 0
-                                      ? task.tags
-                                          .map((tag) => tag.title)
-                                          .join(", ")
-                                      : "No hay tags en esta Tarea"}
-                                  </span>
+                                  <Tooltip
+                                    dismissOnContentMouseEnter
+                                    autoSize
+                                    position="after"
+                                    align="bottom"
+                                    trigger={
+                                      <span
+                                        style={{
+                                          fontStyle: "italic",
+                                          fontSize: "16px",
+                                          display: "inline-block",
+                                          maxWidth: "200px",
+                                          whiteSpace: "nowrap",
+                                          overflow: "hidden",
+                                          textOverflow: "ellipsis",
+                                        }}
+                                      >
+                                        {task.tags.length > 0
+                                          ? task.tags
+                                              .map((tag) => tag.title)
+                                              .join(", ")
+                                          : "No hay tags en esta Tarea"}
+                                      </span>
+                                    }
+                                    content={
+                                      <span
+                                        style={{
+                                          fontStyle: "italic",
+                                          fontSize: "16px",
+                                        }}
+                                      >
+                                        {task.tags.length > 0
+                                          ? task.tags
+                                              .map((tag) => tag.title)
+                                              .join(", ")
+                                          : "No hay tags en esta Tarea"}
+                                      </span>
+                                    }
+                                  />
                                 </Flex>
                                 <Flex gap="gap.small">
                                   <label htmlFor="inputField">SubTasks:</label>
-                                  <span
-                                    style={{
-                                      fontStyle: "italic",
-                                      color: "#555",
-                                      fontSize: "16px",
-                                    }}
-                                  >
-                                    {task.subTasks.length > 0
-                                      ? task.subTasks
-                                          .map((task) => task.title)
-                                          .join(", ")
-                                      : "No hay subtareas en esta Tarea"}
-                                  </span>
+
+                                  <Tooltip
+                                    dismissOnContentMouseEnter
+                                    autoSize
+                                    position="after"
+                                    align="center"
+                                    trigger={
+                                      <span
+                                        style={{
+                                          fontStyle: "italic",
+                                          fontSize: "16px",
+                                          display: "inline-block",
+                                          maxWidth: "200px",
+                                          whiteSpace: "nowrap",
+                                          overflow: "hidden",
+                                          textOverflow: "ellipsis",
+                                        }}
+                                      >
+                                        {task.subTasks.length > 0
+                                          ? task.subTasks
+                                              .map((task) => task.title)
+                                              .join(", ")
+                                          : "No hay subtareas en esta Tarea"}
+                                      </span>
+                                    }
+                                    content={
+                                      <span
+                                        style={{
+                                          fontStyle: "italic",
+                                          fontSize: "16px",
+                                        }}
+                                      >
+                                        {task.subTasks.length > 0
+                                          ? task.subTasks
+                                              .map((task) => task.title)
+                                              .join(", ")
+                                          : "No hay subtareas en esta Tarea"}
+                                      </span>
+                                    }
+                                  />
                                 </Flex>
                               </div>
                             }
@@ -953,13 +1033,30 @@ const Menu = ({
                 onClick={() => {}}
               >
                 <Flex>
-                  <p
-                    className="category-title"
-                    key={category.id}
-                    onClick={() => handleCategoryClick(category)}
-                  >
-                    {category.title}
-                  </p>
+                  <Tooltip
+                    dismissOnContentMouseEnter
+                    autoSize
+                    trigger={
+                      <p
+                        className="category-title"
+                        key={category.id}
+                        onClick={() => handleCategoryClick(category)}
+                      >
+                        {category.title}
+                      </p>
+                    }
+                    content={
+                      <div
+                        style={{
+                          maxWidth: "100px",
+                          wordWrap: "break-word",
+                          overflowWrap: "break-word",
+                        }}
+                      >
+                        {category.title}
+                      </div>
+                    }
+                  ></Tooltip>
 
                   <Dialog
                     cancelButton="Cancel"
@@ -1117,7 +1214,6 @@ const Menu = ({
               </div>
             );
           })}
-
         </div>
         <Dialog
           cancelButton="Cancel"
@@ -1174,13 +1270,31 @@ const Menu = ({
             return (
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Flex>
-                  <p
-                    className="category-title"
-                    key={tag.id}
-                    onClick={() => handleTagClick(tag)}
-                  >
-                    {tag.title}
-                  </p>
+                  <Tooltip
+                    dismissOnContentMouseEnter
+                    autoSize
+                    trigger={
+                      <p
+                        className="category-title"
+                        key={tag.id}
+                        onClick={() => handleTagClick(tag)}
+                      >
+                        {tag.title}
+                      </p>
+                    }
+                    content={
+                      <div
+                        style={{
+                          maxWidth: "100px",
+                          wordWrap: "break-word",
+                          overflowWrap: "break-word",
+                        }}
+                      >
+                        {tag.title}
+                      </div>
+                    }
+                  ></Tooltip>
+
                   <Dialog
                     cancelButton="Cancel"
                     confirmButton="Update"
