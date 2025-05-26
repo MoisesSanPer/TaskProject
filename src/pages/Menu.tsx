@@ -359,6 +359,7 @@ const Menu = ({
                                           whiteSpace: "nowrap",
                                           overflow: "hidden",
                                           textOverflow: "ellipsis",
+                                          cursor: "context-menu",
                                         }}
                                       >
                                         {task.categories.length > 0
@@ -401,6 +402,7 @@ const Menu = ({
                                           whiteSpace: "nowrap",
                                           overflow: "hidden",
                                           textOverflow: "ellipsis",
+                                          cursor: "context-menu",
                                         }}
                                       >
                                         {task.tags.length > 0
@@ -428,46 +430,83 @@ const Menu = ({
                                 </Flex>
                                 <Flex gap="gap.small">
                                   <label htmlFor="inputField">SubTasks:</label>
-
-                                  <Tooltip
-                                    dismissOnContentMouseEnter
-                                    autoSize
-                                    position="after"
-                                    align="center"
-                                    trigger={
-                                      <span
-                                        style={{
-                                          fontStyle: "italic",
-                                          fontSize: "16px",
-                                          display: "inline-block",
-                                          maxWidth: "200px",
-                                          whiteSpace: "nowrap",
-                                          overflow: "hidden",
-                                          textOverflow: "ellipsis",
-                                        }}
-                                      >
-                                        {task.subTasks.length > 0
-                                          ? task.subTasks
-                                              .map((task) => task.title)
-                                              .join(", ")
-                                          : "No hay subtareas en esta Tarea"}
-                                      </span>
-                                    }
-                                    content={
-                                      <span
-                                        style={{
-                                          fontStyle: "italic",
-                                          fontSize: "16px",
-                                        }}
-                                      >
-                                        {task.subTasks.length > 0
-                                          ? task.subTasks
-                                              .map((task) => task.title)
-                                              .join(", ")
-                                          : "No hay subtareas en esta Tarea"}
-                                      </span>
-                                    }
-                                  />
+                                  {/*Separate every item of subtask in Tooltip  so we can
+                                  hover every one and lok */}
+                                  {task.subTasks.length > 0 ? (
+                                    task.subTasks.map((subTask, index) => (
+                                      <Tooltip
+                                        key={index}
+                                        dismissOnContentMouseEnter
+                                        autoSize
+                                        position="below"
+                                        align="start"
+                                        trigger={
+                                          <span
+                                            style={{
+                                              fontStyle: "italic",
+                                              fontSize: "16px",
+                                              display: "inline-block",
+                                              maxWidth: "50px",
+                                              whiteSpace: "nowrap",
+                                              overflow: "hidden",
+                                              textOverflow: "ellipsis",
+                                              cursor: "context-menu",
+                                              marginRight: "8px",
+                                            }}
+                                          >
+                                            {subTask.title}
+                                          </span>
+                                        }
+                                        content={
+                                          <div
+                                            style={{
+                                              fontSize: "14px",
+                                              maxWidth: "300px",
+                                            }}
+                                          >
+                                            <p>
+                                              <strong>Title:</strong>
+                                              {subTask.title}
+                                            </p>
+                                            <p>
+                                              <strong>Description:</strong>
+                                              {subTask.description}
+                                            </p>
+                                            <p>
+                                              <strong>
+                                                End Date:
+                                              </strong>
+                                              {subTask.endDate}
+                                            </p>
+                                            <p>
+                                              <strong>Status:</strong>
+                                              {status[subTask.status]}
+                                            </p>
+                                            <p>{/*Mapped the categories to see  each ctaegory title that contain */}
+                                              <strong>Categories:</strong>
+                                              {subTask.categories?.map((cat) => cat.title)
+                                              .join(", ") ||
+                                                "No categories assign"}
+                                            </p>
+                                            <p>
+                                              <strong>Tags:</strong>
+                                              {subTask.tags?.map((cat) => cat.title).join(", ") ||
+                                                "No tags assign"}
+                                            </p>
+                                          </div>
+                                        }
+                                      />
+                                    ))
+                                  ) : (
+                                    <span
+                                      style={{
+                                        fontStyle: "italic",
+                                        fontSize: "16px",
+                                      }}
+                                    >
+                                      There are no subtasks in this Task.
+                                    </span>
+                                  )}
                                 </Flex>
                               </div>
                             }
@@ -691,8 +730,8 @@ const Menu = ({
                             onClick={() => {
                               taskDelete(task.id).then((result) => {
                                 if (result) {
-                                  //Lo que haces es actualizar la lista temporal con los id que sena distinto del que has clickado para asi no tener que  borrar
-                                  //de la lista temporal y asi no tener problemas
+                                  //What you do is update the temporary list with the ids that are different from the one you clicked on so you don't have to delete them.
+                                  //of the temporary list so as not to have problems
                                   updateListTask(
                                     Tasks.filter((c) => c.id != task.id)
                                   );
@@ -893,7 +932,7 @@ const Menu = ({
               </Flex>
               <div>
                 <Flex gap="gap.small">
-                  <label>Date:</label>
+                  <label>End Date:</label>
                   <Datepicker
                     selected={date}
                     onDateChange={(_, data) => {
