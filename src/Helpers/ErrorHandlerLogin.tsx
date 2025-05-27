@@ -10,12 +10,14 @@ export const handleErrorLogin =(error:any) =>{
                  toast.warning(val.description);
             }
         }else if (err?.data){
-            toast.warning(err.data);
-        } else if (err?.status == 401){
-            toast.warning("Please login")
+            toast.error(err.data);
+        } else if (err?.status == 404){
+            //This error is the status code that the  return the login from the BackEnd when it does not found the user at the database
+            toast.error("Incorrect email or password")
+            
             window.history.pushState({},"LoginPage","/login");
         } else if (err){
-            toast.warning(err?.data);
+            toast.error(err?.data);
         }
     }
 }

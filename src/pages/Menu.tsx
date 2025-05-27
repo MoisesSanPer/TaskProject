@@ -233,8 +233,10 @@ const Menu = ({
           </div>
         </Flex>
         <div>
+          <div className="task-columns">
           {tagsTaskNumber === true
-            ? mappedTask
+            ?
+            mappedTask
                 .filter((sta) =>
                   sta.tags.some((tags) => tags.id === selectedTag!.id)
                 )
@@ -323,6 +325,7 @@ const Menu = ({
                                     id="TaskDescription"
                                     value={task.description}
                                     readOnly={true}
+                                    fluid
                                   />
                                 </Flex>
                                 <Flex gap="gap.small">
@@ -473,25 +476,26 @@ const Menu = ({
                                               {subTask.description}
                                             </p>
                                             <p>
-                                              <strong>
-                                                End Date:
-                                              </strong>
+                                              <strong>End Date:</strong>
                                               {subTask.endDate}
                                             </p>
                                             <p>
                                               <strong>Status:</strong>
                                               {status[subTask.status]}
                                             </p>
-                                            <p>{/*Mapped the categories to see  each ctaegory title that contain */}
+                                            <p>
+                                              {/*Mapped the categories to see  each ctaegory title that contain */}
                                               <strong>Categories:</strong>
-                                              {subTask.categories?.map((cat) => cat.title)
-                                              .join(", ") ||
+                                              {subTask.categories
+                                                ?.map((cat) => cat.title)
+                                                .join(", ") ||
                                                 "No categories assign"}
                                             </p>
                                             <p>
                                               <strong>Tags:</strong>
-                                              {subTask.tags?.map((cat) => cat.title).join(", ") ||
-                                                "No tags assign"}
+                                              {subTask.tags
+                                                ?.map((cat) => cat.title)
+                                                .join(", ") || "No tags assign"}
                                             </p>
                                           </div>
                                         }
@@ -596,15 +600,15 @@ const Menu = ({
                                   <Dropdown
                                     className="icons"
                                     multiple
+                                    //We only show tasks that do not have subtasks within them.
+                                    //If some tasks have subtasks it will not be shown
                                     items={mappedTask.filter(
                                       (Task) =>
                                         Task.id != task.id &&
                                         !Tasks.filter(
                                           (c) =>
                                             c.subTasks && c.subTasks.length > 0
-                                        )
-                                          .flatMap((a) => a.subTasks)
-                                          .some((b) => b.id === Task.id)
+                                        ).some((b) => b.id === Task.id)
                                     )}
                                     placeholder="Update your SubTasks"
                                     noResultsMessage="We couldn't find any matches."
@@ -749,6 +753,7 @@ const Menu = ({
                 );
               })}
         </div>
+      </div>
       </div>
       <div className="menu-container">
         <Flex>
@@ -896,7 +901,9 @@ const Menu = ({
                   backgroundColor: "#6F00FF",
                   color: "white",
                 },
+                height:"60px"
               }}
+              size="medium"
             />
           }
           content={
@@ -1146,7 +1153,7 @@ const Menu = ({
                     open={CategoryDeleteDialogOpen}
                     //I prefer not having backgorund and you can see the app normally
                     backdrop={false}
-                    header="Delete Category (Click outside to leave)"
+                    header="Delete Category (Click  the X to close out)"
                     //Close Icon were we update  the state that control if it is open and we close it
                     headerAction={{
                       icon: <CloseIcon />,
@@ -1382,7 +1389,7 @@ const Menu = ({
                     open={TagDeleteDialogOpen}
                     //I prefer not having backgorund and you can see the app normally
                     backdrop={false}
-                    header="Delete Tag (Click outside to leave)"
+                    header="Delete Tag (Click the X to close out)"
                     //Close Icon were we update  the state that control if it is open and we close it
                     headerAction={{
                       icon: <CloseIcon />,
