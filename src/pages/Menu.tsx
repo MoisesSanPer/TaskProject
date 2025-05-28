@@ -570,6 +570,20 @@ const Menu = ({
                                         }}
                                         placeholder="Update the task title"
                                       />
+                                      <div
+                                        style={{
+                                          marginTop: "4px",
+                                          fontSize: "1em",
+                                          color: "#888",
+                                          textAlign: "right",
+                                        }}
+                                      >
+                                        {
+                                          inputTaskTitleUpdateValue!
+                                            .length
+                                        }
+                                        /200
+                                      </div>
                                     </Flex>
                                     <Flex gap="gap.small">
                                       <label htmlFor="inputField">
@@ -588,6 +602,20 @@ const Menu = ({
                                         resize="both"
                                         placeholder="Update the description title"
                                       />
+                                      <div
+                                        style={{
+                                          marginTop: "4px",
+                                          fontSize: "1em",
+                                          color: "#888",
+                                          textAlign: "right",
+                                        }}
+                                      >
+                                        {
+                                          inputTaskDescriptionUpdateValue!
+                                            .length
+                                        }
+                                        /200
+                                      </div>
                                     </Flex>
                                     <Flex gap="gap.small">
                                       <label htmlFor="inputField">
@@ -959,6 +987,16 @@ const Menu = ({
                   }
                   placeholder="Write the task title"
                 />
+                <div
+                  style={{
+                    marginTop: "4px",
+                    fontSize: "1em",
+                    color: "#888",
+                    textAlign: "right",
+                  }}
+                >
+                  {inputTaskTitleValue!.length}/30
+                </div>
               </Flex>
               <Flex gap="gap.small">
                 <label htmlFor="inputField">Description:</label>
@@ -973,6 +1011,16 @@ const Menu = ({
                   }
                   placeholder="Write the task description"
                 />
+                <div
+                  style={{
+                    marginTop: "4px",
+                    fontSize: "1em",
+                    color: "#888",
+                    textAlign: "right",
+                  }}
+                >
+                  {inputTaskDescriptionValue!.length}/200
+                </div>
               </Flex>
               <div>
                 <Flex gap="gap.small">
@@ -1166,6 +1214,16 @@ const Menu = ({
                           }
                           placeholder="Update the category title "
                         />
+                        <div
+                          style={{
+                            marginTop: "4px",
+                            fontSize: "1em",
+                            color: "#888",
+                            textAlign: "right",
+                          }}
+                        >
+                          {inputCategoryUpdateValue!.length}/30
+                        </div>
                       </div>
                     }
                     onConfirm={() => {
@@ -1328,6 +1386,16 @@ const Menu = ({
                 }
                 placeholder="Write the category title"
               />
+              <div
+                style={{
+                  marginTop: "4px",
+                  fontSize: "1em",
+                  color: "#888",
+                  textAlign: "right",
+                }}
+              >
+                {inputCategoryValue.length}/30
+              </div>
             </div>
           }
           onConfirm={() => {
@@ -1407,6 +1475,16 @@ const Menu = ({
                           }
                           placeholder="Update the tag title"
                         />
+                        <div
+                          style={{
+                            marginTop: "4px",
+                            fontSize: "1em",
+                            color: "#888",
+                            textAlign: "right",
+                          }}
+                        >
+                          {inputTagUpdateValue!.length}/30
+                        </div>
                       </div>
                     }
                     onConfirm={() => {
@@ -1557,6 +1635,16 @@ const Menu = ({
                 onChange={({}, data) => setInputTagValue(data?.value ?? "")}
                 placeholder="Write the tag title"
               />
+              <div
+                style={{
+                  marginTop: "4px",
+                  fontSize: "1em",
+                  color: "#888",
+                  textAlign: "right",
+                }}
+              >
+                {inputTagValue.length}/30
+              </div>
             </div>
           }
           onConfirm={() => {
