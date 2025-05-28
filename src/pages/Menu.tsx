@@ -578,11 +578,7 @@ const Menu = ({
                                           textAlign: "right",
                                         }}
                                       >
-                                        {
-                                          inputTaskTitleUpdateValue!
-                                            .length
-                                        }
-                                        /200
+                                        {inputTaskTitleUpdateValue?.length}/200
                                       </div>
                                     </Flex>
                                     <Flex gap="gap.small">
@@ -611,9 +607,7 @@ const Menu = ({
                                         }}
                                       >
                                         {
-                                          inputTaskDescriptionUpdateValue!
-                                            .length
-                                        }
+                                          inputTaskDescriptionUpdateValue?.length}
                                         /200
                                       </div>
                                     </Flex>
@@ -995,7 +989,7 @@ const Menu = ({
                     textAlign: "right",
                   }}
                 >
-                  {inputTaskTitleValue!.length}/30
+                  {inputTaskTitleValue.length}/30
                 </div>
               </Flex>
               <Flex gap="gap.small">
@@ -1019,7 +1013,7 @@ const Menu = ({
                     textAlign: "right",
                   }}
                 >
-                  {inputTaskDescriptionValue!.length}/200
+                  {inputTaskDescriptionValue.length}/200
                 </div>
               </Flex>
               <div>
@@ -1222,7 +1216,7 @@ const Menu = ({
                             textAlign: "right",
                           }}
                         >
-                          {inputCategoryUpdateValue!.length}/30
+                          {inputCategoryUpdateValue?.length}/30
                         </div>
                       </div>
                     }
@@ -1483,7 +1477,7 @@ const Menu = ({
                             textAlign: "right",
                           }}
                         >
-                          {inputTagUpdateValue!.length}/30
+                          {inputTagUpdateValue?.length}/30
                         </div>
                       </div>
                     }
@@ -1643,7 +1637,7 @@ const Menu = ({
                   textAlign: "right",
                 }}
               >
-                {inputTagValue.length}/30
+                {inputTagValue.toString().length}/30
               </div>
             </div>
           }
@@ -1681,7 +1675,7 @@ const Menu = ({
               <div>
                 <Datepicker
                   onDateChange={(_, v) => {
-                    alert(`You picked '${v!.value}'.`);
+                    alert(Tasks.filter((t)=>t.endDate == v?.value.toDateString()).length> 0 ? `The tasks for the day(${v!.value.toDateString()}) are: ${Tasks.filter((t)=>t.endDate == v?.value.toDateString()).map((t)=>t.title)}.` :`The are no task avalaible at day (${v?.value.toDateString()})`);
                   }}
                   today={new Date()}
                   buttonOnly
