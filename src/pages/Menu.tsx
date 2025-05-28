@@ -595,7 +595,8 @@ const Menu = ({
                                           );
                                         }}
                                         fluid
-                                        resize="both"
+                                        resize="vertical"
+                                        rows={4}
                                         placeholder="Update the description title"
                                       />
                                       <div
@@ -607,7 +608,8 @@ const Menu = ({
                                         }}
                                       >
                                         {
-                                          inputTaskDescriptionUpdateValue?.length}
+                                          inputTaskDescriptionUpdateValue?.length
+                                        }
                                         /200
                                       </div>
                                     </Flex>
@@ -817,7 +819,6 @@ const Menu = ({
           <div style={{ width: "130px" }}></div>
           <DarkMode toggleTheme={toggleTheme} user={user!} />
         </Flex>
-
         <h2 className="h2c1" style={{ cursor: "default" }}>
           TASKS
         </h2>
@@ -996,7 +997,8 @@ const Menu = ({
                 <label htmlFor="inputField">Description:</label>
                 <TextArea
                   fluid
-                  resize="both"
+                  resize="vertical"
+                  rows={4}
                   maxLength="200"
                   id="inputField"
                   value={inputTaskDescriptionValue}
@@ -1675,7 +1677,14 @@ const Menu = ({
               <div>
                 <Datepicker
                   onDateChange={(_, v) => {
-                    alert(Tasks.filter((t)=>t.endDate == v?.value.toDateString()).length> 0 ? `The tasks for the day(${v!.value.toDateString()}) are: ${Tasks.filter((t)=>t.endDate == v?.value.toDateString()).map((t)=>t.title)}.` :`The are no task avalaible at day (${v?.value.toDateString()})`);
+                    alert(
+                      Tasks.filter((t) => t.endDate == v?.value.toDateString())
+                        .length > 0
+                        ? `The tasks for the day(${v!.value.toDateString()}) are: ${Tasks.filter(
+                            (t) => t.endDate == v?.value.toDateString()
+                          ).map((t) => t.title)}.`
+                        : `The are no task avalaible at day (${v?.value.toDateString()})`
+                    );
                   }}
                   today={new Date()}
                   buttonOnly
@@ -1688,7 +1697,7 @@ const Menu = ({
               </div>
             }
           />
-          <div className="Tasks" onClick={logout}>
+          <div className="Tasks Signout" onClick={logout}>
             <Flex>
               <FaSignOutAlt size={20} />
               <p>Sign Out</p>
