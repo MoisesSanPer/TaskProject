@@ -1237,6 +1237,14 @@ const Menu = ({
                           cat.id === updatedCategory.id ? updatedCategory : cat
                         )
                       );
+                        updateListTask( Tasks.map((task) => ({
+                        ...task,
+                        categories: task.categories.map((cat) =>
+                          cat.id === updatedCategory.id
+                            ? { ...cat, title: updatedCategory.title }
+                            : cat
+                        ),
+                      })));
                     }}
                     onCancel={() => setinputCategoryUpdateValue(category.title)}
                   />
@@ -1498,6 +1506,12 @@ const Menu = ({
                           tag.id === updatedTag.id ? updatedTag : tag
                         )
                       );
+                      //Update the list while mapping the Task and 
+                      updateListTask(Tasks.map (task =>({
+                        ...task,
+                        //update the array of tags when id are the same and desstruct the titleand updated it 
+                        tags:task.tags.map((tag)=> tag.id == updatedTag.id ?{...tag,title:updatedTag.title} : tag)
+                      })));
                     }}
                     onCancel={() => setinputTagUpdateValue(tag.title)}
                   />
