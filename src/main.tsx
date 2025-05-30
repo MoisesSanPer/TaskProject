@@ -30,7 +30,6 @@ const Root = () => {
           setTheme(teamsDarkTheme);
         }
       } catch (error) {
-        console.error("Error fetching theme:", error);
       }
     };
 
